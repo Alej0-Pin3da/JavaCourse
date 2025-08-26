@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "VariacionesMain",
+            "request": "launch",
+            "mainClass": "VariacionesMain",
+            "projectName": "JavaCourse_6494a371"
+        },
+        {
+            "type": "java",
+            "name": "ProcesarArgumentos con argumentos",
+            "request": "launch",
+            "mainClass": "ProcesarArgumentos",
+            "projectName": "JavaCourse",
+            "cwd": "${workspaceFolder}/Ejemplos/Concepto01-MetodoMain",
+            "args": [
+                "Juan",
+                "25",
+                "Madrid"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "ProcesarArgumentos con espacios",
+            "request": "launch",
+            "mainClass": "ProcesarArgumentos",
+            "projectName": "JavaCourse",
+            "cwd": "${workspaceFolder}/Ejemplos/Concepto01-MetodoMain",
+            "args": [
+                "Juan Carlos",
+                "25",
+                "San José"
+            ]
+        }
+    ]
+}
