@@ -24,19 +24,18 @@ Esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escri
 
 ## 📋 Índice de Contenidos
 
-- [CONCEPTO 1: El método main() - Punto de entrada](#concepto-1-el-m%C3%A9todo-main---punto-de-entrada)
-- [CONCEPTO 2: Estructura de clases](#concepto-2---estructura-de-clases)
-- [CONCEPTO 3: Salida estándar (System.out)](#concepto-3---salida-est%C3%A1ndar-systemout)
-- [CONCEPTO 4: CASE SENSITIVITY](#concepto-4-case-sensitivity)
-- [CONCEPTO 6: Tipado fuerte y estático](#concepto-6-tipado-fuerte-y-est%C3%A1tico)
-- [CONCEPTO 7: Variables estáticas vs de instancia](#concepto-7-variables-est%C3%A1ticas-vs-de-instancia)
-- [CONCEPTO 11: Strings inmutables](#concepto-11-strings-inmutables)
-- [CONCEPTO 12: Estructuras de control](#concepto-12-estructuras-de-control)
-- [CONCEPTO 13: Arrays en Java](#concepto-13-arrays-en-java)
-- [CONCEPTO 14: Tipos de datos en Java 8](#concepto-14-tipos-de-datos-en-java-8)
-- [CONCEPTO 15: Reglas para nombres de variables](#concepto-15-reglas-para-nombres-de-variables)
-- [CONCEPTO 16: Tipos de comentarios](#concepto-16-tipos-de-comentarios)
-- [CONCEPTO 17: Paso de parámetros](#concepto-17-paso-de-par%C3%A1metros)
+- [CONCEPTO 1: El método main() - Punto de entrada](#-concepto-1-el-método-main---punto-de-entrada)
+- [CONCEPTO 2: Estructura de clases](#️-concepto-2--estructura-de-clases)
+- [CONCEPTO 3: Salida estándar (System.out)](#️-concepto-3--salida-estándar-systemout)
+- [CONCEPTO 4: CASE SENSITIVITY](#-concepto-4-case-sensitivity)
+- [CONCEPTO 7: Variables estáticas vs de instancia](#️-concepto-7-variables-estáticas-vs-de-instancia)
+- [CONCEPTO 11: Strings inmutables](#-concepto-11--strings-inmutables)
+- [CONCEPTO 12: Estructuras de control](#-concepto-12-estructuras-de-control)
+- [CONCEPTO 13: Arrays](#-concepto-13--arrays)
+- [CONCEPTO 14: Tipos de datos (primitivos y wrappers)](#-concepto-14--tipos-de-datos-primitivos-y-wrappers)
+- [CONCEPTO 15: Reglas para variables, clases y palabras reservadas](#-concepto-15--reglas-para-variables-clases-y-palabras-reservadas)
+- [CONCEPTO 16: Tipos de comentarios](#-concepto-16--tipos-de-comentarios)
+- [CONCEPTO 17: Paso de parámetros](#-concepto-17--paso-de-parámetros)
 
 ---
 
@@ -1385,9 +1384,477 @@ Regla práctica: elige nombres descriptivos y consistentes; si dudas, prefiere c
 
 ### 💬 CONCEPTO 16 — Tipos de comentarios
 
-    `//` línea, `/* ... */` multilínea, `/** ... */` JavaDoc.
+Java ofrece tres tipos principales de comentarios, cada uno con propósitos específicos y mejores prácticas asociadas. Los comentarios son fundamentales para la documentación del código y la comunicación entre desarrolladores.
 
-    ---
+#### **1. Comentarios de línea simple (`//`)**
+
+Los comentarios de línea simple se extienden desde `//` hasta el final de la línea y son ideales para explicaciones breves.
+
+##### **Usos principales:**
+```java
+public class EjemploComentarios {
+    // Variable para almacenar el contador principal
+    private int contador = 0;
+    
+    public void metodoEjemplo() {
+        contador++; // Incrementar contador después de cada operación
+        
+        // TODO: Implementar validación de rango
+        if (contador > 100) {
+            reset(); // Reiniciar si supera el límite
+        }
+        
+        // FIXME: Este algoritmo es O(n²), optimizar
+        for (int i = 0; i < contador; i++) {
+            // Procesamiento interno
+            procesarElemento(i);
+        }
+    }
+}
+```
+
+##### **Etiquetas especiales comunes:**
+```java
+// TODO: Funcionalidad pendiente de implementar
+// FIXME: Error conocido que necesita corrección
+// HACK: Solución temporal, revisar en futuras versiones
+// NOTE: Información importante para mantener
+// WARNING: Código crítico, modificar con cuidado
+// OPTIMIZE: Oportunidad de mejora de rendimiento
+// REVIEW: Código que necesita revisión por pares
+```
+
+#### **2. Comentarios multilínea (`/* */`)**
+
+Los comentarios multilínea se extienden desde `/*` hasta `*/` y pueden abarcar múltiples líneas. Son útiles para explicaciones extensas o para comentar bloques de código temporalmente.
+
+##### **Formato recomendado:**
+```java
+/*
+ * Este método implementa el algoritmo de ordenamiento QuickSort
+ * optimizado para arrays de enteros.
+ * 
+ * Complejidad temporal: O(n log n) promedio, O(n²) peor caso
+ * Complejidad espacial: O(log n) debido a la recursión
+ * 
+ * @param arr Array a ordenar
+ * @param low Índice inferior del rango
+ * @param high Índice superior del rango
+ */
+public void quickSort(int[] arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+```
+
+##### **Comentar código temporalmente:**
+```java
+public void procesarDatos() {
+    // Versión nueva (en desarrollo)
+    procesamientoOptimizado();
+    
+    /*
+    // Versión anterior (comentada temporalmente)
+    for (int i = 0; i < datos.length; i++) {
+        if (datos[i] != null) {
+            procesarItem(datos[i]);
+        }
+    }
+    */
+}
+```
+
+##### **Comentarios de bloque para licencias/headers:**
+```java
+/*
+ * Copyright (c) 2025 Mi Empresa
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ */
+package com.miempresa.proyecto;
+```
+
+#### **3. Comentarios JavaDoc (`/** */`)**
+
+Los comentarios JavaDoc son una forma especializada de comentarios multilínea que generan documentación HTML automáticamente. Siguen el formato `/** */` y utilizan etiquetas especiales.
+
+##### **Estructura básica:**
+```java
+/**
+ * Breve descripción del método, clase o campo.
+ * 
+ * Descripción más detallada que puede incluir múltiples párrafos,
+ * ejemplos de uso, consideraciones especiales, etc.
+ * 
+ * @param nombreParametro descripción del parámetro
+ * @return descripción de lo que retorna el método
+ * @throws TipoExcepcion cuándo y por qué se lanza la excepción
+ * @since versión en que se agregó
+ * @author nombre del autor
+ * @deprecated si el método está obsoleto
+ */
+```
+
+##### **Ejemplo completo de clase documentada:**
+```java
+/**
+ * Representa una cuenta bancaria básica con operaciones de depósito,
+ * retiro y consulta de saldo.
+ * 
+ * <p>Esta clase proporciona las funcionalidades esenciales para
+ * manejar una cuenta bancaria, incluyendo validaciones de seguridad
+ * y registro de transacciones.</p>
+ * 
+ * <p><strong>Ejemplo de uso:</strong></p>
+ * <pre>
+ * CuentaBancaria cuenta = new CuentaBancaria("123456789", 1000.0);
+ * cuenta.depositar(500.0);
+ * cuenta.retirar(200.0);
+ * System.out.println("Saldo: " + cuenta.getSaldo()); // Saldo: 1300.0
+ * </pre>
+ * 
+ * @author Juan Pérez
+ * @version 2.1
+ * @since 1.0
+ */
+public class CuentaBancaria {
+    /**
+     * Número único que identifica la cuenta bancaria.
+     * 
+     * @since 1.0
+     */
+    private final String numeroCuenta;
+    
+    /**
+     * Saldo actual de la cuenta en la moneda base.
+     * 
+     * @since 1.0
+     */
+    private double saldo;
+    
+    /**
+     * Crea una nueva cuenta bancaria con el número y saldo inicial especificados.
+     * 
+     * @param numeroCuenta el número único de la cuenta (no puede ser null o vacío)
+     * @param saldoInicial el saldo inicial de la cuenta (debe ser >= 0)
+     * @throws IllegalArgumentException si el número de cuenta es inválido
+     * @throws IllegalArgumentException si el saldo inicial es negativo
+     * @since 1.0
+     */
+    public CuentaBancaria(String numeroCuenta, double saldoInicial) {
+        if (numeroCuenta == null || numeroCuenta.trim().isEmpty()) {
+            throw new IllegalArgumentException("El número de cuenta no puede estar vacío");
+        }
+        if (saldoInicial < 0) {
+            throw new IllegalArgumentException("El saldo inicial no puede ser negativo");
+        }
+        
+        this.numeroCuenta = numeroCuenta;
+        this.saldo = saldoInicial;
+    }
+    
+    /**
+     * Deposita una cantidad específica en la cuenta.
+     * 
+     * <p>El monto a depositar debe ser positivo. Esta operación
+     * incrementa el saldo actual de la cuenta.</p>
+     * 
+     * @param monto la cantidad a depositar (debe ser > 0)
+     * @return el nuevo saldo después del depósito
+     * @throws IllegalArgumentException si el monto es menor o igual a cero
+     * @since 1.0
+     */
+    public double depositar(double monto) {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("El monto a depositar debe ser positivo");
+        }
+        
+        saldo += monto;
+        return saldo;
+    }
+    
+    /**
+     * Retira una cantidad específica de la cuenta si hay fondos suficientes.
+     * 
+     * @param monto la cantidad a retirar (debe ser > 0)
+     * @return el nuevo saldo después del retiro
+     * @throws IllegalArgumentException si el monto es menor o igual a cero
+     * @throws IllegalStateException si no hay fondos suficientes
+     * @since 1.0
+     */
+    public double retirar(double monto) {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("El monto a retirar debe ser positivo");
+        }
+        if (monto > saldo) {
+            throw new IllegalStateException("Fondos insuficientes");
+        }
+        
+        saldo -= monto;
+        return saldo;
+    }
+    
+    /**
+     * Obtiene el saldo actual de la cuenta.
+     * 
+     * @return el saldo actual de la cuenta
+     * @since 1.0
+     */
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    /**
+     * Obtiene el número de cuenta.
+     * 
+     * @return el número único de la cuenta
+     * @since 1.0
+     */
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+}
+```
+
+#### **Etiquetas JavaDoc más utilizadas**
+
+##### **Para métodos:**
+```java
+/**
+ * @param nombreParam descripción del parámetro
+ * @return descripción de lo que retorna
+ * @throws ExceptionType cuándo se lanza esta excepción
+ * @see ClaseRelacionada#metodoRelacionado()
+ * @since versión en que se agregó
+ * @deprecated desde versión X.X, usar {@link #nuevoMetodo()} en su lugar
+ */
+```
+
+##### **Para clases:**
+```java
+/**
+ * @author Nombre del Autor
+ * @version 1.2.3
+ * @since 1.0
+ * @see ClaseRelacionada
+ * @deprecated desde versión 2.0, usar {@link NuevaClase} en su lugar
+ */
+```
+
+##### **Para campos:**
+```java
+/**
+ * @since versión en que se agregó
+ * @deprecated si está obsoleto
+ */
+```
+
+#### **Etiquetas HTML permitidas en JavaDoc**
+
+JavaDoc permite ciertas etiquetas HTML para formatear la documentación:
+
+```java
+/**
+ * <p>Este es un párrafo separado.</p>
+ * 
+ * <ul>
+ * <li>Primer elemento de lista</li>
+ * <li>Segundo elemento de lista</li>
+ * </ul>
+ * 
+ * <ol>
+ * <li>Primer elemento numerado</li>
+ * <li>Segundo elemento numerado</li>
+ * </ol>
+ * 
+ * <pre>
+ * // Ejemplo de código formateado
+ * int resultado = calcular(10, 20);
+ * System.out.println(resultado);
+ * </pre>
+ * 
+ * <code>variable</code> - para resaltar código inline
+ * <strong>texto importante</strong> - para texto en negritas
+ * <em>texto enfatizado</em> - para texto en cursiva
+ * 
+ * <table>
+ * <tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr>
+ * <tr><td>x</td><td>int</td><td>Primer operando</td></tr>
+ * <tr><td>y</td><td>int</td><td>Segundo operando</td></tr>
+ * </table>
+ */
+```
+
+#### **Referencias cruzadas en JavaDoc**
+
+```java
+/**
+ * Este método utiliza el algoritmo implementado en {@link #ordenarArray(int[])}.
+ * 
+ * Para más información sobre ordenamiento, consultar:
+ * {@link java.util.Arrays#sort(int[])}
+ * 
+ * @see #metodoRelacionado()
+ * @see OtraClase#otroMetodo()
+ * @see <a href="https://docs.oracle.com/javase/8/docs/api/">Java 8 API</a>
+ */
+```
+
+#### **Generación de documentación**
+
+##### **Comando básico:**
+```bash
+# Generar documentación para todos los archivos Java
+javadoc *.java
+
+# Generar en directorio específico
+javadoc -d docs *.java
+
+# Incluir información de autor y versión
+javadoc -d docs -author -version *.java
+
+# Para paquetes específicos
+javadoc -d docs -sourcepath src com.miempresa.proyecto
+```
+
+##### **Opciones avanzadas:**
+```bash
+# Documentación completa con enlaces a JDK
+javadoc -d docs \
+        -author \
+        -version \
+        -link https://docs.oracle.com/javase/8/docs/api/ \
+        -windowtitle "Mi Proyecto API" \
+        -doctitle "Mi Proyecto Documentation" \
+        -header "<b>Mi Proyecto v1.0</b>" \
+        -footer "<i>Copyright 2025 Mi Empresa</i>" \
+        *.java
+```
+
+#### **Mejores prácticas para comentarios**
+
+##### **✅ Qué hacer:**
+```java
+// ✅ Explica el "por qué", no el "qué"
+// Usar caché para mejorar rendimiento en consultas frecuentes
+Map<String, Object> cache = new HashMap<>();
+
+// ✅ Documenta decisiones de diseño importantes
+/**
+ * Implementa lazy loading para optimizar el uso de memoria.
+ * Los datos se cargan solo cuando se acceden por primera vez.
+ */
+private List<String> datosLazy;
+
+// ✅ Explica algoritmos complejos
+/**
+ * Implementa el algoritmo de Dijkstra para encontrar el camino más corto.
+ * Complejidad: O((V + E) log V) donde V = vértices, E = aristas
+ */
+public List<Node> encontrarCaminoMasCorto(Node origen, Node destino) {
+    // Implementación...
+}
+
+// ✅ Documenta precondiciones y postcondiciones
+/**
+ * @param array debe estar ordenado ascendentemente
+ * @return índice del elemento o -1 si no se encuentra
+ * @throws IllegalArgumentException si el array es null
+ */
+public int busquedaBinaria(int[] array, int elemento) {
+    // Implementación...
+}
+```
+
+##### **❌ Qué evitar:**
+```java
+// ❌ Comentarios obvios (ruido)
+int contador = 0; // Inicializar contador en 0
+
+// ❌ Comentarios desactualizados
+/**
+ * Retorna el nombre del usuario
+ * @return el nombre como String
+ */
+public int getUserId() { // Método retorna int, no String!
+    return this.userId;
+}
+
+// ❌ Comentarios que duplican el código
+// Incrementar i en 1
+i++;
+
+// ❌ Comentarios largos para código simple
+/**
+ * Este método suma dos números enteros utilizando
+ * el operador de suma aritmética básica implementado
+ * en el procesador de la máquina virtual de Java
+ * para realizar la operación matemática fundamental...
+ */
+public int sumar(int a, int b) {
+    return a + b; // Un simple return bastaría sin tanto comentario
+}
+```
+
+#### **Comentarios para diferentes audiencias**
+
+##### **Para desarrolladores del equipo:**
+```java
+// TEAM: Este workaround es temporal hasta que el API v2 esté disponible
+// PERFORMANCE: Este método se llama frecuentemente, optimizar si es posible
+// SECURITY: Validación adicional requerida por auditoría de seguridad
+```
+
+##### **Para mantenimiento futuro:**
+```java
+/**
+ * IMPORTANTE: Este método modifica el estado global de la aplicación.
+ * Cualquier cambio aquí debe coordinarse con el equipo de arquitectura.
+ * 
+ * Última modificación: 2025-08-26 por Juan Pérez
+ * Motivo: Optimización de memoria según ticket #2347
+ */
+```
+
+##### **Para usuarios de la API:**
+```java
+/**
+ * <h3>Uso típico:</h3>
+ * <pre>
+ * // Crear instancia
+ * ProcessorService processor = new ProcessorService();
+ * 
+ * // Configurar opciones
+ * processor.setOption("timeout", 5000);
+ * processor.setOption("retries", 3);
+ * 
+ * // Procesar datos
+ * Result result = processor.process(inputData);
+ * </pre>
+ * 
+ * <h3>Consideraciones importantes:</h3>
+ * <ul>
+ * <li>Este método es thread-safe</li>
+ * <li>El timeout predeterminado es 30 segundos</li>
+ * <li>Se recomienda reutilizar instancias para mejor rendimiento</li>
+ * </ul>
+ */
+```
+
+Los comentarios efectivos mejoran significativamente la mantenibilidad del código y facilitan la colaboración en equipos de desarrollo. El uso apropiado de cada tipo de comentario según el contexto es clave para una documentación de calidad.
+
+---
 
 ### ⚡ CONCEPTO 17 — Paso de parámetros
 
