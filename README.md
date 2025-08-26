@@ -555,12 +555,69 @@ La comprensión de variables estáticas vs de instancia es esencial para diseña
 
 ### 📝 CONCEPTO 11 — Strings inmutables
 
-    Los `String` son inmutables; para concatenaciones intensivas usa `StringBuilder`.
+Los `String` en Java son objetos inmutables: una vez creado un `String`, su contenido no puede cambiar.
 
-    ```java
-    String s = "Java";
-    String t = s.toUpperCase();
-    ```
+¿Qué significa esto en la práctica?
+- Cualquier operación que parezca "modificar" un `String` en realidad crea un nuevo objeto `String`.
+
+Ejemplo:
+```java
+String s = "Java";           // objeto A
+String t = s.toUpperCase();   // crea objeto B con "JAVA"; s sigue siendo "Java"
+```
+
+Ventajas de la inmutabilidad:
+- Seguridad en concurrencia: múltiples hilos pueden compartir el mismo `String` sin sincronización.
+- Caching y rendimiento en lecturas: el valor (y su hash) puede computarse una vez.
+- Uso eficiente del String Pool (ver más abajo).
+
+String Pool e `intern()`:
+- Literales de `String` se colocan en un pool (permite reutilizar la misma instancia para literales idénticos).
+- `String.intern()` fuerza que una cadena tenga su versión canonical en el pool y devuelve esa referencia.
+
+```java
+String a = "hola";                // internado por literal
+String b = new String("hola");    // objeto distinto en heap
+String c = b.intern();              // c referencia la instancia del pool (igual a a)
+System.out.println(a == c);         // true
+```
+
+Igualdad: `==` vs `equals()`
+- `==` compara referencias (misma instancia).
+- `equals()` compara contenido del `String` (uso recomendado para comparar textos).
+
+```java
+String x = new String("x");
+String y = new String("x");
+System.out.println(x == y);        // false
+System.out.println(x.equals(y));   // true
+```
+
+Rendimiento y concatenación
+- En concatenaciones simples y literales, el compilador optimiza `+` en tiempo de compilación.
+- En bucles o concatenaciones intensivas, usar `StringBuilder` (no `String`) para evitar crear muchos objetos temporales.
+
+Ejemplo comparativo:
+```java
+// Ineficiente: crea muchos Strings temporales
+String r = "";
+for (int i = 0; i < 1000; i++) {
+    r += i + ",";
+}
+
+// Eficiente: reutiliza el mismo buffer
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 1000; i++) {
+    sb.append(i).append(',');
+}
+String result = sb.toString();
+```
+
+Buenas prácticas resumidas
+- Usa `StringBuilder` en loops o concatenaciones grandes.
+- Usa `equals()` para comparar contenido.
+- Aprovecha literales y `intern()` sólo cuando realmente necesites canonicalizar referencias (uso avanzado).
+- Evita dependencias en comportamiento histórico (por ejemplo, detalles de implementación de `substring` que cambiaron en versiones antiguas de Java).
 
 ---
 
@@ -1050,10 +1107,186 @@ while (it.hasNext()) {
 ---
 
 ### 📊 CONCEPTO 13 — Arrays
+Arrays en Java son objetos de tamaño fijo que almacenan elementos del mismo tipo y exponen la propiedad `.length` para conocer su tamaño.
 
-    Arrays son objetos de tamaño fijo y usan el atributo `.length`.
+Características clave:
+- Tamaño fijo: una vez creado, no cambia su longitud.
+- Índices base 0: el primer elemento está en la posición 0 y el último en `length - 1`.
+- Pueden ser de tipos primitivos (p. ej. `int[]`) o de referencia (p. ej. `String[]`).
+- Son objetos y, por tanto, se almacenan en el heap.
 
-    ---
+Declaración y creación:
+```java
+// Declarar
+int[] a;            // variable que puede apuntar a un array de int
+
+// Crear con tamaño
+a = new int[5];     // [0,0,0,0,0]
+
+// Crear e inicializar
+int[] b = {1, 2, 3};
+String[] names = new String[]{"Ana", "Luis"};
+```
+
+Acceso y modificación:
+```java
+int x = b[0];       // leer (1)
+b[1] = 42;          // asignar
+int len = b.length; // obtener tamaño
+```
+
+Recorrido:
+```java
+// for clásico
+for (int i = 0; i < b.length; i++) {
+    System.out.println(b[i]);
+}
+
+// for-each (más legible, no permite conocer el índice directamente)
+for (int v : b) {
+    System.out.println(v);
+}
+```
+
+Arrays multidimensionales:
+```java
+int[][] matriz = new int[3][2];     // matriz 3x2 (todas las filas mismo tamaño)
+int[][] jagged = new int[3][];      // filas con tamaños distintos
+jagged[0] = new int[2];
+jagged[1] = new int[4];
+```
+
+API y utilidades importantes:
+
+- `java.util.Arrays` (métodos clave):
+    - `Arrays.toString(array)` / `Arrays.deepToString(array)` — representación legible de arrays (deep para arrays anidados).
+    - `Arrays.sort(array)` — ordena in-place en tiempo O(n log n).
+    - `Arrays.parallelSort(array)` — ordena en paralelo aprovechando múltiples cores (útil para arrays grandes).
+    - `Arrays.binarySearch(array, key)` — búsqueda binaria (requiere array previamente ordenado).
+    - `Arrays.copyOf(array, newLength)` / `Arrays.copyOfRange(array, from, to)` — copiar y redimensionar de forma segura.
+    - `Arrays.fill(array, value)` — rellena todo el array con un único valor (útil para inicializar/limpiar).
+    - `Arrays.equals(a,b)` / `Arrays.deepEquals(a,b)` — comparación por contenido.
+    - `Arrays.asList(array)` — crea una vista fija tipo `List` sobre el array; la lista resultante es de tamaño fijo y refleja cambios en el array.
+    - `Arrays.setAll(array, i -> f(i))` / `Arrays.parallelSetAll(array, i -> f(i))` — inicialización mediante función (Java 8+).
+    - `Arrays.mismatch(a, b)` (Java 9+) — devuelve el primer índice donde difieren o -1 si son iguales.
+
+- `System.arraycopy(src, srcPos, dest, destPos, length)` — copia de bloques entre arrays muy eficiente (mejor rendimiento que copiar elemento a elemento en Java puro).
+
+- Otras utilidades relacionadas:
+    - `Collections` y `List` (por ejemplo, `new ArrayList<>(Arrays.asList(array))` para obtener una lista mutable).
+    - `java.util.concurrent` collections para uso concurrente (p. ej. `CopyOnWriteArrayList`) si múltiples hilos modifican la estructura.
+
+Streams y procesamiento funcional (resumen):
+
+Un Stream en Java representa una secuencia de elementos sobre la cual podemos aplicar operaciones funcionales (map, filter, reduce, collect). Los Streams permiten escribir pipelines declarativos y pueden ser secuenciales o paralelos.
+
+- Características clave:
+    - Operaciones intermedias (map, filter, sorted) son perezosas y devuelven otro Stream.
+    - Operaciones terminales (forEach, collect, reduce, sum) disparan la ejecución y producen un resultado o efecto lateral.
+    - Los Streams no almacenan datos: son una vista computacional sobre una fuente (arrays, colecciones, I/O).
+
+- Tipos de Streams:
+    - `Stream<T>` para referencias.
+    - `IntStream`, `LongStream`, `DoubleStream` para tipos primitivos (evitan boxing).
+
+- Ejemplo básico:
+```java
+int[] nums = {1,2,3,4,5};
+int sum = Arrays.stream(nums)
+                                .filter(n -> n % 2 == 0)
+                                .map(n -> n * 2)
+                                .sum();
+```
+
+- Ejemplo con objetos y collector:
+```java
+String[] names = {"Ana", "Luis", "María"};
+List<String> upper = Arrays.stream(names)"+
+        .map(String::toUpperCase)
+        .filter(s -> s.length() > 3)
+        .collect(Collectors.toList());
+```
+
+- Paralelismo:
+    - `Arrays.stream(array).parallel()` o `parallelStream()` en colecciones; útil para operaciones CPU-bound en arrays grandes, pero cuidado con efectos laterales y overhead de particionado.
+
+Consideraciones de rendimiento:
+- Streams pueden ser legibles y concisos; para hot paths donde la alocación y boxing son críticos, usa `IntStream`/`LongStream` o APIs de arrays (System.arraycopy, Arrays methods).
+
+Ejemplos:
+```java
+int[] c = Arrays.copyOf(b, 5);               // copia y extiende con ceros
+System.arraycopy(b, 0, c, 0, Math.min(b.length, c.length));
+Arrays.sort(c);                              // ordenar
+int idx = Arrays.binarySearch(c, 42);        // buscar (array debe estar ordenado)
+System.out.println(Arrays.toString(c));     // representación legible
+
+// Rellenar con un valor
+Arrays.fill(c, 0);
+
+// Comparar arrays
+int[] x = {1,2,3};
+int[] y = {1,2,3};
+System.out.println(Arrays.equals(x,y)); // true
+
+// Convertir a stream y sumar
+int sum = Arrays.stream(c).sum();
+```
+
+
+Errores comunes:
+- Off-by-one: usar `i < array.length` y no `<=`.
+- IndexOutOfBounds: acceder a índices negativos o >= length.
+- Intentar cambiar el tamaño del array (usar `ArrayList` o crear uno nuevo con `Arrays.copyOf`).
+- Modificar elementos mientras iteras con for-each (usa índices o `List` cuando debas eliminar).
+
+#### Vaciar o reutilizar un array ya inicializado
+
+Una vez que un array ha sido creado e inicializado con valores, no existe un método "vaciar" que cambie su longitud; las estrategias dependen del objetivo:
+
+1) Reutilizar el mismo array y sobrescribir valores
+```java
+Arrays.fill(arr, 0);          // para tipos primitivos: rellena con el valor por defecto/indicado
+Arrays.fill(objArr, null);    // para arrays de referencia: establece todas las referencias a null
+```
+Ventaja: mantiene la misma referencia (útil si otros objetos mantienen punteros al array).
+
+2) Crear un nuevo array y reasignar la referencia
+```java
+arr = new int[originalLength];   // crea un array vacío (con ceros)
+```
+Ventaja: sencillo y claro; cualquier referencia antigua seguirá apuntando al array previo.
+
+3) Mantener un contador lógico de elementos (simular una 'longitud' variable)
+```java
+int size = 0;          // número de elementos válidos en el array
+arr[size++] = value;   // añadir
+// 'vaciar' lógicamente: size = 0;
+```
+Ventaja: evita reallocs constantes; patrón útil en estructuras de alto rendimiento.
+
+4) Usar `Arrays.copyOf` para truncar o expandir
+```java
+arr = Arrays.copyOf(arr, newLength);
+```
+Esto crea un nuevo array con la longitud indicada y copia los elementos hasta el nuevo tamaño.
+
+Consideraciones sobre referencias y concurrencia:
+- Si otras partes del código apuntan al mismo array, reasignar la variable local no afecta a esas referencias.
+- Si necesitas invalidar contenido por seguridad (por ejemplo, limpiar datos sensibles), usa `Arrays.fill(objArr, null)` o sobreescribe con valores neutros.
+- Para entornos concurrentes, sincroniza cuando múltiples hilos lean/escriban el array o usa estructuras concurrentes (p. ej. `CopyOnWriteArrayList`).
+
+Rendimiento y recomendaciones:
+- Para colecciones dinámicas, prefiere `ArrayList<T>` en lugar de arrays si necesitas tamaño variable.
+- Para operaciones intensivas de lectura/escritura indexada, los arrays son muy eficientes (menos overhead que `ArrayList`).
+- Evita crear arrays muy grandes sin control de memoria; usa streams o procesamiento por bloques cuando sea necesario.
+
+Buenas prácticas:
+- Usa `Arrays.asList()` cuando necesites una vista fija basada en un array (no soporta operaciones de tamaño).
+- Prefiere `Arrays.copyOf()` o `System.arraycopy()` para copiar en vez de bucles manuales por claridad y rendimiento.
+- Documenta si un array puede contener `null` para tipos de referencia.
+
+---
 
 ### 🎯 CONCEPTO 14 — Tipos de datos (primitivos y wrappers)
 
