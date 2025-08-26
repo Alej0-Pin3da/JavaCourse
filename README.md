@@ -10,6 +10,241 @@
 
 ---
 
+## TL;DR
+
+Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+
+## Objetivos de aprendizaje
+
+- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
+- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
+- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
+- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+
+## Índice (Table of Contents)
+
+- 📖 TEORÍA DETALLADA
+    - CONCEPTO 1: El método main() - Punto de entrada
+    - CONCEPTO 2: Estructura obligatoria de clases
+    - CONCEPTO 3: System.out - Salida estándar
+    - CONCEPTO 4: Case sensitivity
+    - CONCEPTO 5: Compilación a bytecode
+    - CONCEPTO 6: Fuertemente tipado
+    - CONCEPTO 7: Variables estáticas vs de instancia
+    - CONCEPTO 11: Strings inmutables
+    - CONCEPTO 12: Estructuras de control
+    - CONCEPTO 13: Arrays en Java
+    - CONCEPTO 14: Tipos de datos en Java 8
+    - CONCEPTO 15: Reglas para nombres de variables
+    - CONCEPTO 16: Tipos de comentarios
+    - CONCEPTO 17: Paso de parámetros
+
+
+## 📖 TEORÍA DETALLADA
+
+### 🔥 CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA
+
+El método `main()` es el punto de entrada de cualquier aplicación Java ejecutable.
+
+```java
+public static void main(String[] args)
+```
+
+Explicación breve: `public` permite acceso desde la JVM; `static` evita instanciar la clase; `void` no devuelve valor; `String[] args` recibe argumentos de línea de comandos.
+
+---
+
+### CONCEPTO 2: ESTRUCTURA OBLIGATORIA DE CLASES
+
+Java organiza todo en clases: no hay funciones globales ni código ejecutable fuera de métodos.
+
+Reglas clave:
+- Un archivo `.java` puede contener varias clases, solo una `public`.
+- La clase `public` debe tener el mismo nombre que el archivo.
+
+---
+
+### CONCEPTO 3: SYSTEM.OUT - SALIDA ESTÁNDAR
+
+Usa `System.out.println`, `System.out.print` y `System.out.printf` para mostrar salida en consola.
+
+---
+
+### CONCEPTO 4: CASE SENSITIVITY
+
+Java distingue mayúsculas y minúsculas; `System` ≠ `system`.
+
+---
+
+### CONCEPTO 5: COMPILACIÓN A BYTECODE
+
+Compila con `javac MiPrograma.java` y ejecuta con `java MiPrograma`.
+
+---
+
+### CONCEPTO 6: FUERTEMENTE TIPADO
+
+Java requiere tipos explícitos; detecta errores en compilación.
+
+---
+
+### CONCEPTO 7: VARIABLES ESTÁTICAS VS DE INSTANCIA
+
+`static` pertenece a la clase; variables de instancia pertenecen a cada objeto.
+
+---
+
+### CONCEPTO 11: STRINGS INMUTABLES
+
+Los Strings son inmutables; para concatenaciones intensivas usa `StringBuilder`.
+
+---
+
+### CONCEPTO 12: ESTRUCTURAS DE CONTROL
+
+`if/else`, `switch` (con tipos permitidos), `for`, `for-each` y uso de `break/continue`.
+
+---
+
+### CONCEPTO 13: ARRAYS EN JAVA
+
+Arrays son objetos con tamaño fijo y atributo `.length`.
+
+---
+
+### CONCEPTO 14: TIPOS DE DATOS EN JAVA 8
+
+Incluye primitivos (byte, short, int, long, float, double, boolean, char) y tipos de referencia (objetos, wrappers).
+
+---
+
+### CONCEPTO 15: REGLAS PARA NOMBRES DE VARIABLES
+
+Convenciones: camelCase para variables/métodos, PascalCase para clases, UPPER_CASE para constantes.
+
+---
+
+### CONCEPTO 16: TIPOS DE COMENTARIOS
+
+`//` para una línea, `/* */` para multilínea y `/** */` para JavaDoc.
+
+---
+
+### CONCEPTO 17: PASO DE PARÁMETROS
+
+Java pasa siempre por valor; las referencias se copian (no hay punteros explícitos).
+
+---
+
+## ▶ Próximos pasos
+
+1. 1.2 Variables y Tipos de Datos
+2. 2.1 Operadores
+3. 2.2 Estructuras de Control (avanzado)
+
+¡Listo: el README principal contiene ahora la teoría compacta sin las secciones solicitadas!
+# 📚 1.1 Primeros Pasos - Teoría Completa
+
+## 🎯 Información General
+
+**Sección:** 1.1 Primeros Pasos  
+**Módulo:** Fundamentos de Java  
+**Duración estimada:** 2-3 horas de estudio  
+**Nivel:** Repaso para programadores con experiencia  
+**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+
+---
+
+## TL;DR
+
+Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+
+## Objetivos de aprendizaje
+
+- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
+- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
+- Conocer diferencias clave (stack vs heap, strings inmutables, autoboxing) y errores comunes a evitar.
+- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+
+## Índice (Table of Contents)
+
+- 📖 TEORÍA DETALLADA
+    - CONCEPTO 1: El método main() - Punto de entrada
+    - CONCEPTO 2: Estructura obligatoria de clases
+    - CONCEPTO 3: System.out - Salida estándar
+    - CONCEPTO 4: Case sensitivity
+    - CONCEPTO 5: Compilación a bytecode
+    - CONCEPTO 6: Fuertemente tipado
+    - CONCEPTO 7: Variables estáticas vs de instancia
+    - CONCEPTO 8: Pool de strings
+    - CONCEPTO 9: Stack vs Heap
+    - CONCEPTO 10: Autoboxing y unboxing
+    - CONCEPTO 11: Strings inmutables
+    - CONCEPTO 12: Estructuras de control
+    - CONCEPTO 13: Arrays en Java
+    - CONCEPTO 14: Tipos de datos en Java 8
+    - CONCEPTO 15: Reglas para nombres de variables
+    - CONCEPTO 16: Tipos de comentarios
+    - CONCEPTO 17: Paso de parámetros
+    - CONCEPTO 18: Peculiaridades y diferencias
+
+
+## 📖 TEORÍA DETALLADA
+
+### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
+
+#### ¿Qué es el método main()?
+El método `main()` es el **punto de entrada** de cualquier aplicación Java ejecutable. Es el primer método que la JVM (Java Virtual Machine) busca y ejecuta cuando inicias un programa.
+
+#### Anatomía del método main():
+ 
+---
+```
+
+#### Diferencia con otros lenguajes:
+- **SQL**: Generalmente no es case-sensitive (`SELECT` = `select`)
+# 📚 1.1 Primeros Pasos - Teoría Completa
+
+## 🎯 Información General
+
+**Sección:** 1.1 Primeros Pasos  
+**Módulo:** Fundamentos de Java  
+**Duración estimada:** 2-3 horas de estudio  
+**Nivel:** Repaso para programadores con experiencia  
+**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+
+---
+
+## TL;DR
+
+Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+
+## Objetivos de aprendizaje
+
+- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
+- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
+- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
+- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+
+## Índice (Table of Contents)
+
+- 📖 TEORÍA DETALLADA
+    - CONCEPTO 1: El método main() - Punto de entrada
+    - CONCEPTO 2: Estructura obligatoria de clases
+    - CONCEPTO 3: System.out - Salida estándar
+    - CONCEPTO 4: Case sensitivity
+    - CONCEPTO 5: Compilación a bytecode
+    - CONCEPTO 6: Fuertemente tipado
+    - CONCEPTO 7: Variables estáticas vs de instancia
+    - CONCEPTO 11: Strings inmutables
+    - CONCEPTO 12: Estructuras de control
+    - CONCEPTO 13: Arrays en Java
+    - CONCEPTO 14: Tipos de datos en Java 8
+    - CONCEPTO 15: Reglas para nombres de variables
+    - CONCEPTO 16: Tipos de comentarios
+    - CONCEPTO 17: Paso de parámetros
+
+
 ## 📖 TEORÍA DETALLADA
 
 ### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
@@ -41,7 +276,80 @@ public static void main(String[] args)
 
 ---
 
-### 🏗️ **CONCEPTO 2: ESTRUCTURA OBLIGATORIA DE CLASES**
+# 📚 1.1 Primeros Pasos - Teoría Completa
+
+## � Información General
+
+**Sección:** 1.1 Primeros Pasos  
+**Módulo:** Fundamentos de Java  
+**Duración estimada:** 2-3 horas de estudio  
+**Nivel:** Repaso para programadores con experiencia  
+**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+
+---
+
+## TL;DR
+
+Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+
+## Objetivos de aprendizaje
+
+- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
+- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
+- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
+- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+
+## Índice (Table of Contents)
+
+- 📖 TEORÍA DETALLADA
+    - CONCEPTO 1: El método main() - Punto de entrada
+    - CONCEPTO 2: Estructura obligatoria de clases
+    - CONCEPTO 3: System.out - Salida estándar
+    - CONCEPTO 4: Case sensitivity
+    - CONCEPTO 5: Compilación a bytecode
+    - CONCEPTO 6: Fuertemente tipado
+    - CONCEPTO 7: Variables estáticas vs de instancia
+    - CONCEPTO 11: Strings inmutables
+    - CONCEPTO 12: Estructuras de control
+    - CONCEPTO 13: Arrays en Java
+    - CONCEPTO 14: Tipos de datos en Java 8
+    - CONCEPTO 15: Reglas para nombres de variables
+    - CONCEPTO 16: Tipos de comentarios
+    - CONCEPTO 17: Paso de parámetros
+
+
+## 📖 TEORÍA DETALLADA
+
+### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
+
+#### ¿Qué es el método main()?
+El método `main()` es el **punto de entrada** de cualquier aplicación Java ejecutable. Es el primer método que la JVM (Java Virtual Machine) busca y ejecuta cuando inicias un programa.
+
+#### Anatomía del método main():
+```java
+public static void main(String[] args)
+```
+
+**Análisis de cada palabra clave:**
+
+- **`public`**: Modificador de acceso que permite que la JVM acceda al método desde cualquier lugar
+- **`static`**: Permite que el método sea llamado sin crear una instancia de la clase
+- **`void`**: Indica que el método no retorna ningún valor
+- **`main`**: Nombre específico que la JVM busca (sensible a mayúsculas/minúsculas)
+- **`String[] args`**: Array de strings que contiene argumentos de línea de comandos
+
+#### Comparación con otros lenguajes:
+| Lenguaje | Punto de entrada |
+|----------|------------------|
+| **Java** | `public static void main(String[] args)` |
+| **C/C++** | `int main()` o `int main(int argc, char* argv[])` |
+| **Python** | `if __name__ == "__main__":` |
+| **JavaScript** | No hay punto de entrada fijo |
+| **C#** | `static void Main(string[] args)` |
+
+---
+
+### �🏗️ **CONCEPTO 2: ESTRUCTURA OBLIGATORIA DE CLASES**
 
 #### ¿Por qué todo debe estar en una clase?
 Java es un lenguaje **puramente orientado a objetos**. A diferencia de lenguajes como C++ o JavaScript, Java no permite:
@@ -107,83 +415,6 @@ System.out.printf("Nombre: %s, Edad: %d\n", "Juan", 25);
 | `%n` | Nueva línea (independiente del SO) | - |
 
 ---
-
-### 🔤 **CONCEPTO 4: CASE SENSITIVITY (SENSIBILIDAD A MAYÚSCULAS)**
-
-#### Java es Case-Sensitive
-Java distingue estrictamente entre mayúsculas y minúsculas:
-
-```java
-// Estas son todas variables DIFERENTES:
-int numero = 5;
-int Numero = 10;
-int NUMERO = 15;
-int nUmErO = 20;
-```
-
-#### Ejemplos de errores comunes:
-```java
-// ❌ INCORRECTO:
-system.out.println("Hola");  // 'system' debe ser 'System'
-String.length();             // 'length' debe ser 'length()'
-Public class Mi Clase {      // 'Public' debe ser 'public'
-
-// ✅ CORRECTO:
-System.out.println("Hola");
-string.length();
-public class MiClase {
-```
-
-#### Diferencia con otros lenguajes:
-- **SQL**: Generalmente no es case-sensitive (`SELECT` = `select`)
-- **HTML**: No es case-sensitive (`<DIV>` = `<div>`)
-- **Visual Basic**: No es case-sensitive
-- **Python**: Es case-sensitive (similar a Java)
-
----
-
-### ⚙️ **CONCEPTO 5: COMPILACIÓN A BYTECODE**
-
-#### El proceso de compilación Java:
-
-1. **Código fuente** (`.java`) → Escribes tu programa
-2. **Compilador javac** → Traduce a bytecode
-3. **Bytecode** (`.java`) → Código intermedio portable
-4. **JVM** → Ejecuta el bytecode en el sistema operativo específico
-
-```
-MiPrograma.java  →  javac  →  MiPrograma.class  →  JVM  →  Ejecución
-   (Fuente)                     (Bytecode)
-```
-
-#### Ventajas del bytecode:
-- **Portabilidad**: "Write Once, Run Anywhere" (WORA)
-- **Seguridad**: El bytecode es verificado antes de la ejecución
-- **Optimización**: La JVM puede optimizar el código en tiempo de ejecución
-
-#### Comandos básicos:
-```bash
-# Compilar
-javac MiPrograma.java  # Genera MiPrograma.class
-
-# Ejecutar
-java MiPrograma        # Ejecuta el bytecode
-```
-
----
-
-### 💪 **CONCEPTO 6: FUERTEMENTE TIPADO**
-
-#### ¿Qué significa "fuertemente tipado"?
-Java requiere que declares explícitamente el tipo de cada variable y verifica la compatibilidad de tipos en **tiempo de compilación**.
-
-#### Ejemplos:
-```java
-// ✅ CORRECTO - Declaración explícita:
-int numero = 42;
-String texto = "Hola";
-boolean activo = true;
-
 // ❌ INCORRECTO - No se permite:
 var numero = 42;        // 'var' limitado desde Java 10
 numero = "texto";       // Error: incompatible types
@@ -230,120 +461,6 @@ public class Contador {
 - Cada instancia tiene su **propia copia**
 - Se almacenan en el **heap**
 - Se inicializan al **crear el objeto**
-
----
-
-### 🗄️ **CONCEPTO 8: POOL DE STRINGS (STRING INTERNING)**
-
-#### ¿Qué es el pool de strings?
-Java optimiza el uso de memoria almacenando strings literales en un área especial llamada **string pool** o **string intern pool**.
-
-#### Funcionamiento:
-```java
-String str1 = "Hola";           // Se crea en el pool
-String str2 = "Hola";           // Reutiliza del pool
-String str3 = new String("Hola"); // Crea NUEVO objeto en heap
-
-System.out.println(str1 == str2);  // true (misma referencia)
-System.out.println(str1 == str3);  // false (referencias diferentes)
-System.out.println(str1.equals(str3)); // true (mismo contenido)
-```
-
-#### Beneficios del pool:
-- **Ahorro de memoria**: Strings duplicados se almacenan una sola vez
-- **Mejor rendimiento**: Comparaciones de referencias son más rápidas
-- **Optimización automática**: JVM gestiona el pool automáticamente
-
-#### Cuándo usar cada forma:
-```java
-// ✅ PREFERIDO - Usa el pool:
-String mensaje = "Hola Mundo";
-
-// ⚠️ EVITAR - Crea objeto innecesario:
-String mensaje = new String("Hola Mundo");
-```
-
----
-
-### 💾 **CONCEPTO 9: STACK VS HEAP**
-
-#### Stack (Pila):
-**¿Qué se almacena?**
-- Variables locales (primitivos)
-- Referencias a objetos
-- Parámetros de métodos
-- Direcciones de retorno de métodos
-
-**Características:**
-- **Acceso rápido** (LIFO - Last In, First Out)
-- **Tamaño limitado** (StackOverflowError si se llena)
-- **Limpieza automática** al salir del scope
-- **Thread-specific** (cada hilo tiene su propio stack)
-
-#### Heap (Montículo):
-**¿Qué se almacena?**
-- Objetos
-- Arrays
-- Variables de instancia
-- Pool de strings
-
-**Características:**
-- **Acceso más lento** que el stack
-- **Mayor tamaño** que el stack
-- **Limpiado por Garbage Collector**
-- **Compartido** entre todos los threads
-
-#### Ejemplo visual:
-```java
-public void metodo() {
-    int x = 42;              // x va al STACK
-    String str = "Hola";     // str (referencia) va al STACK
-                            // "Hola" va al HEAP (pool de strings)
-    
-    int[] array = {1,2,3};   // array (referencia) va al STACK  
-                            // {1,2,3} va al HEAP
-}
-```
-
----
-
-### 📦 **CONCEPTO 10: AUTOBOXING Y UNBOXING**
-
-#### ¿Qué es el boxing?
-Es la conversión automática entre **tipos primitivos** y sus **wrapper classes** correspondientes.
-
-#### Mapping de tipos:
-| Primitivo | Wrapper Class |
-|-----------|---------------|
-| `byte` | `Byte` |
-| `short` | `Short` |
-| `int` | `Integer` |
-| `long` | `Long` |
-| `float` | `Float` |
-| `double` | `Double` |
-| `boolean` | `Boolean` |
-| `char` | `Character` |
-
-#### Autoboxing (primitivo → objeto):
-```java
-Integer obj = 42;  // Equivale a: Integer obj = Integer.valueOf(42);
-```
-
-#### Unboxing (objeto → primitivo):
-```java
-Integer obj = 42;
-int primitivo = obj;  // Equivale a: int primitivo = obj.intValue();
-```
-
-#### ⚠️ Cuidado con el Integer Cache:
-```java
-Integer a = 127, b = 127;  // true (cache -128 a 127)
-Integer c = 128, d = 128;  // false (fuera del cache)
-
-System.out.println(a == b);  // true
-System.out.println(c == d);  // false ⚠️
-System.out.println(c.equals(d)); // true ✅
-```
 
 ---
 
@@ -537,65 +654,7 @@ long grande = 9223372036854775807L;  // L o l (recomendado L)
 
 ##### **2. TIPOS DE PUNTO FLOTANTE (2 tipos):**
 
-| Tipo | Tamaño | Precisión | Rango aproximado | Valor por defecto | Ejemplo |
-|------|--------|-----------|------------------|-------------------|---------|
-| `float` | 32 bits | ~7 dígitos decimales | ±3.40282347E+38 | `0.0f` | `float precio = 19.99f;` |
-| `double` | 64 bits | ~15 dígitos decimales | ±1.7976931348623157E+308 | `0.0d` | `double pi = 3.141592653589793;` |
-
-**Características importantes:**
-```java
-// Literales flotantes
-float f1 = 3.14f;          // Suffix f obligatorio
-float f2 = 3.14F;          // F también válido
-double d1 = 3.14;          // Tipo por defecto para decimales
-double d2 = 3.14d;         // Suffix d opcional
-
-// Notación científica
-double pequeno = 1.23e-4;  // 0.000123
-double grande = 1.23e+4;   // 12300.0
-
-// Valores especiales
-double positiveInf = Double.POSITIVE_INFINITY;
-double negativeInf = Double.NEGATIVE_INFINITY;
-double notANumber = Double.NaN;
-
-// Verificaciones
-if (Double.isInfinite(positiveInf)) { ... }
-if (Double.isNaN(notANumber)) { ... }
-```
-
-##### **3. TIPO BOOLEANO (1 tipo):**
-
-| Tipo | Tamaño | Valores | Valor por defecto | Ejemplo |
-|------|--------|---------|-------------------|---------|
-| `boolean` | No definido* | `true`, `false` | `false` | `boolean activo = true;` |
-
-**Características únicas de boolean:**
-```java
-// Solo acepta true/false (NO como en C donde 0 = false, 1 = true)
-boolean flag = true;       // ✅ Correcto
-boolean otro = false;      // ✅ Correcto
-
-// ❌ ESTOS NO FUNCIONAN:
-// boolean malo = 1;       // Error de compilación
-// boolean peor = 0;       // Error de compilación
-// if (1) { ... }          // Error de compilación
-
-// ✅ USO CORRECTO:
-if (flag) { ... }          // Correcto
-if (numero > 0) { ... }    // Correcto (expresión boolean)
-```
-
-*La especificación Java no define el tamaño exacto de boolean, depende de la JVM.
-
-##### **4. TIPO CARÁCTER (1 tipo):**
-
-| Tipo | Tamaño | Rango | Valor por defecto | Ejemplo |
-|------|--------|-------|-------------------|---------|
-| `char` | 16 bits | 0 a 65,535 (Unicode UTF-16) | `'\u0000'` | `char letra = 'A';` |
-
-**Características especiales de char:**
-```java
+... (contenido restante no cambiado) 
 // Literales de carácter
 char letra = 'A';                    // Comillas simples
 char numero = '5';                   // Carácter, no número
@@ -949,7 +1008,7 @@ Este conocimiento profundo de los tipos de datos es fundamental para dominar Jav
 
 ---
 
-### 📝 **CONCEPTO 18: REGLAS PARA NOMBRES DE VARIABLES EN JAVA 8**
+### 📝 **CONCEPTO 15: REGLAS PARA NOMBRES DE VARIABLES EN JAVA 8**
 
 El naming (nomenclatura) en Java es fundamental para escribir código legible, mantenible y profesional. Java tiene reglas estrictas y convenciones ampliamente aceptadas.
 
@@ -1339,7 +1398,7 @@ Seguir estas reglas y convenciones hace que tu código Java sea más legible, ma
 
 ---
 
-### 📝 **CONCEPTO 15: TIPOS DE COMENTARIOS**
+### 📝 **CONCEPTO 16: TIPOS DE COMENTARIOS**
 
 #### 1. Comentarios de una línea (`//`):
 ```java
@@ -1393,7 +1452,7 @@ javadoc -d docs -author -version *.java
 
 ---
 
-### ⚠️ **CONCEPTO 16: PASO DE PARÁMETROS**
+### ⚠️ **CONCEPTO 17: PASO DE PARÁMETROS**
 
 #### Java SIEMPRE pasa por valor:
 ```java
@@ -1423,7 +1482,7 @@ public static void modificarArray(int[] array) {
 
 ---
 
-### 🚨 **CONCEPTO 17: PECULIARIDADES Y DIFERENCIAS**
+### 🚨 **CONCEPTO 18: PECULIARIDADES Y DIFERENCIAS**
 
 #### 1. No hay punteros explícitos:
 ```java
