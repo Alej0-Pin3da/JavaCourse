@@ -105,15 +105,12 @@ System.out.println(Edad);  // 30
 System.out.println(EDAD);  // 35
 System.out.println(EdAd);  // 40
 ```
-        
-        // Tabla de promoción automática en operaciones:
-        // byte, short, char → int
-        // int + long → long
-        // int + float → float
-        // float + double → double
-    }
-}
-```
+ 
+ - Tabla de promoción automática en operaciones:
+     - byte, short, char → int
+     - int + long → long
+     - int + float → float
+     - float + double → double
 
 #### **Conversiones de tipos (Casting)**
 
@@ -1201,8 +1198,7 @@ int sum = Arrays.stream(nums)
 - Ejemplo con objetos y collector:
 ```java
 String[] names = {"Ana", "Luis", "María"};
-List<String> upper = Arrays.stream(names)"+
-        .map(String::toUpperCase)
+List<String> upper = Arrays.stream(names)\n+        .map(String::toUpperCase)
         .filter(s -> s.length() > 3)
         .collect(Collectors.toList());
 ```
@@ -1416,37 +1412,6 @@ Regla práctica: elige nombres descriptivos y consistentes; si dudas, prefiere c
 | **Python** | `if __name__ == "__main__":` |
 | **JavaScript** | No hay punto de entrada fijo |
 | **C#** | `static void Main(string[] args)` |
-
----
-
-### �🏗️ **CONCEPTO 2: ESTRUCTURA OBLIGATORIA DE CLASES**
-
-#### ¿Por qué todo debe estar en una clase?
-Java es un lenguaje **puramente orientado a objetos**. A diferencia de lenguajes como C++ o JavaScript, Java no permite:
-- Funciones globales
-- Variables globales fuera de clases
-- Código ejecutable fuera de métodos
-
-#### Reglas fundamentales:
-1. **Un archivo `.java` puede contener múltiples clases**, pero solo una puede ser `public`
-2. **La clase pública debe tener el mismo nombre que el archivo**
-3. **Toda funcionalidad debe estar encapsulada en métodos de clases**
-
-#### Ejemplo de estructura básica:
-```java
-// Archivo: MiPrograma.java
-public class MiPrograma {           // Clase pública
-    private static String mensaje;  // Campo de clase
-    
-    public static void main(String[] args) {  // Método principal
-        // Código ejecutable aquí
-    }
-    
-    private static void otroMetodo() {        // Método auxiliar
-        // Más código aquí
-    }
-}
-```
 
 ---
 
