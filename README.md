@@ -497,7 +497,7 @@ List<String> nombres = new ArrayList<String>();
 ##### **2. Evitar castings innecesarios:**
 ```java
 // ❌ Cast innecesario:
-double resultado = (double) (10 + 20);  // 10 + 20 ya es int
+double resultado = (double) (10 + 20);  // 10 + 20 ya es double
 
 // ✅ Mejor:
 double resultado = 10.0 + 20;  // Promoción automática a double
