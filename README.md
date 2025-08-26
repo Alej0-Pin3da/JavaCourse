@@ -1,5 +1,5 @@
 
-# 📚 1.1 Primeros Pasos - Teoría (versión limpia)
+# 📚 1.1 Primeros Pasos — Teoría Fundamental de Java 8
 
 ## 🎯 Información General
 
@@ -13,108 +13,51 @@
 
 ## TL;DR
 
-Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+Esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
 
-## Objetivos de aprendizaje
+## 🎯 Objetivos de aprendizaje
 
 - Entender el punto de entrada `main()` y la estructura básica de una clase Java.
 - Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
 - Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
 - Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
 
-## Índice (Table of Contents)
+## 📋 Índice de Contenidos
 
-- 📖 TEORÍA DETALLADA
-
-# 📚 1.1 Primeros Pasos - Teoría (versión limpia)
-
-## 🎯 Información General
-
-**Sección:** 1.1 Primeros Pasos  
-**Módulo:** Fundamentos de Java  
-**Duración estimada:** 2-3 horas de estudio  
-**Nivel:** Repaso para programadores con experiencia  
-**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+- [CONCEPTO 1: El método main() - Punto de entrada](#concepto-1-el-método-main---punto-de-entrada)
+- [CONCEPTO 2: Estructura obligatoria de clases](#concepto-2-estructura-obligatoria-de-clases)
+- [CONCEPTO 3: System.out - Salida estándar](#concepto-3-systemout---salida-estándar)
+- [CONCEPTO 4: Case sensitivity](#concepto-4-case-sensitivity)
+- [CONCEPTO 5: Compilación y ejecución](#concepto-5-compilación-y-ejecución)
+- [CONCEPTO 6: Tipado fuerte y estático](#concepto-6-tipado-fuerte-y-estático)
+- [CONCEPTO 7: Variables estáticas vs de instancia](#concepto-7-variables-estáticas-vs-de-instancia)
+- [CONCEPTO 11: Strings inmutables](#concepto-11-strings-inmutables)
+- [CONCEPTO 12: Estructuras de control](#concepto-12-estructuras-de-control)
+- [CONCEPTO 13: Arrays en Java](#concepto-13-arrays-en-java)
+- [CONCEPTO 14: Tipos de datos en Java 8](#concepto-14-tipos-de-datos-en-java-8)
+- [CONCEPTO 15: Reglas para nombres de variables](#concepto-15-reglas-para-nombres-de-variables)
+- [CONCEPTO 16: Tipos de comentarios](#concepto-16-tipos-de-comentarios)
+- [CONCEPTO 17: Paso de parámetros](#concepto-17-paso-de-parámetros)
 
 ---
 
-## TL;DR
+## 📖 TEORÍA DETALLADA
 
-Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+### 🔥 CONCEPTO 1: El método main() - Punto de entrada
 
-## Objetivos de aprendizaje
+El método `main()` es el punto de entrada de cualquier aplicación Java ejecutable.
 
-- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
-- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
-- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
-- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+#### Firma obligatoria:
+```java
+public static void main(String[] args)
+```
 
-## Índice (Table of Contents)
-
-- 📖 TEORÍA DETALLADA
-    - CONCEPTO 1: El método main() - Punto de entrada
-    - CONCEPTO 2: Estructura obligatoria de clases
-    - CONCEPTO 3: System.out - Salida estándar
-    - CONCEPTO 4: Case sensitivity
-    - CONCEPTO 5: Compilación a bytecode
-    - CONCEPTO 6: Fuertemente tipado
-    - CONCEPTO 7: Variables estáticas vs de instancia
-    - CONCEPTO 11: Strings inmutables
-    - CONCEPTO 12: Estructuras de control
-    - CONCEPTO 13: Arrays en Java
-    - CONCEPTO 14: Tipos de datos en Java 8
-    - CONCEPTO 15: Reglas para nombres de variables
-
-    # 📚 1.1 Primeros Pasos — Teoría (versión canónica)
-
-    ## 🎯 Información general
-
-    Sección: 1.1 Primeros Pasos  
-    Módulo: Fundamentos de Java  
-    Duración estimada: 2–3 horas  
-    Nivel: Repaso para programadores con experiencia
-
-    ---
-
-    ## TL;DR
-
-    Resumen: conceptos esenciales para empezar con Java 8: escribir/ejecutar programas, estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas.
-
-    ## Objetivos de aprendizaje
-
-    - Entender el método de entrada `main()` y la estructura de una clase Java.
-    - Distinguir primitivos vs wrappers y cuándo usarlos.
-    - Conocer strings inmutables y autoboxing; evitar errores comunes.
-    - Compilar y ejecutar con `javac` / `java`.
-
-    ## Índice
-
-    - CONCEPTO 1: main() — Punto de entrada
-    - CONCEPTO 2: Estructura de clases
-    - CONCEPTO 3: Salida estándar (System.out)
-    - CONCEPTO 4: Case sensitivity
-    - CONCEPTO 5: Compilación y ejecución
-    - CONCEPTO 6: Tipado fuerte
-    - CONCEPTO 7: Variables static vs instancia
-    - CONCEPTO 11: Strings inmutables
-    - CONCEPTO 12: Estructuras de control
-    - CONCEPTO 13: Arrays
-    - CONCEPTO 14: Tipos de datos (primitivos y wrappers)
-    - CONCEPTO 15: Nombres y convenciones
-    - CONCEPTO 16: Tipos de comentarios
-    - CONCEPTO 17: Paso de parámetros
-
-    ---
-
-    ## CONCEPTO 1 — main() (punto de entrada)
-
-    Firma habitual:
-
-    ```java
-    public static void main(String[] args)
-    ```
-
-    `public` permite que la JVM invoque el método; `static` evita instanciar la clase; `String[] args` recibe argumentos.
+#### Desglose de componentes:
+- **`public`**: Permite que la JVM invoque el método desde fuera de la clase
+- **`static`**: No requiere crear una instancia de la clase para ejecutarse  
+- **`void`**: No retorna ningún valor
+- **`main`**: Nombre exacto que busca la JVM
+- **`String[] args`**: Array que recibe los argumentos de línea de comandos
 
     ---
 
