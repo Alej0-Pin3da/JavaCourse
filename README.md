@@ -1,4 +1,32 @@
-# 📚 1.1 Primeros Pasos - Teoría Completa
+
+# 📚 1.1 Primeros Pasos - Teoría (versión limpia)
+
+## 🎯 Información General
+
+**Sección:** 1.1 Primeros Pasos  
+**Módulo:** Fundamentos de Java  
+**Duración estimada:** 2-3 horas de estudio  
+**Nivel:** Repaso para programadores con experiencia  
+**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+
+---
+
+## TL;DR
+
+Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+
+## Objetivos de aprendizaje
+
+- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
+- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
+- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
+- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+
+## Índice (Table of Contents)
+
+- 📖 TEORÍA DETALLADA
+
+# 📚 1.1 Primeros Pasos - Teoría (versión limpia)
 
 ## 🎯 Información General
 
@@ -36,309 +64,171 @@ Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java
     - CONCEPTO 13: Arrays en Java
     - CONCEPTO 14: Tipos de datos en Java 8
     - CONCEPTO 15: Reglas para nombres de variables
-    - CONCEPTO 16: Tipos de comentarios
-    - CONCEPTO 17: Paso de parámetros
 
+    # 📚 1.1 Primeros Pasos — Teoría (versión canónica)
 
-## 📖 TEORÍA DETALLADA
+    ## 🎯 Información general
 
-### 🔥 CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA
+    Sección: 1.1 Primeros Pasos  
+    Módulo: Fundamentos de Java  
+    Duración estimada: 2–3 horas  
+    Nivel: Repaso para programadores con experiencia
 
-El método `main()` es el punto de entrada de cualquier aplicación Java ejecutable.
+    ---
 
-```java
-public static void main(String[] args)
-```
+    ## TL;DR
 
-Explicación breve: `public` permite acceso desde la JVM; `static` evita instanciar la clase; `void` no devuelve valor; `String[] args` recibe argumentos de línea de comandos.
+    Resumen: conceptos esenciales para empezar con Java 8: escribir/ejecutar programas, estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas.
 
----
+    ## Objetivos de aprendizaje
 
-### CONCEPTO 2: ESTRUCTURA OBLIGATORIA DE CLASES
+    - Entender el método de entrada `main()` y la estructura de una clase Java.
+    - Distinguir primitivos vs wrappers y cuándo usarlos.
+    - Conocer strings inmutables y autoboxing; evitar errores comunes.
+    - Compilar y ejecutar con `javac` / `java`.
 
-Java organiza todo en clases: no hay funciones globales ni código ejecutable fuera de métodos.
+    ## Índice
 
-Reglas clave:
-- Un archivo `.java` puede contener varias clases, solo una `public`.
-- La clase `public` debe tener el mismo nombre que el archivo.
-
----
-
-### CONCEPTO 3: SYSTEM.OUT - SALIDA ESTÁNDAR
-
-Usa `System.out.println`, `System.out.print` y `System.out.printf` para mostrar salida en consola.
-
----
-
-### CONCEPTO 4: CASE SENSITIVITY
-
-Java distingue mayúsculas y minúsculas; `System` ≠ `system`.
-
----
-
-### CONCEPTO 5: COMPILACIÓN A BYTECODE
-
-Compila con `javac MiPrograma.java` y ejecuta con `java MiPrograma`.
-
----
-
-### CONCEPTO 6: FUERTEMENTE TIPADO
-
-Java requiere tipos explícitos; detecta errores en compilación.
-
----
-
-### CONCEPTO 7: VARIABLES ESTÁTICAS VS DE INSTANCIA
-
-`static` pertenece a la clase; variables de instancia pertenecen a cada objeto.
-
----
-
-### CONCEPTO 11: STRINGS INMUTABLES
-
-Los Strings son inmutables; para concatenaciones intensivas usa `StringBuilder`.
-
----
-
-### CONCEPTO 12: ESTRUCTURAS DE CONTROL
-
-`if/else`, `switch` (con tipos permitidos), `for`, `for-each` y uso de `break/continue`.
-
----
-
-### CONCEPTO 13: ARRAYS EN JAVA
-
-Arrays son objetos con tamaño fijo y atributo `.length`.
-
----
-
-### CONCEPTO 14: TIPOS DE DATOS EN JAVA 8
-
-Incluye primitivos (byte, short, int, long, float, double, boolean, char) y tipos de referencia (objetos, wrappers).
-
----
-
-### CONCEPTO 15: REGLAS PARA NOMBRES DE VARIABLES
-
-Convenciones: camelCase para variables/métodos, PascalCase para clases, UPPER_CASE para constantes.
-
----
-
-### CONCEPTO 16: TIPOS DE COMENTARIOS
-
-`//` para una línea, `/* */` para multilínea y `/** */` para JavaDoc.
-
----
-
-### CONCEPTO 17: PASO DE PARÁMETROS
-
-Java pasa siempre por valor; las referencias se copian (no hay punteros explícitos).
-
----
-
-## ▶ Próximos pasos
-
-1. 1.2 Variables y Tipos de Datos
-2. 2.1 Operadores
-3. 2.2 Estructuras de Control (avanzado)
-
-¡Listo: el README principal contiene ahora la teoría compacta sin las secciones solicitadas!
-# 📚 1.1 Primeros Pasos - Teoría Completa
-
-## 🎯 Información General
-
-**Sección:** 1.1 Primeros Pasos  
-**Módulo:** Fundamentos de Java  
-**Duración estimada:** 2-3 horas de estudio  
-**Nivel:** Repaso para programadores con experiencia  
-**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
-
----
-
-## TL;DR
-
-Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
-
-## Objetivos de aprendizaje
-
-- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
-- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
-- Conocer diferencias clave (stack vs heap, strings inmutables, autoboxing) y errores comunes a evitar.
-- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
-
-## Índice (Table of Contents)
-
-- 📖 TEORÍA DETALLADA
-    - CONCEPTO 1: El método main() - Punto de entrada
-    - CONCEPTO 2: Estructura obligatoria de clases
-    - CONCEPTO 3: System.out - Salida estándar
+    - CONCEPTO 1: main() — Punto de entrada
+    - CONCEPTO 2: Estructura de clases
+    - CONCEPTO 3: Salida estándar (System.out)
     - CONCEPTO 4: Case sensitivity
-    - CONCEPTO 5: Compilación a bytecode
-    - CONCEPTO 6: Fuertemente tipado
-    - CONCEPTO 7: Variables estáticas vs de instancia
-    - CONCEPTO 8: Pool de strings
-    - CONCEPTO 9: Stack vs Heap
-    - CONCEPTO 10: Autoboxing y unboxing
+    - CONCEPTO 5: Compilación y ejecución
+    - CONCEPTO 6: Tipado fuerte
+    - CONCEPTO 7: Variables static vs instancia
     - CONCEPTO 11: Strings inmutables
     - CONCEPTO 12: Estructuras de control
-    - CONCEPTO 13: Arrays en Java
-    - CONCEPTO 14: Tipos de datos en Java 8
-    - CONCEPTO 15: Reglas para nombres de variables
-    - CONCEPTO 16: Tipos de comentarios
-    - CONCEPTO 17: Paso de parámetros
-    - CONCEPTO 18: Peculiaridades y diferencias
-
-
-## 📖 TEORÍA DETALLADA
-
-### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
-
-#### ¿Qué es el método main()?
-El método `main()` es el **punto de entrada** de cualquier aplicación Java ejecutable. Es el primer método que la JVM (Java Virtual Machine) busca y ejecuta cuando inicias un programa.
-
-#### Anatomía del método main():
- 
----
-```
-
-#### Diferencia con otros lenguajes:
-- **SQL**: Generalmente no es case-sensitive (`SELECT` = `select`)
-# 📚 1.1 Primeros Pasos - Teoría Completa
-
-## 🎯 Información General
-
-**Sección:** 1.1 Primeros Pasos  
-**Módulo:** Fundamentos de Java  
-**Duración estimada:** 2-3 horas de estudio  
-**Nivel:** Repaso para programadores con experiencia  
-**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
-
----
-
-## TL;DR
-
-Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
-
-## Objetivos de aprendizaje
-
-- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
-- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
-- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
-- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
-
-## Índice (Table of Contents)
-
-- 📖 TEORÍA DETALLADA
-    - CONCEPTO 1: El método main() - Punto de entrada
-    - CONCEPTO 2: Estructura obligatoria de clases
-    - CONCEPTO 3: System.out - Salida estándar
-    - CONCEPTO 4: Case sensitivity
-    - CONCEPTO 5: Compilación a bytecode
-    - CONCEPTO 6: Fuertemente tipado
-    - CONCEPTO 7: Variables estáticas vs de instancia
-    - CONCEPTO 11: Strings inmutables
-    - CONCEPTO 12: Estructuras de control
-    - CONCEPTO 13: Arrays en Java
-    - CONCEPTO 14: Tipos de datos en Java 8
-    - CONCEPTO 15: Reglas para nombres de variables
+    - CONCEPTO 13: Arrays
+    - CONCEPTO 14: Tipos de datos (primitivos y wrappers)
+    - CONCEPTO 15: Nombres y convenciones
     - CONCEPTO 16: Tipos de comentarios
     - CONCEPTO 17: Paso de parámetros
 
+    ---
 
-## 📖 TEORÍA DETALLADA
+    ## CONCEPTO 1 — main() (punto de entrada)
 
-### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
+    Firma habitual:
 
-#### ¿Qué es el método main()?
-El método `main()` es el **punto de entrada** de cualquier aplicación Java ejecutable. Es el primer método que la JVM (Java Virtual Machine) busca y ejecuta cuando inicias un programa.
+    ```java
+    public static void main(String[] args)
+    ```
 
-#### Anatomía del método main():
-```java
-public static void main(String[] args)
-```
+    `public` permite que la JVM invoque el método; `static` evita instanciar la clase; `String[] args` recibe argumentos.
 
-**Análisis de cada palabra clave:**
+    ---
 
-- **`public`**: Modificador de acceso que permite que la JVM acceda al método desde cualquier lugar
-- **`static`**: Permite que el método sea llamado sin crear una instancia de la clase
-- **`void`**: Indica que el método no retorna ningún valor
-- **`main`**: Nombre específico que la JVM busca (sensible a mayúsculas/minúsculas)
-- **`String[] args`**: Array de strings que contiene argumentos de línea de comandos
+    ## CONCEPTO 2 — Estructura de clases
 
-#### Comparación con otros lenguajes:
-| Lenguaje | Punto de entrada |
-|----------|------------------|
-| **Java** | `public static void main(String[] args)` |
-| **C/C++** | `int main()` o `int main(int argc, char* argv[])` |
-| **Python** | `if __name__ == "__main__":` |
-| **JavaScript** | No hay punto de entrada fijo |
-| **C#** | `static void Main(string[] args)` |
+    Todo el código ejecutable debe estar dentro de clases y métodos. Solo una clase `public` por archivo y debe coincidir el nombre del archivo.
 
----
+    Ejemplo mínimo:
 
-# 📚 1.1 Primeros Pasos - Teoría Completa
+    ```java
+    public class HolaMundo {
+        public static void main(String[] args) {
+            System.out.println("Hola Mundo");
+        }
+    }
+    ```
 
-## � Información General
+    ---
 
-**Sección:** 1.1 Primeros Pasos  
-**Módulo:** Fundamentos de Java  
-**Duración estimada:** 2-3 horas de estudio  
-**Nivel:** Repaso para programadores con experiencia  
-**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
+    ## CONCEPTO 3 — Salida estándar (System.out)
 
----
+    Usa `System.out.println`, `System.out.print` y `System.out.printf` para mostrar información por consola.
 
-## TL;DR
+    ---
 
-Breve resumen: esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
+    ## CONCEPTO 4 — Case sensitivity
 
-## Objetivos de aprendizaje
+    Java distingue mayúsculas/minúsculas: `Main` ≠ `main`, `System` ≠ `system`.
 
-- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
-- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
-- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
-- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
+    ---
 
-## Índice (Table of Contents)
+    ## CONCEPTO 5 — Compilación y ejecución
 
-- 📖 TEORÍA DETALLADA
-    - CONCEPTO 1: El método main() - Punto de entrada
-    - CONCEPTO 2: Estructura obligatoria de clases
-    - CONCEPTO 3: System.out - Salida estándar
-    - CONCEPTO 4: Case sensitivity
-    - CONCEPTO 5: Compilación a bytecode
-    - CONCEPTO 6: Fuertemente tipado
-    - CONCEPTO 7: Variables estáticas vs de instancia
-    - CONCEPTO 11: Strings inmutables
-    - CONCEPTO 12: Estructuras de control
-    - CONCEPTO 13: Arrays en Java
-    - CONCEPTO 14: Tipos de datos en Java 8
-    - CONCEPTO 15: Reglas para nombres de variables
-    - CONCEPTO 16: Tipos de comentarios
-    - CONCEPTO 17: Paso de parámetros
+    Compilar: `javac MiPrograma.java` → genera `.class`. Ejecutar: `java MiPrograma` (sin `.class`).
 
+    ---
 
-## 📖 TEORÍA DETALLADA
+    ## CONCEPTO 6 — Tipado fuerte y estático
 
-### 🔥 **CONCEPTO 1: EL MÉTODO MAIN() - PUNTO DE ENTRADA**
+    Java es fuertemente tipado y chequea tipos en compilación, lo que reduce errores en tiempo de ejecución.
 
-#### ¿Qué es el método main()?
-El método `main()` es el **punto de entrada** de cualquier aplicación Java ejecutable. Es el primer método que la JVM (Java Virtual Machine) busca y ejecuta cuando inicias un programa.
+    ---
 
-#### Anatomía del método main():
-```java
-public static void main(String[] args)
-```
+    ## CONCEPTO 7 — Variables estáticas vs de instancia
 
-**Análisis de cada palabra clave:**
+    `static` pertenece a la clase; las variables de instancia pertenecen a cada objeto.
 
-- **`public`**: Modificador de acceso que permite que la JVM acceda al método desde cualquier lugar
-- **`static`**: Permite que el método sea llamado sin crear una instancia de la clase
-- **`void`**: Indica que el método no retorna ningún valor
-- **`main`**: Nombre específico que la JVM busca (sensible a mayúsculas/minúsculas)
-- **`String[] args`**: Array de strings que contiene argumentos de línea de comandos
+    ```java
+    public class Contador {
+        private static int total = 0;
+        private int id;
+    }
+    ```
 
-#### Comparación con otros lenguajes:
+    ---
+
+    ## CONCEPTO 11 — Strings inmutables
+
+    Los `String` son inmutables; para concatenaciones intensivas usa `StringBuilder`.
+
+    ```java
+    String s = "Java";
+    String t = s.toUpperCase();
+    ```
+
+    ---
+
+    ## CONCEPTO 12 — Estructuras de control
+
+    Condicionales (`if/else`), `switch` (soporta `String`), bucles (`for`, `while`, `for-each`) y control (`break`, `continue`).
+
+    ---
+
+    ## CONCEPTO 13 — Arrays
+
+    Arrays son objetos de tamaño fijo y usan el atributo `.length`.
+
+    ---
+
+    ## CONCEPTO 14 — Tipos de datos (primitivos y wrappers)
+
+    Primitivos: `byte, short, int, long, float, double, boolean, char`.
+    Wrappers: `Integer, Long, Double, Boolean, Character`, necesarios en colecciones.
+
+    ---
+
+    ## CONCEPTO 15 — Nombres y convenciones
+
+    Usar `camelCase` para variables y métodos, `PascalCase` para clases y `UPPER_CASE` para constantes.
+
+    ---
+
+    ## CONCEPTO 16 — Tipos de comentarios
+
+    `//` línea, `/* ... */` multilínea, `/** ... */` JavaDoc.
+
+    ---
+
+    ## CONCEPTO 17 — Paso de parámetros
+
+    Java pasa por valor; las referencias a objetos se copian (no se pasa un puntero manipulable externamente).
+
+    ---
+
+    ## Próximos pasos
+
+    1) `1.2 Variables y Tipos de Datos`
+    2) `2.1 Operadores`
+    3) `2.2 Estructuras de Control (avanzado)`
+
+    ---
+
+    Nota: la copia completa anterior se guardó en `README_BACKUP.md` antes de la limpieza.
+
 | Lenguaje | Punto de entrada |
 |----------|------------------|
 | **Java** | `public static void main(String[] args)` |
