@@ -74,13 +74,218 @@ public static void main(String[] args)
     }
     ```
 
-    ---
+---
 
 ### 🖥️ CONCEPTO 3 — Salida estándar (System.out)
 
-    Usa `System.out.println`, `System.out.print` y `System.out.printf` para mostrar información por consola.
+#### **¿Qué es System.out?**
+`System.out` es un objeto de tipo `PrintStream` que representa la **salida estándar** del programa, típicamente la consola o terminal. Es parte de la clase `System` en el paquete `java.lang` y es la forma más común de mostrar información al usuario en aplicaciones de consola.
 
-    ---
+#### **1. MÉTODOS PRINCIPALES**
+
+##### **1.1 println() - Imprime con salto de línea**
+```java
+public class EjemplosPrintln {
+    public static void main(String[] args) {
+        System.out.println("Primera línea");
+        System.out.println("Segunda línea");
+        System.out.println(42);
+        System.out.println(true);
+        System.out.println(3.14159);
+        
+        // Salida:
+        // Primera línea
+        // Segunda línea
+        // 42
+        // true
+        // 3.14159
+    }
+}
+```
+
+##### **1.2 print() - Imprime sin salto de línea**
+```java
+public class EjemplosPrint {
+    public static void main(String[] args) {
+        System.out.print("Hola ");
+        System.out.print("Mundo ");
+        System.out.print("desde ");
+        System.out.print("Java");
+        
+        // Salida: Hola Mundo desde Java
+    }
+}
+```
+
+##### **1.3 printf() - Impresión con formato**
+```java
+public class EjemplosPrintf {
+    public static void main(String[] args) {
+        String nombre = "Juan";
+        int edad = 25;
+        double altura = 1.75;
+        boolean estudiante = true;
+        
+        System.out.printf("Nombre: %s%n", nombre);
+        System.out.printf("Edad: %d años%n", edad);
+        System.out.printf("Altura: %.2f metros%n", altura);
+        System.out.printf("¿Es estudiante? %b%n", estudiante);
+        
+        // Formato complejo en una línea
+        System.out.printf("%-10s | %3d | %6.2f | %-10s%n", 
+                         nombre, edad, altura, estudiante);
+        
+        // Salida:
+        // Nombre: Juan
+        // Edad: 25 años
+        // Altura: 1.75 metros
+        // ¿Es estudiante? true
+        // Juan       |  25 |   1.75 | true      
+    }
+}
+```
+
+#### **2. ESPECIFICADORES DE FORMATO**
+
+| Especificador | Tipo | Descripción | Ejemplo |
+|---------------|------|-------------|---------|
+| `%s` | String | Cadena de texto | `"Hola"` |
+| `%d` | int/long | Entero decimal | `123` |
+| `%o` | int/long | Entero octal | `173` (123 en octal) |
+| `%x` / `%X` | int/long | Entero hexadecimal | `7b` / `7B` |
+| `%f` | float/double | Punto flotante | `123.456000` |
+| `%.2f` | float/double | Flotante con 2 decimales | `123.46` |
+| `%e` / `%E` | float/double | Notación científica | `1.234560e+02` |
+| `%c` | char/int | Carácter | `'A'` |
+| `%b` | boolean | Booleano | `true` / `false` |
+| `%n` | - | Nueva línea (independiente del SO) | Salto de línea |
+| `%%` | - | Símbolo de porcentaje literal | `%` |
+
+#### **3. MODIFICADORES DE FORMATO**
+
+##### **3.1 Ancho de campo y alineación:**
+```java
+public class ModificadoresFormato {
+    public static void main(String[] args) {
+        String producto = "Laptop";
+        int precio = 1500;
+        
+        // Alineación a la derecha (por defecto)
+        System.out.printf("%10s: $%5d%n", producto, precio);
+        
+        // Alineación a la izquierda
+        System.out.printf("%-10s: $%-5d%n", producto, precio);
+        
+        // Rellenar con ceros
+        System.out.printf("%010d%n", precio);
+        
+        // Mostrar signo siempre
+        System.out.printf("%+d%n", precio);
+        
+        // Salida:
+        //     Laptop: $ 1500
+        // Laptop    : $1500 
+        // 0000001500
+        // +1500
+    }
+}
+```
+
+#### **4. DIFERENCIAS IMPORTANTES**
+
+##### **4.1 print() vs println():**
+```java
+public class DiferenciasPrint {
+    public static void main(String[] args) {
+        // Con println() cada salida va en nueva línea
+        System.out.println("Línea 1");
+        System.out.println("Línea 2");
+        System.out.println("Línea 3");
+        
+        System.out.println("--- Separador ---");
+        
+        // Con print() todo va en la misma línea
+        System.out.print("Palabra1 ");
+        System.out.print("Palabra2 ");
+        System.out.print("Palabra3");
+        System.out.println(); // Salto manual
+        
+        // Salida:
+        // Línea 1
+        // Línea 2
+        // Línea 3
+        // --- Separador ---
+        // Palabra1 Palabra2 Palabra3
+    }
+}
+```
+
+##### **4.2 printf() vs println() para números:**
+```java
+public class FormatoNumeros {
+    public static void main(String[] args) {
+        double numero = 3.141592653589793;
+        
+        System.out.println("Con println():");
+        System.out.println(numero); // 3.141592653589793
+        
+        System.out.println("Con printf():");
+        System.out.printf("2 decimales: %.2f%n", numero);  // 3.14
+        System.out.printf("4 decimales: %.4f%n", numero);  // 3.1416
+        System.out.printf("Notación científica: %.2e%n", numero); // 3.14e+00
+        
+        // Para precios
+        double precio = 1234.5;
+        System.out.printf("Precio: $%,.2f%n", precio); // $1,234.50
+    }
+}
+```
+
+#### **5. BUENAS PRÁCTICAS**
+
+##### **5.1 Uso de %n en lugar de \n:**
+```java
+// ❌ Dependiente del sistema operativo
+System.out.printf("Primera línea\nSegunda línea");
+
+// ✅ Independiente del sistema operativo
+System.out.printf("Primera línea%nSegunda línea");
+```
+
+##### **5.2 Validación de argumentos:**
+```java
+public class ValidacionFormato {
+    public static void main(String[] args) {
+        String nombre = null;
+        Integer edad = null;
+        
+        // ❌ Puede causar excepción
+        // System.out.printf("Nombre: %s, Edad: %d%n", nombre, edad);
+        
+        // ✅ Validación previa
+        System.out.printf("Nombre: %s, Edad: %s%n", 
+                         nombre != null ? nombre : "N/A",
+                         edad != null ? edad.toString() : "N/A");
+    }
+}
+```
+
+##### **5.3 Constantes para formatos complejos:**
+```java
+public class ConstantesFormato {
+    private static final String FORMATO_PRODUCTO = "%-15s | $%8.2f | %5d unidades%n";
+    private static final String FORMATO_FECHA = "%02d/%02d/%04d %02d:%02d%n";
+    
+    public static void main(String[] args) {
+        System.out.printf(FORMATO_PRODUCTO, "Laptop", 1299.99, 5);
+        System.out.printf(FORMATO_PRODUCTO, "Mouse", 29.99, 25);
+        
+        System.out.printf(FORMATO_FECHA, 15, 8, 2024, 14, 30);
+    }
+}
+```
+
+---
 
 ### 📝 **CONCEPTO 4: CASE SENSITIVITY**
 
