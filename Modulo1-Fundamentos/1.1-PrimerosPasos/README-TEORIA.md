@@ -498,40 +498,844 @@ jagged[2] = new int[3];    // Tercera fila: 3 elementos
 
 ---
 
-### 🎯 **CONCEPTO 14: TIPOS PRIMITIVOS - LOS 8 BÁSICOS**
+### 🎯 **CONCEPTO 14: TIPOS DE DATOS EN JAVA 8 - PRIMITIVOS Y OBJETOS**
 
-#### Tipos enteros:
-| Tipo | Tamaño | Rango | Ejemplo |
-|------|--------|-------|---------|
-| `byte` | 8 bits | -128 a 127 | `byte b = 100;` |
-| `short` | 16 bits | -32,768 a 32,767 | `short s = 1000;` |
-| `int` | 32 bits | -2³¹ a 2³¹-1 | `int i = 42;` |
-| `long` | 64 bits | -2⁶³ a 2⁶³-1 | `long l = 42L;` |
+Java 8 maneja dos categorías fundamentales de tipos de datos:
+1. **Tipos Primitivos** (8 tipos básicos)
+2. **Tipos de Referencia** (Objetos, incluyendo Wrapper Classes)
 
-#### Tipos de punto flotante:
-| Tipo | Tamaño | Precisión | Ejemplo |
-|------|--------|-----------|---------|
-| `float` | 32 bits | ~7 dígitos | `float f = 3.14f;` |
-| `double` | 64 bits | ~15 dígitos | `double d = 3.14159;` |
+---
 
-#### Otros tipos:
-| Tipo | Tamaño | Valores | Ejemplo |
-|------|--------|---------|---------|
-| `boolean` | - | `true`, `false` | `boolean flag = true;` |
-| `char` | 16 bits | Unicode 0-65535 | `char c = 'A';` |
+#### **PARTE A: TIPOS PRIMITIVOS - LOS 8 FUNDAMENTALES**
 
-#### Notaciones especiales:
+Los tipos primitivos son los **bloques de construcción básicos** de Java. No son objetos y se almacenan directamente en el stack.
+
+##### **1. TIPOS ENTEROS (4 tipos):**
+
+| Tipo | Tamaño | Rango | Valor por defecto | Ejemplo |
+|------|--------|-------|-------------------|---------|
+| `byte` | 8 bits (1 byte) | -128 a 127 | `0` | `byte edad = 25;` |
+| `short` | 16 bits (2 bytes) | -32,768 a 32,767 | `0` | `short año = 2024;` |
+| `int` | 32 bits (4 bytes) | -2,147,483,648 a 2,147,483,647 | `0` | `int poblacion = 1_000_000;` |
+| `long` | 64 bits (8 bytes) | -9,223,372,036,854,775,808 a 9,223,372,036,854,775,807 | `0L` | `long distancia = 384_400_000L;` |
+
+**Características importantes:**
 ```java
+// Literales enteros
+int decimal = 42;           // Base 10
+int octal = 052;           // Base 8 (prefijo 0)
+int hexadecimal = 0x2A;    // Base 16 (prefijo 0x)
+int binario = 0b101010;    // Base 2 (prefijo 0b) - Java 7+
+
 // Underscores para legibilidad (Java 7+)
 int millon = 1_000_000;
-long grande = 9_223_372_036_854_775_807L;
+long billón = 1_000_000_000_000L;
 
-// Diferentes bases numéricas
-int decimal = 26;        // Base 10
-int octal = 032;         // Base 8 (prefijo 0)
-int hexadecimal = 0x1A;  // Base 16 (prefijo 0x)
-int binario = 0b11010;   // Base 2 (prefijo 0b, Java 7+)
+// Suffix obligatorio para long
+long grande = 9223372036854775807L;  // L o l (recomendado L)
 ```
+
+##### **2. TIPOS DE PUNTO FLOTANTE (2 tipos):**
+
+| Tipo | Tamaño | Precisión | Rango aproximado | Valor por defecto | Ejemplo |
+|------|--------|-----------|------------------|-------------------|---------|
+| `float` | 32 bits | ~7 dígitos decimales | ±3.40282347E+38 | `0.0f` | `float precio = 19.99f;` |
+| `double` | 64 bits | ~15 dígitos decimales | ±1.7976931348623157E+308 | `0.0d` | `double pi = 3.141592653589793;` |
+
+**Características importantes:**
+```java
+// Literales flotantes
+float f1 = 3.14f;          // Suffix f obligatorio
+float f2 = 3.14F;          // F también válido
+double d1 = 3.14;          // Tipo por defecto para decimales
+double d2 = 3.14d;         // Suffix d opcional
+
+// Notación científica
+double pequeno = 1.23e-4;  // 0.000123
+double grande = 1.23e+4;   // 12300.0
+
+// Valores especiales
+double positiveInf = Double.POSITIVE_INFINITY;
+double negativeInf = Double.NEGATIVE_INFINITY;
+double notANumber = Double.NaN;
+
+// Verificaciones
+if (Double.isInfinite(positiveInf)) { ... }
+if (Double.isNaN(notANumber)) { ... }
+```
+
+##### **3. TIPO BOOLEANO (1 tipo):**
+
+| Tipo | Tamaño | Valores | Valor por defecto | Ejemplo |
+|------|--------|---------|-------------------|---------|
+| `boolean` | No definido* | `true`, `false` | `false` | `boolean activo = true;` |
+
+**Características únicas de boolean:**
+```java
+// Solo acepta true/false (NO como en C donde 0 = false, 1 = true)
+boolean flag = true;       // ✅ Correcto
+boolean otro = false;      // ✅ Correcto
+
+// ❌ ESTOS NO FUNCIONAN:
+// boolean malo = 1;       // Error de compilación
+// boolean peor = 0;       // Error de compilación
+// if (1) { ... }          // Error de compilación
+
+// ✅ USO CORRECTO:
+if (flag) { ... }          // Correcto
+if (numero > 0) { ... }    // Correcto (expresión boolean)
+```
+
+*La especificación Java no define el tamaño exacto de boolean, depende de la JVM.
+
+##### **4. TIPO CARÁCTER (1 tipo):**
+
+| Tipo | Tamaño | Rango | Valor por defecto | Ejemplo |
+|------|--------|-------|-------------------|---------|
+| `char` | 16 bits | 0 a 65,535 (Unicode UTF-16) | `'\u0000'` | `char letra = 'A';` |
+
+**Características especiales de char:**
+```java
+// Literales de carácter
+char letra = 'A';                    // Comillas simples
+char numero = '5';                   // Carácter, no número
+char unicode = '\u0041';             // Unicode para 'A'
+char tab = '\t';                     // Carácter de tabulación
+char nuevaLinea = '\n';              // Carácter de nueva línea
+
+// char es numérico (puede hacer aritmética)
+char a = 'A';
+char b = (char)(a + 1);              // b = 'B'
+System.out.println((int)a);         // Imprime: 65
+
+// Caracteres especiales (escape sequences)
+char comillaSimple = '\'';           // \'
+char comillaDoble = '"';             // " (sin escape en char)
+char backslash = '\\';               // \\
+char retornoCarro = '\r';            // \r
+```
+
+---
+
+#### **PARTE B: TIPOS DE REFERENCIA (OBJETOS)**
+
+A diferencia de los tipos primitivos, los tipos de referencia:
+- **Son objetos** (se almacenan en el heap)
+- **Tienen métodos y atributos**
+- **Pueden ser `null`**
+- **Se pasan por referencia** (copia de la referencia)
+
+##### **1. WRAPPER CLASSES - ENVOLTURAS DE PRIMITIVOS**
+
+Cada tipo primitivo tiene su clase wrapper correspondiente:
+
+| Primitivo | Wrapper Class | Paquete | Ejemplo de creación |
+|-----------|---------------|---------|---------------------|
+| `byte` | `Byte` | `java.lang` | `Byte b = Byte.valueOf(100);` |
+| `short` | `Short` | `java.lang` | `Short s = Short.valueOf(1000);` |
+| `int` | `Integer` | `java.lang` | `Integer i = Integer.valueOf(42);` |
+| `long` | `Long` | `java.lang` | `Long l = Long.valueOf(42L);` |
+| `float` | `Float` | `java.lang` | `Float f = Float.valueOf(3.14f);` |
+| `double` | `Double` | `java.lang` | `Double d = Double.valueOf(3.14);` |
+| `boolean` | `Boolean` | `java.lang` | `Boolean bool = Boolean.valueOf(true);` |
+| `char` | `Character` | `java.lang` | `Character c = Character.valueOf('A');` |
+
+**¿Por qué existen las Wrapper Classes?**
+1. **Colecciones**: `ArrayList<Integer>` (no acepta `ArrayList<int>`)
+2. **Métodos útiles**: `Integer.parseInt("123")`, `Double.isNaN()`
+3. **Valores null**: Los primitivos no pueden ser `null`
+4. **Genéricos**: Necesarios para `List<T>`, `Map<K,V>`, etc.
+
+##### **2. AUTOBOXING Y UNBOXING EN JAVA 8**
+
+**Autoboxing** (primitivo → wrapper automáticamente):
+```java
+// Automático desde Java 5
+Integer obj1 = 42;               // Equivale a: Integer.valueOf(42)
+Double obj2 = 3.14;              // Equivale a: Double.valueOf(3.14)
+Boolean obj3 = true;             // Equivale a: Boolean.valueOf(true)
+
+// En colecciones
+List<Integer> numeros = new ArrayList<>();
+numeros.add(42);                 // Autoboxing: int → Integer
+numeros.add(100);                // Autoboxing: int → Integer
+```
+
+**Unboxing** (wrapper → primitivo automáticamente):
+```java
+Integer objInt = 42;
+int primitivo = objInt;          // Equivale a: objInt.intValue()
+
+// En operaciones aritméticas
+Integer a = 10, b = 20;
+int suma = a + b;                // Unboxing automático para la suma
+```
+
+**⚠️ CUIDADOS CON AUTOBOXING:**
+
+```java
+// 1. PERFORMANCE - Crear objetos es costoso
+List<Integer> lista = new ArrayList<>();
+for (int i = 0; i < 1_000_000; i++) {
+    lista.add(i);  // 1 millón de autoboxings (lento)
+}
+
+// 2. NULL POINTER EXCEPTION
+Integer obj = null;
+int primitivo = obj;  // ¡NullPointerException en runtime!
+
+// 3. INTEGER CACHE (-128 a 127)
+Integer a = 127, b = 127;    // Mismo objeto (cache)
+Integer c = 128, d = 128;    // Objetos diferentes
+
+System.out.println(a == b);  // true (misma referencia)
+System.out.println(c == d);  // false (referencias diferentes) ⚠️
+System.out.println(c.equals(d)); // true (mismo valor) ✅
+```
+
+##### **3. MÉTODOS ÚTILES DE WRAPPER CLASSES**
+
+```java
+// INTEGER
+int valor = Integer.parseInt("123");        // String → int
+Integer obj = Integer.valueOf("123");       // String → Integer
+String str = Integer.toString(123);         // int → String
+String binario = Integer.toBinaryString(10); // "1010"
+String hex = Integer.toHexString(255);      // "ff"
+int max = Integer.MAX_VALUE;                // 2147483647
+int min = Integer.MIN_VALUE;                // -2147483648
+
+// DOUBLE
+double d = Double.parseDouble("3.14");      // String → double
+boolean esNaN = Double.isNaN(d);            // Verificar NaN
+boolean esInfinito = Double.isInfinite(d);  // Verificar infinito
+String str = Double.toString(3.14);         // double → String
+
+// CHARACTER
+boolean esLetra = Character.isLetter('A');      // true
+boolean esDigito = Character.isDigit('5');      // true
+boolean esMayus = Character.isUpperCase('A');   // true
+char mayus = Character.toUpperCase('a');        // 'A'
+char minus = Character.toLowerCase('A');        // 'a'
+
+// BOOLEAN  
+Boolean obj = Boolean.valueOf("true");      // String → Boolean
+boolean primitivo = Boolean.parseBoolean("false"); // String → boolean
+```
+
+##### **4. COMPARACIÓN: PRIMITIVOS VS OBJETOS**
+
+| Aspecto | Primitivos | Objetos (Wrapper Classes) |
+|---------|------------|---------------------------|
+| **Ubicación** | Stack | Heap |
+| **Velocidad** | Muy rápido | Más lento |
+| **Memoria** | Mínima | Más memoria (overhead) |
+| **Valores null** | ❌ No permitido | ✅ Permitido |
+| **Métodos** | ❌ No tienen | ✅ Muchos métodos útiles |
+| **Colecciones** | ❌ No compatible | ✅ Compatible |
+| **Genéricos** | ❌ No compatible | ✅ Compatible |
+| **Comparación** | `==` compara valor | `==` compara referencias |
+| **Inmutabilidad** | N/A | ✅ Son inmutables |
+
+##### **5. CUÁNDO USAR CADA TIPO**
+
+**Usa PRIMITIVOS cuando:**
+```java
+// Variables simples y operaciones aritméticas
+int contador = 0;
+double precio = 19.99;
+boolean activo = true;
+
+// Loops y cálculos intensivos
+for (int i = 0; i < 1_000_000; i++) {
+    // Operaciones rápidas
+}
+```
+
+**Usa WRAPPER CLASSES cuando:**
+```java
+// Colecciones
+List<Integer> numeros = new ArrayList<>();
+Map<String, Double> precios = new HashMap<>();
+
+// Necesitas null
+Integer edad = null;  // Indica "no especificado"
+if (edad != null) {
+    // Procesar edad
+}
+
+// Métodos de utilidad
+String numero = "123";
+try {
+    Integer valor = Integer.valueOf(numero);
+} catch (NumberFormatException e) {
+    // Manejar error
+}
+
+// Genéricos
+Optional<Double> resultado = calcular();
+```
+
+---
+
+#### **PARTE C: TIPOS ESPECIALES EN JAVA 8**
+
+##### **1. STRING - EL TIPO MÁS USADO**
+```java
+// String es una CLASE, no primitivo
+String texto = "Hola Mundo";        // Literal (pool de strings)
+String texto2 = new String("Hola"); // Objeto explícito (heap)
+
+// Características clave
+String inmutable = "Java";
+inmutable.toUpperCase();             // No modifica 'inmutable'
+String nuevo = inmutable.toUpperCase(); // Crea nuevo String
+
+// Métodos importantes
+int longitud = texto.length();       // 10
+char caracter = texto.charAt(0);     // 'H'
+boolean contiene = texto.contains("Mundo"); // true
+String[] partes = texto.split(" ");  // ["Hola", "Mundo"]
+```
+
+##### **2. ARRAYS - OBJETOS ESPECIALES**
+```java
+// Arrays SON objetos (no primitivos)
+int[] numeros = {1, 2, 3, 4, 5};    // Array de primitivos
+Integer[] objetos = {1, 2, 3, 4, 5}; // Array de objetos
+
+// Propiedades de arrays
+System.out.println(numeros.length);  // 5 (atributo, no método)
+System.out.println(numeros instanceof Object); // true
+
+// Arrays multidimensionales
+int[][] matriz = new int[3][4];      // 3 filas, 4 columnas
+String[][] tabla = {
+    {"A", "B", "C"},
+    {"D", "E", "F"}
+};
+```
+
+##### **3. ENUM - TIPO ESPECIAL (Java 5+)**
+```java
+// Enums son clases especiales
+public enum Dia {
+    LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO
+}
+
+// Uso
+Dia hoy = Dia.LUNES;
+if (hoy == Dia.LUNES) {
+    System.out.println("Inicio de semana");
+}
+
+// En switch (Java 8)
+switch (hoy) {
+    case LUNES:
+    case MARTES:
+        System.out.println("Día laboral");
+        break;
+    case SABADO:
+    case DOMINGO:
+        System.out.println("Fin de semana");
+        break;
+}
+```
+
+---
+
+#### **PARTE D: CONVERSIONES DE TIPOS EN JAVA 8**
+
+##### **1. CONVERSIONES IMPLÍCITAS (WIDENING)**
+Java permite conversiones automáticas cuando no hay pérdida de datos:
+
+```java
+// Jerarquía de conversiones automáticas:
+// byte → short → int → long → float → double
+// char → int → long → float → double
+
+byte b = 10;
+short s = b;     // ✅ Automático: byte → short
+int i = s;       // ✅ Automático: short → int  
+long l = i;      // ✅ Automático: int → long
+float f = l;     // ✅ Automático: long → float
+double d = f;    // ✅ Automático: float → double
+
+char c = 'A';
+int ascii = c;   // ✅ Automático: char → int (valor 65)
+```
+
+##### **2. CONVERSIONES EXPLÍCITAS (NARROWING)**
+Requieren casting explícito cuando puede haber pérdida de datos:
+
+```java
+// Casting explícito (puede perder datos)
+double d = 3.14159;
+float f = (float) d;    // Pérdida de precisión
+int i = (int) f;        // i = 3 (pierde decimales)
+short s = (short) i;    // Posible pérdida si i > 32767
+byte b = (byte) s;      // Posible pérdida si s > 127
+
+// Overflow en conversiones
+int grande = 130;
+byte pequeño = (byte) grande;  // pequeño = -126 (overflow)
+```
+
+##### **3. CONVERSIONES CON STRINGS**
+```java
+// String → primitivos
+String numero = "123";
+int entero = Integer.parseInt(numero);
+double decimal = Double.parseDouble("3.14");
+boolean bool = Boolean.parseBoolean("true");
+
+// primitivos → String
+String str1 = String.valueOf(123);    // "123"
+String str2 = Integer.toString(123);  // "123" 
+String str3 = "" + 123;               // "123" (concatenación)
+String str4 = String.format("%d", 123); // "123" (formato)
+```
+
+---
+
+#### **PARTE E: MEJORES PRÁCTICAS EN JAVA 8**
+
+##### **1. ELECCIÓN DE TIPOS:**
+```java
+// ✅ BUENAS PRÁCTICAS:
+int contador = 0;              // int para contadores normales
+long timestamp = System.currentTimeMillis(); // long para timestamps
+double precio = 19.99;         // double para dinero (o BigDecimal)
+boolean activo = true;         // boolean para flags
+String mensaje = "Hola";       // String para texto
+
+// ⚠️ EVITAR:
+float dinero = 19.99f;         // float tiene poca precisión
+byte contador = 0;             // byte innecesario para contadores simples
+```
+
+##### **2. COMPARACIONES SEGURAS:**
+```java
+// ✅ CORRECTO para objetos:
+String a = "Hola", b = "Hola";
+if (a.equals(b)) { ... }       // Compara contenido
+
+Integer x = 1000, y = 1000;
+if (x.equals(y)) { ... }       // Compara valor
+
+// ✅ CORRECTO para primitivos:
+int p = 42, q = 42;
+if (p == q) { ... }            // Compara valor
+
+// ❌ PELIGROSO:
+if (a == b) { ... }            // Compara referencias (puede fallar)
+if (x == y) { ... }            // Compara referencias (fallará fuera del cache)
+```
+
+##### **3. MANEJO DE NULL:**
+```java
+// ✅ VERIFICACIÓN SEGURA:
+Integer numero = obtenerNumero(); // Puede retornar null
+if (numero != null) {
+    int valor = numero;        // Unboxing seguro
+    // usar valor
+}
+
+// ❌ PELIGROSO:
+int valor = numero;            // NullPointerException si numero es null
+```
+
+Este conocimiento profundo de los tipos de datos es fundamental para dominar Java 8 y escribir código eficiente y seguro.
+
+---
+
+### 📝 **CONCEPTO 18: REGLAS PARA NOMBRES DE VARIABLES EN JAVA 8**
+
+El naming (nomenclatura) en Java es fundamental para escribir código legible, mantenible y profesional. Java tiene reglas estrictas y convenciones ampliamente aceptadas.
+
+---
+
+#### **PARTE A: REGLAS OBLIGATORIAS (SINTÁCTICAS)**
+
+Estas son las reglas que **DEBE** cumplir todo identificador en Java para que el código compile:
+
+##### **1. CARACTERES PERMITIDOS:**
+```java
+// ✅ PERMITIDO - Letras (a-z, A-Z)
+int edad = 25;
+String nombre = "Juan";
+boolean ACTIVO = true;
+
+// ✅ PERMITIDO - Dígitos (0-9) DESPUÉS del primer carácter
+int numero1 = 100;
+String texto123 = "test";
+double precio2024 = 19.99;
+
+// ✅ PERMITIDO - Underscore (_) en cualquier posición
+int _contador = 0;
+String mi_variable = "test";
+boolean __interno = true;
+int precio_ = 100;
+
+// ✅ PERMITIDO - Símbolo de dólar ($) en cualquier posición
+int $precio = 50;
+String nombre$completo = "Juan Pérez";
+boolean flag$ = false;
+
+// ✅ PERMITIDO - Caracteres Unicode
+String niño = "Pedro";    // ñ es válida
+int café = 1;             // é es válida
+String montaña = "Everest"; // ñ es válida
+```
+
+##### **2. CARACTERES NO PERMITIDOS:**
+```java
+// ❌ NO PERMITIDO - Espacios
+int mi variable = 10;      // Error de compilación
+
+// ❌ NO PERMITIDO - Caracteres especiales
+int precio-total = 100;    // Error: - no permitido
+String email@domain = "";  // Error: @ no permitido
+double valor#1 = 3.14;     // Error: # no permitido
+boolean test&flag = true;  // Error: & no permitido
+
+// ❌ NO PERMITIDO - Empezar con dígito
+int 1contador = 0;         // Error de compilación
+String 2024año = "2024";   // Error de compilación
+```
+
+##### **3. LONGITUD:**
+```java
+// ✅ PERMITIDO - Sin límite oficial de longitud
+int a = 1;  // 1 carácter válido
+String esteEsUnNombreMuyLargoParaUnaVariablePeroPerfectamenteValido = "test";
+
+// ⚠️ RECOMENDACIÓN: Máximo 20-25 caracteres para legibilidad
+```
+
+##### **4. PALABRAS RESERVADAS (KEYWORDS):**
+Java tiene 50 palabras reservadas que **NO** pueden usarse como nombres de variables:
+
+```java
+// ❌ PALABRAS RESERVADAS - NO PERMITIDAS:
+abstract, assert, boolean, break, byte, case, catch, char, class, const,
+continue, default, do, double, else, enum, extends, false, final, finally,
+float, for, goto, if, implements, import, instanceof, int, interface, long,
+native, new, null, package, private, protected, public, return, short, static,
+strictfp, super, switch, synchronized, this, throw, throws, transient, true,
+try, void, volatile, while
+
+// Ejemplos de errores:
+int class = 5;        // ❌ Error: 'class' es palabra reservada
+String new = "test";  // ❌ Error: 'new' es palabra reservada  
+boolean true = false; // ❌ Error: 'true' es palabra reservada
+```
+
+##### **5. CASE SENSITIVITY:**
+```java
+// Java distingue mayúsculas y minúsculas - TODAS SON DIFERENTES:
+int variable = 1;
+int Variable = 2;
+int VARIABLE = 3;
+int VaRiAbLe = 4;
+
+System.out.println(variable);  // 1
+System.out.println(Variable);  // 2
+System.out.println(VARIABLE);  // 3
+System.out.println(VaRiAbLe);  // 4
+```
+
+---
+
+#### **PARTE B: CONVENCIONES DE JAVA (ESTILO ORACLE/SUN)**
+
+Estas no son obligatorias para compilar, pero son **estándares de la industria**:
+
+##### **1. VARIABLES LOCALES Y CAMPOS DE INSTANCIA - camelCase:**
+```java
+// ✅ CORRECTO - Primera letra minúscula, resto en camelCase
+int edad = 25;
+String nombreCompleto = "Juan Pérez";
+boolean estaActivo = true;
+double precioTotal = 159.99;
+List<String> listaNombres = new ArrayList<>();
+
+// ❌ INCORRECTO (compila, pero rompe convenciones):
+int Edad = 25;              // Primera letra mayúscula
+String nombre_completo = ""; // Underscores (estilo C/Python)
+boolean esta_activo = true;  // Underscores
+double PRECIO_TOTAL = 99;    // Todo mayúsculas
+```
+
+##### **2. CONSTANTES - UPPER_CASE con underscores:**
+```java
+// ✅ CORRECTO para constantes (static final)
+public static final int MAX_INTENTOS = 3;
+public static final String MENSAJE_ERROR = "Error de conexión";
+public static final double PI = 3.14159265359;
+private static final boolean DEBUG_ACTIVO = true;
+
+// Constantes locales también usan mayúsculas
+final int LIMITE_EDAD = 18;
+final String FORMATO_FECHA = "dd/MM/yyyy";
+```
+
+##### **3. CLASES - PascalCase (UpperCamelCase):**
+```java
+// ✅ CORRECTO - Cada palabra inicia con mayúscula
+public class MiClase { }
+public class CalculadoraPrecios { }  
+public class GestorBaseDatos { }
+public class ValidadorEmail { }
+```
+
+##### **4. MÉTODOS - camelCase:**
+```java
+// ✅ CORRECTO 
+public void calcularTotal() { }
+public String obtenerNombreCompleto() { }
+public boolean esValido() { }
+public void establecerPrecio(double precio) { }
+```
+
+##### **5. PAQUETES - todo en minúsculas:**
+```java
+// ✅ CORRECTO
+package com.empresa.proyecto.util;
+package org.miorganizacion.modulo.dao;
+
+// ❌ INCORRECTO
+package com.Empresa.Proyecto.Util;
+package Com.MiEmpresa.MiProyecto;
+```
+
+---
+
+#### **PARTE C: MEJORES PRÁCTICAS Y RECOMENDACIONES**
+
+##### **1. NOMBRES DESCRIPTIVOS:**
+```java
+// ✅ EXCELENTE - Nombres claros y descriptivos
+int cantidadEstudiantes = 25;
+String direccionEmail = "user@example.com";
+boolean esUsuarioVIP = true;
+double saldoCuentaBancaria = 1500.50;
+List<Producto> productosEnCarrito = new ArrayList<>();
+
+// ❌ MALO - Nombres poco descriptivos
+int x = 25;           // ¿Qué es x?
+String s = "email";   // ¿Qué tipo de string?
+boolean flag = true;  // ¿Flag de qué?
+double d = 1500.50;   // ¿Qué representa d?
+List<Producto> lista = new ArrayList<>(); // ¿Lista de qué?
+```
+
+##### **2. EVITAR ABREVIACIONES CONFUSAS:**
+```java
+// ✅ BUENO - Claro y completo
+String numeroTelefono = "123-456-7890";
+int cantidadProductos = 10;
+boolean estaDisponible = true;
+
+// ⚠️ ACEPTABLE - Abreviaciones muy conocidas
+String url = "http://example.com";
+int id = 1001;
+String html = "<div>content</div>";
+
+// ❌ MALO - Abreviaciones confusas
+String numTel = "123-456-7890";  // ¿numTel = número de teléfono?
+int cantProd = 10;               // ¿cantProd = cantidad productos?
+boolean estaDisp = true;         // ¿estaDisp = está disponible?
+```
+
+##### **3. CONTEXTO Y ÁMBITO:**
+```java
+public class CalculadoraImpuestos {
+    
+    // ✅ BUENO - Nombres cortos en ámbito pequeño
+    public double calcular(double precio, double tasa) {
+        double impuesto = precio * tasa;  // OK: ámbito pequeño
+        double total = precio + impuesto;  // OK: ámbito pequeño
+        return total;
+    }
+    
+    // ✅ BUENO - Nombres más descriptivos en ámbito mayor
+    private static final double TASA_IVA_GENERAL = 0.21;
+    private List<FacturaImpuesto> facturasProcedasEsteAño = new ArrayList<>();
+}
+```
+
+##### **4. PREFIJOS Y SUFIJOS ÚTILES:**
+```java
+// ✅ BUENO - Prefijos para booleans
+boolean esValido = true;
+boolean tienePermiso = false;
+boolean puedeEditar = true;
+boolean estaCompleto = false;
+
+// ✅ BUENO - Sufijos descriptivos
+String nombreArchivo = "documento.pdf";
+int numeroLinea = 45;
+Date fechaCreacion = new Date();
+List<String> listaNombres = new ArrayList<>();
+Map<String, Integer> mapaEdades = new HashMap<>();
+
+// ✅ BUENO - Contexto en nombres
+int contadorUsuarios = 0;
+String mensajeError = "Archivo no encontrado";
+double porcentajeDescuento = 0.15;
+```
+
+---
+
+#### **PARTE D: PATRONES COMUNES DE NOMBRES**
+
+##### **1. CONTADORES Y BUCLES:**
+```java
+// ✅ TRADICIONAL - Variables de bucle
+for (int i = 0; i < lista.size(); i++) {
+    for (int j = 0; j < matriz[i].length; j++) {
+        // i, j, k son estándar para índices
+    }
+}
+
+// ✅ MEJOR - Nombres descriptivos cuando sea necesario
+for (int fila = 0; fila < matriz.length; fila++) {
+    for (int columna = 0; columna < matriz[fila].length; columna++) {
+        matriz[fila][columna] = calcularValor(fila, columna);
+    }
+}
+```
+
+##### **2. VARIABLES TEMPORALES:**
+```java
+// ✅ ACEPTABLE en contextos muy específicos
+String temp = procesarTexto(input);
+int aux = valor1;
+valor1 = valor2;
+valor2 = aux;
+
+// ✅ MEJOR - Nombres que indican propósito
+String textoPreparado = procesarTexto(input);
+int valorTemporal = valor1;
+valor1 = valor2;
+valor2 = valorTemporal;
+```
+
+##### **3. VARIABLES DE CONFIGURACIÓN:**
+```java
+// ✅ EXCELENTE - Configuración clara
+public class ConfiguracionAplicacion {
+    public static final int TIMEOUT_CONEXION_SEGUNDOS = 30;
+    public static final String RUTA_ARCHIVOS_LOG = "/var/log/app";
+    public static final boolean MODO_DEBUG_ACTIVADO = false;
+    public static final int MAX_INTENTOS_LOGIN = 3;
+    
+    private String rutaBaseDatos = "localhost:5432/miapp";
+    private int puertoServidor = 8080;
+}
+```
+
+---
+
+#### **PARTE E: ERRORES COMUNES Y CÓMO EVITARLOS**
+
+##### **1. ERRORES SINTÁCTICOS:**
+```java
+// ❌ ERRORES COMUNES:
+int 2contador = 0;        // No puede empezar con dígito
+String mi variable = "";  // No puede contener espacios
+boolean class = true;     // No puede usar palabras reservadas
+double precio-total = 0;  // Guión no permitido
+
+// ✅ CORRECCIONES:
+int contador2 = 0;        
+String miVariable = "";   
+boolean esClase = true;   
+double precioTotal = 0;   
+```
+
+##### **2. ERRORES DE CONVENCIÓN:**
+```java
+// ❌ ROMPE CONVENCIONES:
+int EDAD = 25;            // Variable no debería ser mayúsculas
+String Nombre = "Juan";   // Primera letra no debería ser mayúscula
+final int limite = 100;   // Constante debería ser mayúsculas
+
+// ✅ SIGUIENDO CONVENCIONES:
+int edad = 25;
+String nombre = "Juan";
+final int LIMITE = 100;
+```
+
+##### **3. NOMBRES PROBLEMÁTICOS:**
+```java
+// ❌ NOMBRES PROBLEMÁTICOS:
+int data = 42;           // ¿Qué tipo de datos?
+String info = "texto";   // ¿Qué información?
+boolean flag1 = true;    // ¿Flag de qué?
+List lista = new ArrayList(); // ¿Lista de qué?
+
+// ✅ NOMBRES MEJORADOS:
+int cantidadVentas = 42;
+String mensajeUsuario = "texto";  
+boolean esUsuarioAutenticado = true;
+List<Producto> productosCarrito = new ArrayList<>();
+```
+
+---
+
+#### **PARTE F: HERRAMIENTAS Y VERIFICACIÓN**
+
+##### **1. IDEs MODERNOS:**
+Los IDEs como IntelliJ IDEA, Eclipse y VS Code ayudan con:
+- **Resaltado de sintaxis** para palabras reservadas
+- **Advertencias** sobre convenciones no seguidas  
+- **Refactoring automático** para renombrar variables
+- **Inspecciones de código** que sugieren mejores nombres
+
+##### **2. CHECKSTYLE Y HERRAMIENTAS DE CALIDAD:**
+```xml
+<!-- Configuración típica de Checkstyle para nombres -->
+<module name="LocalVariableName">
+    <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+</module>
+<module name="ConstantName">
+    <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+</module>
+```
+
+##### **3. ANÁLISIS ESTÁTICO:**
+Herramientas como SonarQube, PMD y SpotBugs pueden detectar:
+- Nombres muy cortos o muy largos
+- Nombres poco descriptivos
+- Variables no utilizadas
+- Violaciones de convenciones
+
+---
+
+#### **RESUMEN: CHECKLIST DE NOMBRES DE VARIABLES**
+
+##### **✅ REGLAS OBLIGATORIAS:**
+- [ ] Solo letras, dígitos, underscore (_) y símbolo de dólar ($)
+- [ ] No empezar con dígito
+- [ ] No usar palabras reservadas
+- [ ] No usar espacios ni caracteres especiales
+
+##### **✅ CONVENCIONES RECOMENDADAS:**
+- [ ] Variables: camelCase (ej: `miVariable`)
+- [ ] Constantes: UPPER_CASE (ej: `MAX_VALOR`)  
+- [ ] Clases: PascalCase (ej: `MiClase`)
+- [ ] Paquetes: minúsculas (ej: `com.empresa.proyecto`)
+
+##### **✅ BUENAS PRÁCTICAS:**
+- [ ] Nombres descriptivos y claros
+- [ ] Evitar abreviaciones confusas
+- [ ] Usar contexto apropiado
+- [ ] Prefijos útiles para booleans (`es`, `tiene`, `puede`)
+- [ ] Longitud apropiada (ni muy corto ni muy largo)
+
+Seguir estas reglas y convenciones hace que tu código Java sea más legible, mantenible y profesional.
 
 ---
 
