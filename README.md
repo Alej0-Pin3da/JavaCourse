@@ -1289,17 +1289,103 @@ Buenas prácticas:
 ---
 
 ### 🎯 CONCEPTO 14 — Tipos de datos (primitivos y wrappers)
+Los tipos de datos en Java se dividen en primitivos y tipos de referencia (objetos). Los primitivos son más eficientes en memoria y rendimiento; las clases wrapper permiten tratarlos como objetos (necesario en colecciones y APIs que requieren objetos).
 
-    Primitivos: `byte, short, int, long, float, double, boolean, char`.
-    Wrappers: `Integer, Long, Double, Boolean, Character`, necesarios en colecciones.
+Tabla resumen de primitivos:
 
-    ---
+| Tipo | Tamaño | Rango | Valor por defecto | Wrapper |
+|------|--------|-------|-------------------|---------|
+| byte | 8 bits | -128 a 127 | 0 | `Byte` |
+| short | 16 bits | -32,768 a 32,767 | 0 | `Short` |
+| int | 32 bits | -2,147,483,648 a 2,147,483,647 | 0 | `Integer` |
+| long | 64 bits | -9.22e18 a 9.22e18 | 0L | `Long` |
+| float | 32 bits | ±3.4e38 (approx) | 0.0f | `Float` |
+| double | 64 bits | ±1.7e308 (approx) | 0.0d | `Double` |
+| boolean | 1 bit (práctico) | true/false | false | `Boolean` |
+| char | 16 bits | ' ' (0..65535) | '\u0000' | `Character` |
 
-### 📝 CONCEPTO 15 — Nombres y convenciones
+Wrappers y autoboxing/unboxing:
+- Desde Java 5 existe autoboxing: el compilador convierte automáticamente entre primitivos y wrappers cuando es necesario.
+    ```java
+    Integer i = 42;     // autoboxing: int -> Integer
+    int j = i;          // unboxing: Integer -> int
+    ```
 
-    Usar `camelCase` para variables y métodos, `PascalCase` para clases y `UPPER_CASE` para constantes.
+Peligros y puntos a considerar:
+- Performance: autoboxing crea objetos; en bucles intensivos puede afectar rendimiento y memoria.
+- `==` con wrappers compara referencias; para comparar valores usa `equals()` o unboxing.
+    ```java
+    Integer a = 127, b = 127;  // puede estar cacheado
+    Integer c = 128, d = 128;  // no cacheado
+    System.out.println(a == b); // true (cache)
+    System.out.println(c == d); // false
+    System.out.println(c.equals(d)); // true
+    ```
+- NullPointerException: al hacer unboxing de un `null` (Integer i = null; int x = i;) se lanza NPE.
 
-    ---
+Cuándo usar cada uno:
+- Usa primitivos (`int`, `double`, etc.) para variables locales, contadores y cálculos numéricos intensivos.
+- Usa wrappers cuando necesites almacenar en colecciones (`List<Integer>`) o cuando una API requiera objetos.
+- Para flags booleanas en objetos, wrapper `Boolean` permite `null` como estado "no especificado".
+
+Conversión entre tipos:
+- Conversión implícita: se permite entre tipos compatibles (p. ej. `int` -> `long`).
+- Conversión explícita (casting) necesaria para pérdidas de precisión: `(int) 3.14`.
+
+Operaciones aritméticas y precauciones:
+- Cuidado con overflow en enteros; usa `long` cuando esperes valores grandes.
+- Para operaciones de precisión decimal usa `BigDecimal` en lugar de `double` cuando la exactitud es crítica (finanzas).
+
+Ejemplos prácticos:
+```java
+int sum = 0;
+for (int i = 0; i < 1_000_000; i++) sum += i; // eficiente
+
+List<Integer> list = new ArrayList<>();
+list.add(1); // autoboxing: int -> Integer
+```
+
+---
+
+### 📝 CONCEPTO 15 — Reglas para variables, clases y palabras reservadas
+
+Variables
+- Formato: camelCase (lowerCamelCase)
+    - Ejemplos: `nombreUsuario`, `contadorTotal`, `estaActivo`
+    - Variables booleanas: prefijos `es/esta/tiene` (p.ej. `estaVacio`, `tieneSiguiente`).
+    - Constantes: `static final` en UPPER_CASE con guiones bajos, p.ej. `MAXIMO_INTENTOS`.
+    - Reglas prácticas:
+        - No uses abreviaturas no obvias.
+        - Para contadores temporales en bucles está bien `i`, `j`, `k`.
+        - Evita nombres que oculten el propósito: `temporal` o `tmp` solo cuando es claramente temporal.
+
+Clases
+- Formato: PascalCase (UpperCamelCase)
+    - Ejemplos: `Cliente`, `ServicioPedidos`, `ManejadorSolicitudHttp`.
+    - Deben ser sustantivos o sustantivo+complemento (no verbos): `GeneradorReporte` (bien), no `generarReporte`.
+    - Evita colisiones con clases estándar (`String`, `List`, etc.).
+
+Palabras reservadas (no usables como identificadores)
+- Java reserva palabras clave que no pueden emplearse como nombres de variables, clases o métodos. Entre ellas:
+
+```
+abstract  assert      boolean   break    byte
+case      catch       char      class    const
+continue  default     do        double   else
+enum      extends     final     finally  float
+for       goto        if        implements import
+instanceof int        interface long     native
+new       package     private   protected public
+return    short       static    strictfp synchronized
+super     switch      this      throw    throws
+transient try         void      volatile while
+```
+
+- Además, literales `true`, `false` y `null` no son válidos como identificadores.
+
+Regla práctica: elige nombres descriptivos y consistentes; si dudas, prefiere claridad. Mantén una guía de estilo del proyecto y aplica herramientas automáticas (Checkstyle) si quieres forzar reglas en CI.
+
+---
 
 ### 💬 CONCEPTO 16 — Tipos de comentarios
 
