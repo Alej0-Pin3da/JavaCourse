@@ -2184,14 +2184,3 @@ if (flag) { ... }  // OK
 - [LeetCode](https://leetcode.com/)
 
 ---
-
-## ➡️ **PRÓXIMOS PASOS**
-
-Una vez que domines completamente esta sección, estarás listo para:
-
-1. **1.2 Variables y Tipos de Datos** - Profundización en tipos avanzados
-2. **2.1 Operadores** - Aritmética, lógica y comparación
-3. **2.2 Estructuras de Control** - Patrones avanzados de control de flujo
-4. **Programación Orientada a Objetos** - El corazón de Java
-
-¡Felicidades por completar los fundamentos de Java! 🎉
