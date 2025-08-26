@@ -3,6 +3,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Estudiante",
+            "request": "launch",
+            "mainClass": "Estudiante",
+            "projectName": "JavaCourse_6494a371"
+        },
+        {
+            "type": "java",
+            "name": "ClaseBasica",
+            "request": "launch",
+            "mainClass": "ClaseBasica",
+            "projectName": "JavaCourse_6494a371"
+        },
+        {
+            "type": "java",
             "name": "VariacionesMain",
             "request": "launch",
             "mainClass": "VariacionesMain",

@@ -1,5 +1,5 @@
 
-# 📚 Primeros Pasos — Teoría Fundamental de Java 8
+# 📚 Teoría Fundamental de Java 8
 
 ## TL;DR
 
