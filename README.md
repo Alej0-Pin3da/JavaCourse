@@ -1,26 +1,9 @@
 
-# 📚 1.1 Primeros Pasos — Teoría Fundamental de Java 8
-
-## 🎯 Información General
-
-**Sección:** 1.1 Primeros Pasos  
-**Módulo:** Fundamentos de Java  
-**Duración estimada:** 2-3 horas de estudio  
-**Nivel:** Repaso para programadores con experiencia  
-**Prerrequisitos:** Conocimientos básicos de programación en cualquier lenguaje  
-
----
+# 📚 Primeros Pasos — Teoría Fundamental de Java 8
 
 ## TL;DR
 
 Esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escribir y ejecutar un programa, la estructura de clases, tipos primitivos y de referencia, control de flujo y buenas prácticas básicas.
-
-## 🎯 Objetivos de aprendizaje
-
-- Entender el punto de entrada `main()` y la estructura básica de una clase Java.
-- Distinguir entre tipos primitivos y tipos de referencia (wrappers) y cuándo usarlos.
-- Conocer diferencias clave (strings inmutables, autoboxing) y errores comunes a evitar.
-- Saber compilar y ejecutar ejemplos sencillos con `javac` y `java`.
 
 ## 📋 Índice de Contenidos
 
