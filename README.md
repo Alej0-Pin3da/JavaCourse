@@ -45,17 +45,277 @@ public static void main(String[] args)
 
 ### 🏗️ CONCEPTO 2 — Estructura de clases
 
-    Todo el código ejecutable debe estar dentro de clases y métodos. Solo una clase `public` por archivo y debe coincidir el nombre del archivo.
+Todo el código ejecutable debe estar dentro de clases y métodos. Solo una clase `public` por archivo y debe coincidir el nombre del archivo.
 
-    Ejemplo mínimo:
-
-    ```java
-    public class HolaMundo {
-        public static void main(String[] args) {
-            System.out.println("Hola Mundo");
-        }
+#### **Ejemplo mínimo:**
+```java
+public class HolaMundo {
+    public static void main(String[] args) {
+        System.out.println("Hola Mundo");
     }
-    ```
+}
+```
+
+---
+
+## 📚 **CONCEPTOS FUNDAMENTALES: CLASE, VARIABLES Y MÉTODOS**
+
+### 🏛️ **¿QUÉ ES UNA CLASE?**
+
+Una **CLASE** es un **MOLDE o PLANTILLA** que define:
+- Las **características** (variables/atributos) que tendrán los objetos
+- Los **comportamientos** (métodos) que podrán realizar los objetos
+- Es como un **plano arquitectónico** para construir objetos
+
+#### **🏗️ Analogía:**
+```
+Clase = Plano de una casa
+Objeto = Casa real construida siguiendo el plano
+```
+
+#### **📝 Sintaxis de una clase:**
+```java
+public class NombreClase {
+    // Variables (características)
+    // Métodos (comportamientos)
+    // Constructor (cómo crear objetos)
+}
+```
+
+#### **🔍 Ejemplo práctico:**
+```java
+public class ClaseBasica {
+    // Constructor
+    public ClaseBasica() {
+        System.out.println("Objeto ClaseBasica creado");
+    }
+    
+    // Método main
+    public static void main(String[] args) {
+        ClaseBasica objeto = new ClaseBasica(); // Crear objeto del molde
+    }
+}
+```
+
+---
+
+### 🔧 **¿QUÉ SON LAS VARIABLES?**
+
+Las **VARIABLES** son **ESPACIOS DE MEMORIA** que almacenan datos. Representan las **CARACTERÍSTICAS** o **PROPIEDADES** de los objetos.
+
+#### **🎯 Tipos de variables en Java:**
+
+##### **1. VARIABLES DE INSTANCIA (Atributos):**
+- Pertenecen a cada objeto individual
+- Cada objeto tiene su propia copia
+- Se declaran dentro de la clase, fuera de métodos
+
+```java
+public class Persona {
+    String nombre;     // Variable de instancia
+    int edad;         // Variable de instancia
+    double altura;    // Variable de instancia
+}
+```
+
+##### **2. VARIABLES LOCALES:**
+- Se declaran dentro de métodos
+- Solo existen mientras se ejecuta el método
+- Deben inicializarse antes de usarse
+
+```java
+public void saludar() {
+    String mensaje = "Hola";  // Variable local
+    System.out.println(mensaje);
+}
+```
+
+##### **3. VARIABLES ESTÁTICAS (de clase):**
+- Pertenecen a la clase, no a objetos individuales
+- Una sola copia compartida por todos los objetos
+- Se marcan con la palabra `static`
+
+```java
+public class Contador {
+    static int total = 0;  // Variable estática
+}
+```
+
+#### **💡 Características principales:**
+- **INDEPENDENCIA**: Cada objeto tiene su propia copia (instancia)
+- **MEMORIA**: Se almacenan en diferentes áreas (Heap, Stack, Method Area)
+- **ACCESO**: Diferentes formas de acceder según el tipo
+- **INICIALIZACIÓN**: En diferentes momentos del ciclo de vida
+
+---
+
+### ⚙️ **¿QUÉ SON LOS MÉTODOS?**
+
+Los **MÉTODOS** son **BLOQUES DE CÓDIGO** que definen los **COMPORTAMIENTOS** o **ACCIONES** que puede realizar un objeto o una clase.
+
+#### **🎯 Componentes de un método:**
+```java
+[modificador] [static] tipoRetorno nombreMetodo([parámetros]) {
+    // Cuerpo del método
+    [return valor;]  // Si retorna algo
+}
+```
+
+#### **🔧 Tipos de métodos:**
+
+##### **1. MÉTODOS DE INSTANCIA:**
+- Operan sobre objetos específicos
+- Pueden acceder a variables de instancia
+- Se llaman: `objeto.nombreMetodo()`
+
+```java
+public void caminar() {
+    System.out.println("Estoy caminando");
+}
+```
+
+##### **2. MÉTODOS ESTÁTICOS:**
+- Pertenecen a la clase, no a objetos
+- Se marcan con `static`
+- Se llaman: `NombreClase.nombreMetodo()`
+
+```java
+public static void mostrarInfo() {
+    System.out.println("Información de la clase");
+}
+```
+
+##### **3. CONSTRUCTOR:**
+- Método especial para crear objetos
+- Mismo nombre que la clase
+- No tiene tipo de retorno
+
+```java
+public ClaseBasica() {
+    System.out.println("Objeto creado");
+}
+```
+
+---
+
+### 🏛️ **RELACIÓN ENTRE CLASE, VARIABLES Y MÉTODOS**
+
+#### **📋 Estructura conceptual:**
+
+```
+CLASE = CONTENEDOR
+├── VARIABLES = CARACTERÍSTICAS/PROPIEDADES
+│   ├── ¿Qué datos almacena?
+│   ├── ¿Qué información describe al objeto?
+│   └── Ejemplo: nombre, edad, color, tamaño
+│
+└── MÉTODOS = COMPORTAMIENTOS/ACCIONES  
+    ├── ¿Qué puede hacer el objeto?
+    ├── ¿Cómo interactúa con otros objetos?
+    └── Ejemplo: caminar(), hablar(), calcular(), mostrar()
+```
+
+#### **🎯 Analogía completa - Clase Auto:**
+
+```java
+class Auto {
+    // VARIABLES (Características):
+    String marca;
+    String color;  
+    int velocidad;
+    boolean encendido;
+    
+    // MÉTODOS (Comportamientos):
+    public void encender() { encendido = true; }
+    public void acelerar() { velocidad += 10; }
+    public void frenar() { velocidad -= 10; }
+    public void tocarBocina() { System.out.println("¡BEEP!"); }
+}
+
+// Usar la clase:
+Auto miAuto = new Auto();  // Crear objeto
+miAuto.encender();         // Usar comportamiento
+miAuto.acelerar();         // Usar comportamiento
+```
+
+#### **🎓 Ejemplo expandido - Clase Estudiante:**
+
+```java
+public class Estudiante {
+    // VARIABLES DE INSTANCIA: Características de cada estudiante
+    private String nombre;
+    private int edad;
+    private double promedio;
+    
+    // CONSTRUCTOR: Cómo crear un estudiante
+    public Estudiante(String nombre, int edad, double promedio) {
+        this.nombre = nombre;      // Asignar características
+        this.edad = edad;
+        this.promedio = promedio;
+    }
+    
+    // MÉTODOS: Comportamientos/acciones del estudiante
+    public void estudiar() {
+        System.out.println(nombre + " está estudiando");
+    }
+    
+    public void mostrarInfo() {
+        System.out.println("Estudiante: " + nombre + ", Edad: " + edad);
+    }
+    
+    public double getPromedio() {
+        return promedio;  // Retorna información
+    }
+    
+    // MÉTODO ESTÁTICO: Pertenece a la clase, no a objetos individuales
+    public static void mostrarReglasEstudio() {
+        System.out.println("Reglas: Ser puntual, participar, hacer tareas");
+    }
+}
+```
+
+#### **💻 Uso de la clase:**
+```java
+public static void main(String[] args) {
+    // CREAR OBJETOS (instancias de la clase)
+    Estudiante ana = new Estudiante("Ana", 20, 8.5);
+    Estudiante carlos = new Estudiante("Carlos", 19, 9.2);
+    
+    // USAR MÉTODOS DE INSTANCIA
+    ana.estudiar();        // Ana está estudiando
+    carlos.mostrarInfo();  // Estudiante: Carlos, Edad: 19
+    
+    // USAR MÉTODO ESTÁTICO (desde la clase)
+    Estudiante.mostrarReglasEstudio();  // Sin crear objeto
+}
+```
+
+---
+
+### 💡 **PUNTOS CLAVE PARA RECORDAR**
+
+#### **🔹 CLASE:**
+- Es el **MOLDE/PLANTILLA**
+- Define **QUÉ** características y comportamientos tendrán los objetos
+- Se escribe **UNA VEZ**, se usa **MUCHAS VECES**
+
+#### **🔹 VARIABLES:**
+- Almacenan **DATOS/INFORMACIÓN**
+- Representan el **ESTADO** del objeto
+- Responden a: **"¿Qué información tiene?"**
+
+#### **🔹 MÉTODOS:**
+- Definen **ACCIONES/COMPORTAMIENTOS**
+- Operan sobre los datos (variables)
+- Responden a: **"¿Qué puede hacer?"**
+
+#### **🎯 REGLA DE ORO:**
+```
+CLASE = VARIABLES (datos) + MÉTODOS (acciones)
+OBJETO = Una instancia específica de la clase con valores concretos
+```
+
+**Esta es la base fundamental de la Programación Orientada a Objetos en Java.**
 
 ---
 

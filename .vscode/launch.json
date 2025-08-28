@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "HolaMundo",
+            "request": "launch",
+            "mainClass": "HolaMundo",
+            "projectName": "JavaCourse_6494a371"
+        },
+        {
+            "type": "java",
             "name": "MetodosBasicos",
             "request": "launch",
             "mainClass": "MetodosBasicos",
