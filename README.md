@@ -10,8 +10,9 @@ Esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escri
 - [CONCEPTO 1: El método main() - Punto de entrada](#-concepto-1-el-método-main---punto-de-entrada)
 - [CONCEPTO 2: Estructura de clases](#️-concepto-2--estructura-de-clases)
 - [CONCEPTO 3: Salida estándar (System.out)](#️-concepto-3--salida-estándar-systemout)
-- [CONCEPTO 4: CASE SENSITIVITY](#-concepto-4-case-sensitivity)
+- [CONCEPTO 4: Case Sensitivity](#-concepto-4-case-sensitivity)
 - [CONCEPTO 5: Variables estáticas vs de instancia](#️-concepto-5-variables-estáticas-vs-de-instancia)
+- [CONCEPTO INTERMEDIO: Interfaces - ¿Qué significa implements Runnable?](#-concepto-intermedio-interfaces---qué-significa-implements-runnable)
 - [CONCEPTO 6: Strings inmutables](#-concepto-6--strings-inmutables)
 - [CONCEPTO 7: Estructuras de control](#-concepto-7-estructuras-de-control)
 - [CONCEPTO 8: Arrays](#-concepto-8--arrays)
@@ -20,12 +21,14 @@ Esta sección cubre los conceptos esenciales para iniciar en Java 8: cómo escri
 - [CONCEPTO 11: Tipos de comentarios](#-concepto-11--tipos-de-comentarios)
 - [CONCEPTO 12: Paso de parámetros](#-concepto-12--paso-de-parámetros)
 - [CONCEPTO 13: Peculiaridades y diferencias](#-concepto-13-peculiaridades-y-diferencias)
+- [PROYECTO INTEGRADOR: Sistema de Gestión de Biblioteca](#-proyecto-integrador-sistema-de-gestión-de-biblioteca)
+- [CONCEPTOS AVANZADOS](#conceptos-avanzados)
 
 ---
 
 ## 📖 TEORÍA DETALLADA
 
-### 🔥 CONCEPTO 1: El método main() - Punto de entrada
+### 🔥 **CONCEPTO 1: El método main() - Punto de entrada**
 
 El método `main()` es el punto de entrada de cualquier aplicación Java ejecutable.
 
@@ -43,7 +46,7 @@ public static void main(String[] args)
 
     ---
 
-### 🏗️ CONCEPTO 2 — Estructura de clases
+### 🏗️ **CONCEPTO 2: Estructura de clases**
 
 Todo el código ejecutable debe estar dentro de clases y métodos. Solo una clase `public` por archivo y debe coincidir el nombre del archivo.
 
@@ -69,8 +72,13 @@ Una **CLASE** es un **MOLDE o PLANTILLA** que define:
 
 #### **🏗️ Analogía:**
 ```
-Clase = Plano de una casa
-Objeto = Casa real construida siguiendo el plano
+Clase = Plantilla/Molde para crear herramientas de ingeniería
+Objeto = Herramienta específica creada usando esa plantilla
+
+Ejemplo Real:
+- Clase Funciones = Molde para crear utilidades de cálculo
+- Objeto funciones1 = Calculadora específica con su propia memoria/estado
+- Objeto funciones2 = Otra calculadora independiente
 ```
 
 #### **📝 Sintaxis de una clase:**
@@ -111,10 +119,11 @@ Las **VARIABLES** son **ESPACIOS DE MEMORIA** que almacenan datos. Representan l
 - Se declaran dentro de la clase, fuera de métodos
 
 ```java
-public class Persona {
-    String nombre;     // Variable de instancia
-    int edad;         // Variable de instancia
-    double altura;    // Variable de instancia
+// Del archivo Funciones.java - Variables de instancia
+public class Funciones implements Runnable {
+    String hora, minutos, segundos, ampm;  // Variables de instancia
+    Calendar calendario;                    // Variable de instancia
+    // Cada objeto Funciones tendría sus propias copias
 }
 ```
 
@@ -124,9 +133,12 @@ public class Persona {
 - Deben inicializarse antes de usarse
 
 ```java
-public void saludar() {
-    String mensaje = "Hola";  // Variable local
-    System.out.println(mensaje);
+// Del archivo Funciones.java - Variables locales en el método redondear
+public static double redondear(double numero, int decimales) {
+    // 'numero' y 'decimales' son parámetros (variables locales)
+    double factor = Math.pow(10, decimales);  // Variable local
+    return Math.round(numero * factor) / factor;
+    // 'factor' solo existe dentro de este método
 }
 ```
 
@@ -136,8 +148,20 @@ public void saludar() {
 - Se marcan con la palabra `static`
 
 ```java
-public class Contador {
-    static int total = 0;  // Variable estática
+// Del archivo Funciones.java - Variables estáticas reales
+public class Funciones {
+    public static int Tamano;                    // Variable estática
+    public static String Ip = "", Equipo = "";  // Variables estáticas inicializadas
+    public static File Archivo = null;          // Variable estática tipo File
+    public static double[][] VpTaps;            // Array estático bidimensional
+    
+    // Constantes estáticas - valores fijos de ingeniería
+    public static double C1wrwct = 7.2661 * Math.pow(10, -5);
+    public static double C2wrwct = -2.9651 * Math.pow(10, -4);
+    
+    // Variables boolean estáticas para control de estados
+    public static boolean advEmbalaje = false;
+    public static boolean ULxEstandar = false;
 }
 ```
 
@@ -169,8 +193,43 @@ Los **MÉTODOS** son **BLOQUES DE CÓDIGO** que definen los **COMPORTAMIENTOS** 
 - Se llaman: `objeto.nombreMetodo()`
 
 ```java
-public void caminar() {
-    System.out.println("Estoy caminando");
+// Del archivo Funciones.java - Métodos de instancia reales
+public class Funciones {
+    // Variables de instancia
+    String hora, minutos, segundos, ampm;
+    Calendar calendario;
+    
+    // Método de instancia que opera sobre las variables de instancia
+    public void calcula() {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        Calendar calendario = new GregorianCalendar();
+        int año = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH);
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+        DatosEntrada.Fecha=+ dia + "/" + (mes+1) + "/" + año;
+        Date fechaHoraActual = new Date();
+        calendario.setTime(fechaHoraActual);
+        ampm = calendario.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
+        if(ampm.equals("PM")){
+            int h = calendario.get(Calendar.HOUR_OF_DAY)-12;
+            hora = h>9?""+h:"0"+h;
+        }else{
+            hora = calendario.get(Calendar.HOUR_OF_DAY)>9?""+calendario.get(Calendar.HOUR_OF_DAY):"0"+calendario.get(Calendar.HOUR_OF_DAY); 
+        }
+        minutos = calendario.get(Calendar.MINUTE)>9?""+calendario.get(Calendar.MINUTE):"0"+calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND)>9?""+calendario.get(Calendar.SECOND):"0"+calendario.get(Calendar.SECOND);
+        if (minutos.equals("15") & segundos.equals("00") || minutos.equals("30") & segundos.equals("00")  || 
+            minutos.equals("45") & segundos.equals("00") || minutos.equals("59") & segundos.equals("00")){
+            System.out.println("Se ejecuto a los "+minutos+"");
+            Consultas.TiempoOracle();
+        }
+    }
+    
+    // Otro método de instancia del sistema real
+    public void reloj() {
+        // Función que calcula la hora y fecha en tiempo real
+        // Trabaja con las variables de instancia del objeto
+    }
 }
 ```
 
@@ -180,8 +239,52 @@ public void caminar() {
 - Se llaman: `NombreClase.nombreMetodo()`
 
 ```java
-public static void mostrarInfo() {
-    System.out.println("Información de la clase");
+// Del archivo Funciones.java - Métodos estáticos del mundo real
+
+// Validación de entrada - no requiere objeto
+public static boolean esNumero(String string) {
+    // Determina si un string es número o no
+    // No necesita crear objeto de Funciones para usarse
+}
+
+// Validación de datos - IMPLEMENTACIÓN COMPLETA
+public static boolean esNumero(String string) {
+    // IMPLEMENTACIÓN REAL del archivo Funciones.java:
+    try {
+        Double.parseDouble(string);
+    } catch (Exception e) {
+        return false;
+    }
+    return true;
+}
+
+// Cálculo matemático - IMPLEMENTACIÓN COMPLETA  
+public static double redondear(double numero, int decimales) {
+    // IMPLEMENTACIÓN REAL del archivo Funciones.java:
+    return Math.round(numero*Math.pow(10,decimales))/Math.pow(10,decimales);
+}
+
+// Validación de eventos del teclado - IMPLEMENTACIÓN COMPLETA
+public static void SoloNumeros(java.awt.event.KeyEvent evt) {
+    // IMPLEMENTACIÓN REAL del archivo Funciones.java:
+    int k = (int) evt.getKeyChar();
+    if (k==44) {
+        evt.consume();
+        JOptionPane.showMessageDialog(null, "Separador con (.)!!!", "Error Datos", JOptionPane.ERROR_MESSAGE);
+    }else if (!((k >= 48 && k <= 57) || k < 32 || k ==127 || k==46)) {
+        evt.consume();
+        JOptionPane.showMessageDialog(null, "No puede ingresar Letras!!!", "Error Datos", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Cálculos de ingeniería específicos - IMPLEMENTACIÓN COMPLETA
+public static double Calculo_wo(double B) {
+    // IMPLEMENTACIÓN REAL del archivo Funciones.java:
+    double Wo= (VariablesEntrada.pla+ VariablesEntrada.plc * B + 
+            VariablesEntrada.ple * (Math.pow(B, 2)) + VariablesEntrada.plg * 
+            (Math.pow(B, 3)))*2.205 / (1 + VariablesEntrada.plb * B + VariablesEntrada.pld * 
+            (Math.pow(B, 2)) + VariablesEntrada.plf * (Math.pow(B, 3)));
+    return Wo;
 }
 ```
 
@@ -191,8 +294,25 @@ public static void mostrarInfo() {
 - No tiene tipo de retorno
 
 ```java
-public ClaseBasica() {
-    System.out.println("Objeto creado");
+// Del archivo Funciones.java - Constructor implícito
+public class Funciones implements Runnable {
+    // Java crea automáticamente un constructor por defecto:
+    // public Funciones() {
+    //     // Inicializa variables de instancia con valores por defecto
+    //     hora = null;
+    //     minutos = null;
+    //     calendario = null;
+    // }
+    
+    // Constructor personalizado (si fuera necesario):
+    public Funciones() {
+        // Inicialización específica para el sistema de transformadores
+        calendario = new GregorianCalendar();
+        hora = "";
+        minutos = "";
+        segundos = "";
+        ampm = "";
+    }
 }
 ```
 
@@ -206,87 +326,259 @@ public ClaseBasica() {
 CLASE = CONTENEDOR
 ├── VARIABLES = CARACTERÍSTICAS/PROPIEDADES
 │   ├── ¿Qué datos almacena?
-│   ├── ¿Qué información describe al objeto?
-│   └── Ejemplo: nombre, edad, color, tamaño
+│   ├── ¿Qué información describe al objeto/clase?
+│   └── Ejemplo: Ip, Equipo, Tamano, banderas de control
 │
 └── MÉTODOS = COMPORTAMIENTOS/ACCIONES  
-    ├── ¿Qué puede hacer el objeto?
-    ├── ¿Cómo interactúa con otros objetos?
-    └── Ejemplo: caminar(), hablar(), calcular(), mostrar()
+    ├── ¿Qué puede hacer la clase?
+    ├── ¿Cómo procesa los datos?
+    └── Ejemplo: redondear(), esNumero(), calcula(), VentanaEntrada()
 ```
 
-#### **🎯 Analogía completa - Clase Auto:**
+#### **🎯 Ejemplo Real - Clase Funciones del Sistema:**
 
 ```java
-class Auto {
-    // VARIABLES (Características):
-    String marca;
-    String color;  
-    int velocidad;
-    boolean encendido;
+// Del archivo Funciones.java - Clase utilitaria real de ingeniería
+public class Funciones implements Runnable {
     
-    // MÉTODOS (Comportamientos):
-    public void encender() { encendido = true; }
-    public void acelerar() { velocidad += 10; }
-    public void frenar() { velocidad -= 10; }
-    public void tocarBocina() { System.out.println("¡BEEP!"); }
+    // VARIABLES ESTÁTICAS (Compartidas por toda la aplicación):
+    public static String Ip = "";           // IP del servidor
+    public static String Equipo = "";       // Nombre del equipo
+    public static int Tamano;                // Tamaño de elementos
+    public static File Archivo = null;      // Archivo de trabajo actual
+    
+    // Variables de control del sistema
+    public static int bandera, bandera1, bandera2; // Estados de proceso
+    public static boolean advEmbalaje = false;      // Advertencia de embalaje
+    public static double[][] VpTaps;               // Datos de taps de voltaje
+    
+    // Constantes de ingeniería (fórmulas específicas)
+    public static double C1wrwct = 7.2661 * Math.pow(10, -5);
+    public static double C2wrwct = -2.9651 * Math.pow(10, -4);
+    
+    // VARIABLES DE INSTANCIA (Específicas de cada objeto):
+    String hora, minutos, segundos, ampm;    // Tiempo actual
+    Calendar calendario;                     // Calendario del objeto
+    
+    // MÉTODOS ESTÁTICOS (Utilidades que no requieren objetos):
+    
+    // Validación de datos - IMPLEMENTACIÓN COMPLETA
+    public static boolean esNumero(String string) {
+        try {
+            Double.parseDouble(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+    
+    // Cálculos matemáticos de ingeniería - IMPLEMENTACIÓN COMPLETA
+    public static double redondear(double numero, int decimales) {
+        return Math.round(numero*Math.pow(10,decimales))/Math.pow(10,decimales);
+    }
+    
+    public static double Calculo_wo(double B) {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        double Wo= (VariablesEntrada.pla+ VariablesEntrada.plc * B + 
+                VariablesEntrada.ple * (Math.pow(B, 2)) + VariablesEntrada.plg * 
+                (Math.pow(B, 3)))*2.205 / (1 + VariablesEntrada.plb * B + VariablesEntrada.pld * 
+                (Math.pow(B, 2)) + VariablesEntrada.plf * (Math.pow(B, 3)));
+        return Wo;
+    }
+    
+    // Gestión de interfaz de usuario - IMPLEMENTACIÓN COMPLETA
+    public static void VentanaEntrada(boolean band) {
+        try{
+            VariablesEntrada.VEntrada=0;
+            if (Funciones.entrada==null) {
+                Funciones.entrada=new Entrada();
+                Funciones.AbrirVentanas(Funciones.entrada,true,band,true);
+                bandera=1;            
+                DatosEntrada.InicializarVariables();
+            }else{
+                Funciones.AbrirVentanas(Funciones.entrada,false,band,true);
+            }     
+        }catch(HeadlessException ex){}
+    }
+    
+    public static void SoloNumeros(java.awt.event.KeyEvent evt) {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        int k = (int) evt.getKeyChar();
+        if (k==44) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Separador con (.)!!!", "Error Datos", JOptionPane.ERROR_MESSAGE);
+        }else if (!((k >= 48 && k <= 57) || k < 32 || k ==127 || k==46)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "No puede ingresar Letras!!!", "Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    // MÉTODOS DE INSTANCIA (Operan sobre datos del objeto):
+    public void calcula() {
+        // Calcula hora y fecha usando 'calendario' (variable de instancia)
+        calendario = new GregorianCalendar();
+        // Actualiza hora, minutos, segundos, ampm
+    }
+    
+    public void reloj() {
+        // Función de reloj en tiempo real
+        // Usa las variables de instancia para mantener el tiempo
+    }
 }
-
-// Usar la clase:
-Auto miAuto = new Auto();  // Crear objeto
-miAuto.encender();         // Usar comportamiento
-miAuto.acelerar();         // Usar comportamiento
 ```
 
-#### **🎓 Ejemplo expandido - Clase Estudiante:**
+#### **💻 Uso Real en el Sistema:**
 
 ```java
-public class Estudiante {
-    // VARIABLES DE INSTANCIA: Características de cada estudiante
-    private String nombre;
-    private int edad;
-    private double promedio;
-    
-    // CONSTRUCTOR: Cómo crear un estudiante
-    public Estudiante(String nombre, int edad, double promedio) {
-        this.nombre = nombre;      // Asignar características
-        this.edad = edad;
-        this.promedio = promedio;
-    }
-    
-    // MÉTODOS: Comportamientos/acciones del estudiante
-    public void estudiar() {
-        System.out.println(nombre + " está estudiando");
-    }
-    
-    public void mostrarInfo() {
-        System.out.println("Estudiante: " + nombre + ", Edad: " + edad);
-    }
-    
-    public double getPromedio() {
-        return promedio;  // Retorna información
-    }
-    
-    // MÉTODO ESTÁTICO: Pertenece a la clase, no a objetos individuales
-    public static void mostrarReglasEstudio() {
-        System.out.println("Reglas: Ser puntual, participar, hacer tareas");
+// Uso de métodos estáticos (sin crear objetos):
+public class SistemaTransformadores {
+    public static void main(String[] args) {
+        // Validar entrada de usuario
+        String entrada = "123.45";
+        if (Funciones.esNumero(entrada)) {
+            double valor = Double.parseDouble(entrada);
+            
+            // Redondear para mostrar en interfaz
+            double valorRedondeado = Funciones.redondear(valor, 2);
+            System.out.println("Valor: " + valorRedondeado);
+            
+            // Calcular pérdidas en transformador
+            double perdidas = Funciones.Calculo_wo(1.7); // 1.7 KiloGauss
+            System.out.println("Pérdidas: " + perdidas + " W/kg");
+            
+            // Abrir ventana de entrada
+            Funciones.VentanaEntrada(true);
+        }
+        
+        // Uso de métodos de instancia (requiere objeto):
+        Funciones reloj = new Funciones();
+        reloj.calcula();  // Calcula tiempo actual
+        reloj.reloj();    // Inicia reloj en tiempo real
     }
 }
 ```
 
-#### **💻 Uso de la clase:**
+#### **🎓 Ejemplo Práctico - Clase Funciones del Sistema Real:**
+
 ```java
-public static void main(String[] args) {
-    // CREAR OBJETOS (instancias de la clase)
-    Estudiante ana = new Estudiante("Ana", 20, 8.5);
-    Estudiante carlos = new Estudiante("Carlos", 19, 9.2);
+public class Funciones implements Runnable {
+    // VARIABLES DE INSTANCIA: Características específicas de cada instancia
+    String hora, minutos, segundos, ampm;  // Estado del reloj
+    Calendar calendario;                    // Calendario específico del objeto
     
-    // USAR MÉTODOS DE INSTANCIA
-    ana.estudiar();        // Ana está estudiando
-    carlos.mostrarInfo();  // Estudiante: Carlos, Edad: 19
+    // VARIABLES DE CLASE (STATIC): Compartidas por todos los objetos
+    public static String Ip = "";           // IP del servidor
+    public static String Equipo = "";       // Equipo actual
+    public static int Tamano;               // Tamaño estándar
+    public static boolean advEmbalaje = false;  // Control global
     
-    // USAR MÉTODO ESTÁTICO (desde la clase)
-    Estudiante.mostrarReglasEstudio();  // Sin crear objeto
+    // CONSTRUCTOR: Inicializa nuevas instancias
+    public Funciones() {
+        calendario = new GregorianCalendar();  // Inicializar calendario
+        calcula();                             // Calcular hora inicial
+    }
+    
+    // MÉTODOS DE INSTANCIA: Operan sobre datos específicos del objeto
+    public void calcula() {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        Calendar calendario = new GregorianCalendar();
+        int año = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH);
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+        DatosEntrada.Fecha=+ dia + "/" + (mes+1) + "/" + año;
+        Date fechaHoraActual = new Date();
+        calendario.setTime(fechaHoraActual);
+        ampm = calendario.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
+        if(ampm.equals("PM")){
+            int h = calendario.get(Calendar.HOUR_OF_DAY)-12;
+            hora = h>9?""+h:"0"+h;
+        }else{
+            hora = calendario.get(Calendar.HOUR_OF_DAY)>9?""+calendario.get(Calendar.HOUR_OF_DAY):"0"+calendario.get(Calendar.HOUR_OF_DAY); 
+        }
+        minutos = calendario.get(Calendar.MINUTE)>9?""+calendario.get(Calendar.MINUTE):"0"+calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND)>9?""+calendario.get(Calendar.SECOND):"0"+calendario.get(Calendar.SECOND);
+        if (minutos.equals("15") & segundos.equals("00") || minutos.equals("30") & segundos.equals("00")  || 
+            minutos.equals("45") & segundos.equals("00") || minutos.equals("59") & segundos.equals("00")){
+            System.out.println("Se ejecuto a los "+minutos+"");
+            Consultas.TiempoOracle();
+        }
+    }
+    
+    public void reloj() {
+        // Función de reloj que usa los datos de esta instancia
+        SwingUtilities.invokeLater(this);  // Actualización de interfaz
+    }
+    
+    // MÉTODOS ESTÁTICOS: Utilidades independientes, no necesitan objetos
+    public static double redondear(double numero, int decimales) {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        return Math.round(numero*Math.pow(10,decimales))/Math.pow(10,decimales);
+    }
+    
+    public static boolean esNumero(String string) {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        try {
+            Double.parseDouble(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+    
+    public static void VentanaEntrada(boolean band) {
+        // IMPLEMENTACIÓN COMPLETA del archivo Funciones.java:
+        try{
+            VariablesEntrada.VEntrada=0;
+            if (Funciones.entrada==null) {
+                Funciones.entrada=new Entrada();
+                Funciones.AbrirVentanas(Funciones.entrada,true,band,true);
+                bandera=1;            
+                DatosEntrada.InicializarVariables();
+            }else{
+                Funciones.AbrirVentanas(Funciones.entrada,false,band,true);
+            }     
+        }catch(HeadlessException ex){}
+    }
+            v.setVisible(true);
+        }
+    }
+}
+```
+
+#### **💻 Uso Real en el Sistema:**
+```java
+public class SistemaTransformadores {
+    public static void main(String[] args) {
+        // USAR MÉTODOS ESTÁTICOS (sin crear objetos):
+        // Validar entrada de usuario
+        String entrada = "123.45";
+        if (Funciones.esNumero(entrada)) {  // Método estático
+            double valor = Double.parseDouble(entrada);
+            
+            // Redondear resultado
+            double resultado = Funciones.redondear(valor, 2);  // Método estático
+            System.out.println("Valor procesado: " + resultado);
+            
+            // Abrir ventana del sistema
+            Funciones.VentanaEntrada(true);  // Método estático
+        }
+        
+        // CREAR Y USAR OBJETOS (instancias):
+        Funciones reloj1 = new Funciones();     // Reloj del panel principal
+        Funciones reloj2 = new Funciones();     // Reloj del panel de reportes
+        
+        // Cada objeto mantiene su propia hora
+        reloj1.calcula();  // Calcula hora en reloj1
+        reloj2.calcula();  // Calcula hora en reloj2 (independiente)
+        
+        // Cada objeto tiene su propio hilo de ejecución
+        new Thread(reloj1).start();  // Inicia reloj1
+        new Thread(reloj2).start();  // Inicia reloj2
+        
+        // Variables estáticas son compartidas:
+        System.out.println("IP del sistema: " + Funciones.Ip);      // Mismo para todos
+        System.out.println("Equipo: " + Funciones.Equipo);          // Mismo para todos
+    }
 }
 ```
 
@@ -319,7 +611,203 @@ OBJETO = Una instancia específica de la clase con valores concretos
 
 ---
 
-### 🖥️ CONCEPTO 3 — Salida estándar (System.out)
+## 🔍 **ANÁLISIS PRÁCTICO: MÉTODO REAL DE FUNCIONES.JAVA**
+
+### **🧮 Ejemplo del mundo real: Método `redondear()`**
+
+Vamos a analizar un método real del archivo `Funciones.java` para ver cómo se aplican los conceptos fundamentales en la práctica:
+
+```java
+/**
+ * <B>Titulo:</B>redondear<br>.
+ * <B>Descripción:</B>Funcion paa redondear un numero<br>
+ * @param numero
+ * @param decimales
+ * @return 
+ * @since 1.0 Feb 10, 2014.
+ */
+public static double redondear(double numero, int decimales) {
+    // Cálculo del factor de redondeo
+    double factor = Math.pow(10, decimales);
+    
+    // Aplicar redondeo matemático
+    return Math.round(numero * factor) / factor;
+}
+```
+
+#### **🏗️ ANÁLISIS DETALLADO:**
+
+##### **📚 CLASE: `Funciones`**
+- **Propósito**: Contenedor de utilidades matemáticas y funciones auxiliares
+- **Tipo**: Clase utilitaria (contiene métodos estáticos)
+- **Ubicación**: `package modelo;`
+- **Responsabilidad**: Proporcionar funciones matemáticas reutilizables
+
+##### **🔧 VARIABLES en el método:**
+
+**1. PARÁMETROS (Variables de entrada):**
+```java
+double numero    // Número que se va a redondear
+int decimales    // Cantidad de decimales deseados
+```
+
+**2. VARIABLES LOCALES:**
+```java
+double factor = Math.pow(10, decimales);  // Variable local calculada
+```
+
+**3. VARIABLE DE RETORNO:**
+```java
+return Math.round(numero * factor) / factor;  // Resultado calculado
+```
+
+##### **⚙️ MÉTODO: `redondear()`**
+
+**Componentes del método:**
+- **`public`**: Modificador de acceso - puede llamarse desde cualquier lugar
+- **`static`**: Método de clase - no requiere crear objeto de `Funciones`
+- **`double`**: Tipo de retorno - devuelve un número decimal
+- **`redondear`**: Nombre descriptivo del comportamiento
+- **`(double numero, int decimales)`**: Parámetros de entrada
+
+#### **💻 EJEMPLOS DE USO EN LA PRÁCTICA:**
+
+```java
+// Llamadas al método desde otras partes del código
+public class EjemplosDeUso {
+    public static void main(String[] args) {
+        // Redondear a 2 decimales
+        double precio = 15.6789;
+        double precioRedondeado = Funciones.redondear(precio, 2);
+        System.out.println("Precio: $" + precioRedondeado); // Precio: $15.68
+        
+        // Redondear a 1 decimal
+        double temperatura = 23.456;
+        double tempRedondeada = Funciones.redondear(temperatura, 1);
+        System.out.println("Temperatura: " + tempRedondeada + "°C"); // Temperatura: 23.5°C
+        
+        // Redondear a entero (0 decimales)
+        double distancia = 127.89;
+        double distanciaEntera = Funciones.redondear(distancia, 0);
+        System.out.println("Distancia: " + distanciaEntera + " km"); // Distancia: 128.0 km
+    }
+}
+```
+
+#### **🎯 CONCEPTOS FUNDAMENTALES APLICADOS:**
+
+##### **🏛️ CLASE como contenedor:**
+```java
+public class Funciones {
+    // Contiene múltiples métodos utilitarios
+    public static double redondear(double numero, int decimales) { ... }
+    public static boolean esNumero(String string) { ... }
+    public static double Calculo_wo(double B) { ... }
+    // ... más métodos
+}
+```
+
+##### **🔧 VARIABLES con diferentes alcances:**
+```java
+public class Funciones {
+    // VARIABLES ESTÁTICAS (de clase) - compartidas
+    public static int Tamano;
+    public static String Ip = "";
+    
+    // MÉTODO con variables locales - IMPLEMENTACIÓN COMPLETA
+    public static double redondear(double numero, int decimales) {
+        // PARÁMETROS - reciben valores del exterior
+        // numero y decimales son variables locales
+        
+        // IMPLEMENTACIÓN REAL del archivo Funciones.java:
+        return Math.round(numero*Math.pow(10,decimales))/Math.pow(10,decimales);
+        
+        /* EXPLICACIÓN DE LA FÓRMULA:
+         * 1. Math.pow(10, decimales) crea el factor de multiplicación
+         *    Ejemplo: para 2 decimales = 10^2 = 100
+         * 2. numero * factor desplaza decimales a la izquierda 
+         *    Ejemplo: 3.14159 * 100 = 314.159
+         * 3. Math.round() redondea al entero más cercano
+         *    Ejemplo: Math.round(314.159) = 314
+         * 4. Dividir por factor regresa los decimales a su lugar
+         *    Ejemplo: 314 / 100 = 3.14
+         */
+        
+        // VARIABLE DE RETORNO - resultado del método
+        return Math.round(numero * factor) / factor;
+    }
+}
+```
+
+##### **⚙️ MÉTODO como comportamiento:**
+```java
+// El método define UNA ACCIÓN ESPECÍFICA: "redondear números"
+public static double redondear(double numero, int decimales) {
+    // ENTRADA: Recibe datos (número y decimales)
+    // PROCESAMIENTO: Aplica lógica matemática
+    // SALIDA: Devuelve resultado procesado
+}
+```
+
+#### **📊 FLUJO DE EJECUCIÓN PASO A PASO:**
+
+```java
+// 1. LLAMADA AL MÉTODO
+double resultado = Funciones.redondear(15.6789, 2);
+
+// 2. ASIGNACIÓN DE PARÁMETROS
+// numero = 15.6789
+// decimales = 2
+
+// 3. CREACIÓN DE VARIABLE LOCAL
+// factor = Math.pow(10, 2) = 100.0
+
+// 4. CÁLCULO DEL RESULTADO
+// numero * factor = 15.6789 * 100 = 1567.89
+// Math.round(1567.89) = 1568
+// 1568 / factor = 1568 / 100 = 15.68
+
+// 5. RETORNO DEL RESULTADO
+// return 15.68
+```
+
+#### **🏆 CARACTERÍSTICAS DEL DISEÑO:**
+
+##### **✅ Buenas prácticas aplicadas:**
+- **Método estático**: No necesita instancia, es una utilidad pura
+- **Parámetros claros**: `numero` y `decimales` son autodescriptivos  
+- **Nombre descriptivo**: `redondear` indica exactamente qué hace
+- **Tipo de retorno apropiado**: `double` para mantener precisión
+- **Documentación**: JavaDoc completo con propósito y parámetros
+
+##### **🎯 Uso en el contexto real:**
+```java
+// En la aplicación real se usa para:
+// - Redondear cálculos de ingeniería
+// - Formatear precios y costos
+// - Ajustar medidas y dimensiones
+// - Presentar resultados con precisión controlada
+
+// Ejemplo del contexto de transformadores:
+double perdidas = 1567.8934;  // Pérdidas calculadas
+double perdidasRedondeadas = Funciones.redondear(perdidas, 2);
+// Resultado: 1567.89 W (más legible para reportes)
+```
+
+#### **💡 LECCIONES CLAVE:**
+
+1. **CLASE**: `Funciones` actúa como biblioteca de utilidades
+2. **VARIABLES**: Diferentes tipos con diferentes alcances y propósitos
+3. **MÉTODO**: Encapsula una funcionalidad específica y reutilizable
+4. **STATIC**: Permite usar la funcionalidad sin crear objetos
+5. **PARÁMETROS**: Entrada de datos para personalizar el comportamiento
+6. **RETORNO**: Salida procesada para usar en otros lugares
+
+**Este ejemplo demuestra cómo los conceptos teóricos se aplican en código real de producción.**
+
+---
+
+### 🖥️ **CONCEPTO 3: Salida estándar (System.out)**
 
 #### **¿Qué es System.out?**
 `System.out` es un objeto de tipo `PrintStream` que representa la **salida estándar** del programa, típicamente la consola o terminal. Es parte de la clase `System` en el paquete `java.lang` y es la forma más común de mostrar información al usuario en aplicaciones de consola.
@@ -528,9 +1016,90 @@ public class ConstantesFormato {
 }
 ```
 
+### 🎯 **Ejercicios prácticos para System.out**
+
+#### **Ejercicio 1: Menú de restaurante**
+```java
+public class EjercicioMenu {
+    public static void main(String[] args) {
+        // Crear un menú usando System.out.printf con formato de tabla
+        System.out.printf("╔═══════════════════════════════════════════╗%n");
+        System.out.printf("║           RESTAURANTE JAVA CAFÉ          ║%n");
+        System.out.printf("╠═══════════════════════════════════════════╣%n");
+        System.out.printf("║ %-25s | %8s ║%n", "PLATO", "PRECIO");
+        System.out.printf("╠═══════════════════════════════════════════╣%n");
+        System.out.printf("║ %-25s | $%7.2f ║%n", "Hamburguesa Clásica", 12.99);
+        System.out.printf("║ %-25s | $%7.2f ║%n", "Pizza Margarita", 15.50);
+        System.out.printf("║ %-25s | $%7.2f ║%n", "Ensalada César", 9.25);
+        System.out.printf("╚═══════════════════════════════════════════╝%n");
+        
+        // Agregar resumen con totales
+        double subtotal = 37.74;
+        double impuesto = subtotal * 0.15;
+        double total = subtotal + impuesto;
+        
+        System.out.printf("%n--- RESUMEN DE CUENTA ---%n");
+        System.out.printf("Subtotal: $%6.2f%n", subtotal);
+        System.out.printf("Impuesto: $%6.2f%n", impuesto);
+        System.out.printf("Total:    $%6.2f%n", total);
+    }
+}
+```
+
+#### **Ejercicio 2: Debug con System.err**
+```java
+public class EjercicioDebug {
+    public static void main(String[] args) {
+        String usuario = "admin";
+        String password = "123456";
+        
+        System.out.println("=== Sistema de Login ===");
+        System.out.printf("Usuario: %s%n", usuario);
+        
+        // Simular validación
+        if (password.length() < 8) {
+            System.err.printf("ERROR: Contraseña muy corta. Mínimo 8 caracteres, actual: %d%n", 
+                            password.length());
+            System.err.println("NIVEL: CRÍTICO - Acceso denegado");
+            return;
+        }
+        
+        System.out.println("✅ Login exitoso");
+        System.out.printf("Bienvenido %s, hora de acceso: %tT%n", usuario, 
+                         java.time.LocalTime.now());
+    }
+}
+```
+
+#### **Ejercicio 3: Calculadora con formato**
+```java
+public class EjercicioCalculadora {
+    public static void main(String[] args) {
+        double num1 = 15.7;
+        double num2 = 4.3;
+        
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║            CALCULADORA               ║");
+        System.out.println("╚══════════════════════════════════════╝");
+        System.out.printf("%nOperandos: %.2f y %.2f%n%n", num1, num2);
+        
+        // Realizar operaciones y mostrar con formato
+        System.out.printf("Suma:          %6.2f + %6.2f = %8.2f%n", num1, num2, num1 + num2);
+        System.out.printf("Resta:         %6.2f - %6.2f = %8.2f%n", num1, num2, num1 - num2);
+        System.out.printf("Multiplicación:%6.2f × %6.2f = %8.2f%n", num1, num2, num1 * num2);
+        System.out.printf("División:      %6.2f ÷ %6.2f = %8.2f%n", num1, num2, num1 / num2);
+        System.out.printf("Módulo:        %6.2f %% %6.2f = %8.2f%n", num1, num2, num1 % num2);
+        
+        // Mostrar en notación científica
+        double resultado = num1 * num2;
+        System.out.printf("%nEn notación científica: %e%n", resultado);
+    }
+}
+```
+
 ---
 
-### 📝 **CONCEPTO 4: CASE SENSITIVITY**
+### 📝 **CONCEPTO 4: Case Sensitivity**
 
 Java es un lenguaje **case-sensitive**, lo que significa que distingue entre mayúsculas y minúsculas en **todos** los identificadores. Esta característica afecta nombres de variables, métodos, clases, palabras clave y literales.
 
@@ -781,9 +1350,113 @@ if (obj instanceof String) {
 
 El tipado fuerte y estático de Java es uno de sus pilares fundamentales, proporcionando seguridad, rendimiento y mantenibilidad, especialmente crucial en aplicaciones empresariales grandes y complejas.
 
+### 🎯 **Ejercicios prácticos para Case Sensitivity**
+
+#### **Ejercicio 1: Identificar errores de case sensitivity**
+```java
+public class EjercicioCaseSensitivity {
+    public static void main(String[] args) {
+        // ¿Cuáles de estas líneas compilan y cuáles no?
+        String mensaje = "Hola Mundo";
+        // STRING mensaje2 = "Error";        // ❌ Error: STRING no existe
+        // string mensaje3 = "Error";        // ❌ Error: string no existe (debe ser String)
+        
+        int numero = 42;
+        // INT numero2 = 43;                 // ❌ Error: INT no existe (debe ser int)
+        
+        // System.Out.println(mensaje);      // ❌ Error: Out debe ser out
+        System.out.println(mensaje);         // ✅ Correcto
+        
+        // Public static void main...        // ❌ Error: Public debe ser public
+        // SYSTEM.OUT.PRINTLN("Error");      // ❌ Error: todo debe estar en minúsculas apropiadas
+        
+        // ¿Estas variables son diferentes?
+        String nombre = "Juan";
+        String Nombre = "Pedro";
+        String NOMBRE = "Ana";
+        String NoMbRe = "Luis";
+        
+        System.out.println("nombre: " + nombre);   // Juan
+        System.out.println("Nombre: " + Nombre);   // Pedro
+        System.out.println("NOMBRE: " + NOMBRE);   // Ana
+        System.out.println("NoMbRe: " + NoMbRe);   // Luis
+    }
+}
+```
+
+#### **Ejercicio 2: Convenciones de nombres**
+```java
+public class EjercicioConvenciones {
+    // Variables: camelCase
+    private String nombreCompleto = "Juan Pérez";
+    private int edadPersona = 25;
+    private boolean estaActivo = true;
+    
+    // Constantes: UPPER_SNAKE_CASE  
+    private static final String NOMBRE_APLICACION = "Mi App";
+    private static final int MAXIMO_INTENTOS = 3;
+    private static final double PI_VALOR = 3.141592653589793;
+    
+    // Métodos: camelCase
+    public void mostrarInformacion() {
+        System.out.println("Nombre: " + nombreCompleto);
+        System.out.println("Edad: " + edadPersona);
+        System.out.println("Activo: " + estaActivo);
+    }
+    
+    public int calcularAniosParaJubilacion() {
+        final int EDAD_JUBILACION = 65;
+        return EDAD_JUBILACION - edadPersona;
+    }
+    
+    // Método main: punto de entrada
+    public static void main(String[] args) {
+        EjercicioConvenciones persona = new EjercicioConvenciones();
+        persona.mostrarInformacion();
+        
+        System.out.println("Años para jubilación: " + 
+                         persona.calcularAniosParaJubilacion());
+        System.out.println("Aplicación: " + NOMBRE_APLICACION);
+        System.out.println("Valor de PI: " + PI_VALOR);
+    }
+}
+```
+
+#### **Ejercicio 3: Errores comunes de principiantes**
+```java
+public class ErroresComunesCaseSensitivity {
+    public static void main(String[] args) {
+        // ERROR 1: Confundir palabras reservadas
+        // string texto = "Error";          // ❌ string no existe, debe ser String
+        String texto = "Correcto";          // ✅ String con S mayúscula
+        
+        // ERROR 2: Métodos de String mal escritos  
+        String saludo = "hola mundo";
+        // saludo.ToUpperCase();            // ❌ ToUpperCase no existe
+        System.out.println(saludo.toUpperCase()); // ✅ toUpperCase con t minúscula
+        
+        // ERROR 3: Confundir System.out
+        // system.out.println("Error");     // ❌ system debe ser System
+        // System.Out.println("Error");     // ❌ Out debe ser out
+        System.out.println("Correcto");    // ✅ System.out
+        
+        // ERROR 4: Clases vs instancias
+        // math.sqrt(25);                   // ❌ math no existe
+        System.out.println(Math.sqrt(25));  // ✅ Math con M mayúscula
+        
+        // ERROR 5: Variables vs métodos
+        String nombre = "Java";
+        // System.out.println(Nombre);      // ❌ Nombre no existe (variable es nombre)
+        System.out.println(nombre);         // ✅ Variable correcta
+        // System.out.println(nombre.Length); // ❌ Length no existe
+        System.out.println(nombre.length()); // ✅ length() con l minúscula
+    }
+}
+```
+
 ---
 
-### 🏷️ **CONCEPTO 5: VARIABLES ESTÁTICAS VS DE INSTANCIA**
+### 🏷️ **CONCEPTO 5: Variables estáticas vs de instancia**
 
 En Java existen dos tipos principales de variables en las clases: **variables de instancia** (pertenecen a objetos individuales) y **variables estáticas** (pertenecen a la clase como un todo). Entender esta diferencia es fundamental para el diseño orientado a objetos.
 
@@ -996,9 +1669,976 @@ La comprensión de variables estáticas vs de instancia es esencial para diseña
 
 ---
 
-    ---
+## 🖥️ **CONCEPTO 3: Salida estándar (System.out)**
 
-### 📝 CONCEPTO 6 — Strings inmutables
+`System.out` es la forma más común de mostrar información en la consola en Java. Es un objeto de tipo `PrintStream` que representa la **salida estándar** del programa.
+
+### **¿Qué es System.out?**
+
+```java
+System.out  // Objeto estático para salida estándar
+  ↳ System     // Clase del sistema Java
+  ↳ out        // Campo estático de tipo PrintStream  
+  ↳ println()  // Método para imprimir con salto de línea
+```
+
+### **🎯 Métodos principales de System.out**
+
+#### **1. println() - Imprimir con salto de línea**
+
+```java
+public class EjemplosPrintln {
+    public static void main(String[] args) {
+        // Imprimir texto simple
+        System.out.println("¡Hola, Mundo!");
+        
+        // Imprimir variables
+        String nombre = "Juan";
+        int edad = 25;
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Edad: " + edad);
+        
+        // Imprimir expresiones matemáticas
+        System.out.println("5 + 3 = " + (5 + 3));
+        
+        // Imprimir diferentes tipos de datos
+        System.out.println(true);           // boolean
+        System.out.println(3.14159);        // double
+        System.out.println('A');            // char
+        
+        // Línea vacía
+        System.out.println();  // Solo salto de línea
+    }
+}
+```
+
+**💡 Salida esperada:**
+```
+¡Hola, Mundo!
+Nombre: Juan
+Edad: 25
+5 + 3 = 8
+true
+3.14159
+A
+
+```
+
+#### **2. print() - Imprimir sin salto de línea**
+
+```java
+public class EjemplosPrint {
+    public static void main(String[] args) {
+        // print() no agrega salto de línea
+        System.out.print("Hola ");
+        System.out.print("Mundo ");
+        System.out.println("Java!");  // Esta sí hace salto
+        
+        // Útil para contadores o progreso
+        System.out.print("Cargando");
+        for (int i = 0; i < 5; i++) {
+            System.out.print(".");
+            // En aplicación real harías Thread.sleep(500);
+        }
+        System.out.println(" ¡Completo!");
+        
+        // Crear líneas formateadas
+        System.out.print("Nombre: ");
+        System.out.print("María García");
+        System.out.print(" | Edad: ");
+        System.out.println("28");
+    }
+}
+```
+
+**💡 Salida esperada:**
+```
+Hola Mundo Java!
+Cargando..... ¡Completo!
+Nombre: María García | Edad: 28
+```
+
+#### **3. printf() - Imprimir con formato específico**
+
+```java
+public class EjemplosPrintf {
+    public static void main(String[] args) {
+        // Variables de ejemplo
+        String nombre = "Ana";
+        int edad = 30;
+        double altura = 1.65;
+        boolean estudiante = true;
+        
+        // Formato básico
+        System.out.printf("Hola %s%n", nombre);
+        
+        // Múltiples variables
+        System.out.printf("Nombre: %s, Edad: %d años%n", nombre, edad);
+        
+        // Números decimales con precisión
+        System.out.printf("Altura: %.2f metros%n", altura);
+        
+        // Formato completo
+        System.out.printf("Perfil: %s (%d años, %.2f m) - ¿Estudiante? %b%n", 
+                         nombre, edad, altura, estudiante);
+        
+        // Formato de tabla
+        System.out.printf("%-15s | %5s | %8s%n", "NOMBRE", "EDAD", "ALTURA");
+        System.out.printf("%-15s | %5d | %8.2f%n", "Ana García", 30, 1.65);
+        System.out.printf("%-15s | %5d | %8.2f%n", "Luis Martín", 25, 1.78);
+        
+        // Formato de moneda
+        double precio = 1234.56;
+        System.out.printf("Precio: $%,.2f%n", precio);
+    }
+}
+```
+
+**💡 Salida esperada:**
+```
+Hola Ana
+Nombre: Ana, Edad: 30 años
+Altura: 1.65 metros
+Perfil: Ana (30 años, 1.65 m) - ¿Estudiante? true
+NOMBRE          |  EDAD |   ALTURA
+Ana García      |    30 |     1.65
+Luis Martín     |    25 |     1.78
+Precio: $1,234.56
+```
+
+### **📋 Especificadores de formato más comunes**
+
+| Especificador | Tipo | Descripción | Ejemplo |
+|---------------|------|-------------|---------|
+| `%s` | String | Cadena de texto | `"Hola"` |
+| `%d` | int/long | Número entero | `123` |
+| `%f` | float/double | Número decimal | `3.14159` |
+| `%.2f` | float/double | Decimal con 2 decimales | `3.14` |
+| `%c` | char | Carácter individual | `'A'` |
+| `%b` | boolean | Valor verdadero/falso | `true` |
+| `%n` | - | Salto de línea | Nueva línea |
+| `%%` | - | Símbolo % literal | `%` |
+
+### **🎨 Modificadores de formato avanzados**
+
+```java
+public class FormatosAvanzados {
+    public static void main(String[] args) {
+        int numero = 42;
+        
+        // Ancho de campo
+        System.out.printf("|%5d|%n", numero);        // |   42|
+        System.out.printf("|%-5d|%n", numero);       // |42   |
+        System.out.printf("|%05d|%n", numero);       // |00042|
+        
+        // Números grandes con separadores
+        int grande = 1234567;
+        System.out.printf("Número: %,d%n", grande);   // 1,234,567
+        
+        // Hexadecimal y octal
+        System.out.printf("Decimal: %d, Hex: %x, Octal: %o%n", 255, 255, 255);
+        // Decimal: 255, Hex: ff, Octal: 377
+        
+        // Fechas y tiempo (básico)
+        System.out.printf("Año actual: %tY%n", new java.util.Date());
+    }
+}
+```
+
+### **🔧 Casos de uso prácticos en desarrollo**
+
+#### **1. Debugging y desarrollo:**
+```java
+public class DebugEjemplo {
+    public static void main(String[] args) {
+        int[] numeros = {10, 20, 30, 40, 50};
+        
+        // Debug: mostrar estado de variables
+        System.out.println("=== INICIO PROCESO ===");
+        System.out.println("Array length: " + numeros.length);
+        
+        int suma = 0;
+        for (int i = 0; i < numeros.length; i++) {
+            suma += numeros[i];
+            // Debug: mostrar progreso
+            System.out.printf("Paso %d: %d + %d = %d%n", 
+                            i+1, suma-numeros[i], numeros[i], suma);
+        }
+        
+        System.out.println("=== RESULTADO FINAL ===");
+        System.out.printf("Suma total: %d%n", suma);
+        System.out.printf("Promedio: %.2f%n", (double)suma / numeros.length);
+    }
+}
+```
+
+#### **2. Interfaz de usuario básica:**
+```java
+public class MenuEjemplo {
+    public static void main(String[] args) {
+        // Mostrar menú de opciones
+        System.out.println("╔══════════════════════════╗");
+        System.out.println("║      CALCULADORA         ║");
+        System.out.println("╠══════════════════════════╣");
+        System.out.println("║ 1. Sumar                 ║");
+        System.out.println("║ 2. Restar                ║");
+        System.out.println("║ 3. Multiplicar           ║");
+        System.out.println("║ 4. Dividir               ║");
+        System.out.println("║ 0. Salir                 ║");
+        System.out.println("╚══════════════════════════╝");
+        System.out.print("Seleccione una opción: ");
+        
+        // En aplicación real, aquí leerías la entrada del usuario
+    }
+}
+```
+
+#### **3. Reportes y tablas:**
+```java
+public class ReporteEjemplo {
+    public static void main(String[] args) {
+        // Datos de ejemplo
+        String[][] productos = {
+            {"Laptop", "1200.00", "5"},
+            {"Mouse", "25.99", "20"},
+            {"Teclado", "75.50", "12"}
+        };
+        
+        // Encabezado del reporte
+        System.out.println("REPORTE DE INVENTARIO");
+        System.out.println("=====================");
+        System.out.printf("%-10s | %10s | %8s | %10s%n", 
+                         "PRODUCTO", "PRECIO", "STOCK", "VALOR");
+        System.out.println("-".repeat(45));
+        
+        double totalValor = 0;
+        for (String[] producto : productos) {
+            double precio = Double.parseDouble(producto[1]);
+            int stock = Integer.parseInt(producto[2]);
+            double valor = precio * stock;
+            totalValor += valor;
+            
+            System.out.printf("%-10s | $%9.2f | %8d | $%9.2f%n", 
+                             producto[0], precio, stock, valor);
+        }
+        
+        System.out.println("-".repeat(45));
+        System.out.printf("TOTAL INVENTARIO: $%,10.2f%n", totalValor);
+    }
+}
+```
+
+### **⚠️ Consideraciones importantes**
+
+#### **1. Rendimiento:**
+```java
+// ❌ Ineficiente para muchas impresiones
+for (int i = 0; i < 10000; i++) {
+    System.out.println("Línea " + i);  // Lento
+}
+
+// ✅ Mejor para muchas impresiones
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 10000; i++) {
+    sb.append("Línea ").append(i).append("\n");
+}
+System.out.print(sb.toString());  // Una sola llamada
+```
+
+#### **2. Manejo de caracteres especiales:**
+```java
+public class CaracteresEspeciales {
+    public static void main(String[] args) {
+        // Caracteres de escape
+        System.out.println("Comillas: \"Hola\"");           // "Hola"
+        System.out.println("Apostrofe: 'Mundo'");           // 'Mundo'
+        System.out.println("Barra invertida: \\Java\\");    // \Java\
+        System.out.println("Nueva línea: Línea1\nLínea2");  
+        System.out.println("Tabulación: Col1\tCol2");       
+        
+        // Unicode
+        System.out.println("Símbolos: \u2764 \u2665 \u2666"); // ♥ ♦
+    }
+}
+```
+
+### **🎯 Ejercicios prácticos**
+
+#### **Ejercicio 1: Calculadora de información personal**
+```java
+// Crea un programa que muestre tu información usando printf
+public class MiInformacion {
+    public static void main(String[] args) {
+        // TODO: Completa con tus datos
+        String nombre = "Tu Nombre";
+        int edad = 0;
+        double altura = 0.0;
+        char inicial = 'X';
+        boolean programador = false;
+        
+        // Usa printf para mostrar la información formateada
+        System.out.printf("=== MI PERFIL ===%n");
+        // Completar aquí...
+    }
+}
+```
+
+#### **Ejercicio 2: Tabla de multiplicar**
+```java
+// Crea una tabla de multiplicar del 1 al 10 bien formateada
+public class TablaMultiplicar {
+    public static void main(String[] args) {
+        int numero = 7; // Cambia este número
+        
+        System.out.printf("TABLA DE MULTIPLICAR DEL %d%n", numero);
+        System.out.println("========================");
+        
+        // TODO: Crear la tabla usando printf
+        // Formato: "7 x 1 = 7"
+    }
+}
+```
+
+La comprensión de variables estáticas vs de instancia es esencial para diseñar clases eficientes y escribir código Java orientado a objetos correcto y mantenible.
+
+### 🎯 **Ejercicios prácticos para Variables estáticas vs de instancia**
+
+#### **Ejercicio 1: Contador de objetos**
+```java
+public class ContadorVehiculos {
+    // Variable estática - compartida por todos los vehículos
+    private static int totalVehiculos = 0;
+    private static String concesionario = "AutoMax";
+    
+    // Variables de instancia - únicas para cada vehículo
+    private String marca;
+    private String modelo;
+    private int numeroSerie;
+    private double precio;
+    
+    public ContadorVehiculos(String marca, String modelo, double precio) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precio = precio;
+        
+        // Cada vez que se crea un vehículo, incrementa el contador
+        totalVehiculos++;
+        this.numeroSerie = totalVehiculos;
+    }
+    
+    // Método estático - accede solo a variables estáticas
+    public static void mostrarEstadisticasConcesionario() {
+        System.out.println("=== ESTADÍSTICAS DEL CONCESIONARIO ===");
+        System.out.println("Concesionario: " + concesionario);
+        System.out.println("Total vehículos registrados: " + totalVehiculos);
+        // System.out.println(marca); // ❌ Error: no puede acceder a variables de instancia
+    }
+    
+    // Método de instancia - accede a ambos tipos de variables
+    public void mostrarDetallesVehiculo() {
+        System.out.println("--- Vehículo #" + numeroSerie + " ---");
+        System.out.println("Concesionario: " + concesionario);  // Variable estática
+        System.out.println("Marca: " + marca);                  // Variable de instancia
+        System.out.println("Modelo: " + modelo);                // Variable de instancia
+        System.out.println("Precio: $" + precio);               // Variable de instancia
+        System.out.println("Total en inventario: " + totalVehiculos); // Variable estática
+    }
+    
+    public static void main(String[] args) {
+        // Mostrar estadísticas iniciales
+        ContadorVehiculos.mostrarEstadisticasConcesionario();
+        
+        // Crear vehículos
+        ContadorVehiculos auto1 = new ContadorVehiculos("Toyota", "Corolla", 22000);
+        ContadorVehiculos auto2 = new ContadorVehiculos("Honda", "Civic", 24000);
+        ContadorVehiculos auto3 = new ContadorVehiculos("Ford", "Focus", 21000);
+        
+        // Mostrar detalles individuales
+        auto1.mostrarDetallesVehiculo();
+        auto2.mostrarDetallesVehiculo();
+        auto3.mostrarDetallesVehiculo();
+        
+        // Estadísticas finales
+        ContadorVehiculos.mostrarEstadisticasConcesionario();
+    }
+}
+```
+
+#### **Ejercicio 2: Sistema bancario**
+```java
+public class CuentaBancaria {
+    // Variables estáticas - información del banco
+    private static String nombreBanco = "Banco Java";
+    private static double tasaInteresBase = 0.02; // 2% anual
+    private static int totalCuentasCreadas = 0;
+    
+    // Variables de instancia - información específica de la cuenta
+    private String numeroCuenta;
+    private String titular;
+    private double saldo;
+    private String tipoCuenta;
+    
+    public CuentaBancaria(String titular, String tipoCuenta, double saldoInicial) {
+        this.titular = titular;
+        this.tipoCuenta = tipoCuenta;
+        this.saldo = saldoInicial;
+        
+        // Generar número de cuenta único
+        totalCuentasCreadas++;
+        this.numeroCuenta = "JAVA-" + String.format("%06d", totalCuentasCreadas);
+    }
+    
+    // Método estático para cambiar configuración del banco
+    public static void configurarBanco(String nuevoNombre, double nuevaTasa) {
+        nombreBanco = nuevoNombre;
+        tasaInteresBase = nuevaTasa;
+        System.out.println("Configuración del banco actualizada:");
+        System.out.println("Nombre: " + nombreBanco);
+        System.out.println("Nueva tasa: " + (nuevaTasa * 100) + "%");
+    }
+    
+    // Método de instancia para operaciones de cuenta
+    public void depositar(double cantidad) {
+        if (cantidad > 0) {
+            saldo += cantidad;
+            System.out.printf("Depósito realizado: $%.2f. Nuevo saldo: $%.2f%n", 
+                            cantidad, saldo);
+        }
+    }
+    
+    public void retirar(double cantidad) {
+        if (cantidad > 0 && cantidad <= saldo) {
+            saldo -= cantidad;
+            System.out.printf("Retiro realizado: $%.2f. Nuevo saldo: $%.2f%n", 
+                            cantidad, saldo);
+        } else {
+            System.out.println("Fondos insuficientes o cantidad inválida");
+        }
+    }
+    
+    public void calcularIntereses() {
+        double interes = saldo * tasaInteresBase; // Usa variable estática
+        saldo += interes;
+        System.out.printf("Intereses aplicados: $%.2f. Nuevo saldo: $%.2f%n", 
+                        interes, saldo);
+    }
+    
+    // Método para mostrar información completa
+    public void mostrarInformacionCompleta() {
+        System.out.println("╔══════════════════════════════════════════════╗");
+        System.out.println("║              INFORMACIÓN DE CUENTA           ║");
+        System.out.println("╠══════════════════════════════════════════════╣");
+        System.out.printf("║ Banco:        %-30s ║%n", nombreBanco);
+        System.out.printf("║ Cuenta:       %-30s ║%n", numeroCuenta);
+        System.out.printf("║ Titular:      %-30s ║%n", titular);
+        System.out.printf("║ Tipo:         %-30s ║%n", tipoCuenta);
+        System.out.printf("║ Saldo:        $%-29.2f ║%n", saldo);
+        System.out.printf("║ Tasa interés: %-30.2f%% ║%n", tasaInteresBase * 100);
+        System.out.println("╚══════════════════════════════════════════════╝");
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Total cuentas iniciales: " + totalCuentasCreadas);
+        
+        // Crear cuentas
+        CuentaBancaria cuenta1 = new CuentaBancaria("Ana García", "Ahorro", 1000);
+        CuentaBancaria cuenta2 = new CuentaBancaria("Luis Martín", "Corriente", 500);
+        
+        // Operaciones individuales
+        cuenta1.depositar(200);
+        cuenta1.calcularIntereses();
+        cuenta1.mostrarInformacionCompleta();
+        
+        cuenta2.retirar(100);
+        cuenta2.calcularIntereses();
+        cuenta2.mostrarInformacionCompleta();
+        
+        // Cambiar configuración del banco (afecta a todas las cuentas)
+        CuentaBancaria.configurarBanco("Banco Super Java", 0.025);
+        
+        // Los intereses ahora se calculan con la nueva tasa
+        System.out.println("\n--- Después del cambio de configuración ---");
+        cuenta1.calcularIntereses();
+        cuenta2.calcularIntereses();
+        
+        System.out.println("Total cuentas creadas: " + totalCuentasCreadas);
+    }
+}
+```
+
+#### **Ejercicio 3: Juego con puntuación global**
+```java
+public class JuegoArcade {
+    // Variables estáticas - información global del juego
+    private static String nombreJuego = "Super Java Adventure";
+    private static int recordMundial = 0;
+    private static String poseedorRecord = "Ninguno";
+    private static int totalPartidas = 0;
+    
+    // Variables de instancia - información del jugador
+    private String nombreJugador;
+    private int puntuacion;
+    private int nivel;
+    private boolean juegoTerminado;
+    
+    public JuegoArcade(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
+        this.puntuacion = 0;
+        this.nivel = 1;
+        this.juegoTerminado = false;
+        totalPartidas++;
+        
+        System.out.println("¡Nuevo juego iniciado para " + nombreJugador + "!");
+    }
+    
+    // Método estático para mostrar estadísticas globales
+    public static void mostrarEstadisticasGlobales() {
+        System.out.println("════════════════════════════════════════");
+        System.out.println("        " + nombreJuego.toUpperCase());
+        System.out.println("════════════════════════════════════════");
+        System.out.println("Record mundial: " + recordMundial + " pts");
+        System.out.println("Poseedor: " + poseedorRecord);
+        System.out.println("Total partidas: " + totalPartidas);
+        System.out.println("════════════════════════════════════════");
+    }
+    
+    // Métodos de instancia para gameplay
+    public void ganarPuntos(int puntos) {
+        if (!juegoTerminado) {
+            puntuacion += puntos;
+            System.out.printf("%s ganó %d puntos. Total: %d%n", 
+                            nombreJugador, puntos, puntuacion);
+            
+            // Verificar si es nuevo record
+            if (puntuacion > recordMundial) {
+                recordMundial = puntuacion;
+                poseedorRecord = nombreJugador;
+                System.out.println("🎉 ¡NUEVO RECORD MUNDIAL! 🎉");
+            }
+        }
+    }
+    
+    public void subirNivel() {
+        if (!juegoTerminado) {
+            nivel++;
+            int bonus = nivel * 50;
+            puntuacion += bonus;
+            System.out.printf("¡%s subió al nivel %d! Bonus: %d puntos%n", 
+                            nombreJugador, nivel, bonus);
+        }
+    }
+    
+    public void terminarJuego() {
+        juegoTerminado = true;
+        System.out.printf("Juego terminado para %s%n", nombreJugador);
+        System.out.printf("Puntuación final: %d puntos, Nivel: %d%n", 
+                        puntuacion, nivel);
+        
+        if (puntuacion == recordMundial) {
+            System.out.println("¡Tienes el record mundial!");
+        } else {
+            System.out.printf("Te faltan %d puntos para el record%n", 
+                            recordMundial - puntuacion);
+        }
+    }
+    
+    public void mostrarEstadoJugador() {
+        System.out.println("--- Estado del Jugador ---");
+        System.out.println("Jugador: " + nombreJugador);
+        System.out.println("Puntuación: " + puntuacion);
+        System.out.println("Nivel: " + nivel);
+        System.out.println("Estado: " + (juegoTerminado ? "Terminado" : "Jugando"));
+        System.out.println("Record a superar: " + recordMundial);
+    }
+    
+    public static void main(String[] args) {
+        // Mostrar estadísticas iniciales
+        JuegoArcade.mostrarEstadisticasGlobales();
+        
+        // Primer jugador
+        JuegoArcade jugador1 = new JuegoArcade("Mario");
+        jugador1.ganarPuntos(100);
+        jugador1.subirNivel();
+        jugador1.ganarPuntos(150);
+        jugador1.mostrarEstadoJugador();
+        jugador1.terminarJuego();
+        
+        System.out.println();
+        
+        // Segundo jugador
+        JuegoArcade jugador2 = new JuegoArcade("Luigi");
+        jugador2.ganarPuntos(80);
+        jugador2.subirNivel();
+        jugador2.ganarPuntos(200);
+        jugador2.subirNivel();
+        jugador2.ganarPuntos(300);
+        jugador2.mostrarEstadoJugador();
+        jugador2.terminarJuego();
+        
+        // Estadísticas finales
+        JuegoArcade.mostrarEstadisticasGlobales();
+    }
+}
+```
+
+---
+
+## 🔌 **CONCEPTO INTERMEDIO: INTERFACES - ¿Qué significa `implements Runnable`?**
+
+### **¿Qué es una Interfaz en Java?**
+
+Una **interfaz** es como un contrato que una clase debe cumplir. Define **qué métodos** debe tener una clase, pero no **cómo** deben implementarse. Es una forma de lograr herencia múltiple de comportamiento en Java.
+
+```java
+// Definición básica de una interfaz
+public interface MiInterfaz {
+    // Métodos que deben ser implementados (abstractos por defecto)
+    void metodoObligatorio();
+    int otroMetodo(String parametro);
+    
+    // Desde Java 8: métodos con implementación por defecto
+    default void metodoConImplementacion() {
+        System.out.println("Este método ya tiene código");
+    }
+}
+```
+
+### **La Interfaz Runnable: Un caso especial**
+
+`Runnable` es una interfaz predefinida en Java que se usa para **multihilos** (threading). Su definición es muy simple:
+
+```java
+// Así está definida la interfaz Runnable en Java
+public interface Runnable {
+    public abstract void run();  // Un solo método abstracto
+}
+```
+
+### **¿Por qué `implements Runnable` en nuestros ejemplos?**
+
+Cuando ves `public class Funciones implements Runnable`, significa que:
+
+1. **La clase `Funciones` DEBE implementar el método `run()`**
+2. **La clase puede ser ejecutada en un hilo separado** 
+3. **Es una técnica común en aplicaciones Java empresariales**
+
+#### **Ejemplo práctico de por qué se usa:**
+
+```java
+// Clase que implementa Runnable para poder ejecutarse en paralelo
+public class Funciones implements Runnable {
+    
+    // Variables de instancia para el hilo
+    private String nombreHilo;
+    private int tareasDeProceso;
+    
+    public Funciones(String nombre) {
+        this.nombreHilo = nombre;
+        this.tareasDeProceso = 0;
+    }
+    
+    // MÉTODO OBLIGATORIO: debe implementarse por la interfaz Runnable
+    @Override
+    public void run() {
+        // Este método se ejecuta cuando el hilo inicia
+        System.out.println("🚀 Hilo iniciado: " + nombreHilo);
+        
+        for (int i = 1; i <= 5; i++) {
+            System.out.printf("⚙️  %s procesando tarea %d/5%n", nombreHilo, i);
+            tareasDeProceso++;
+            
+            try {
+                Thread.sleep(1000); // Simula trabajo pesado (1 segundo)
+            } catch (InterruptedException e) {
+                System.err.println("❌ Hilo interrumpido: " + nombreHilo);
+                return;
+            }
+        }
+        
+        System.out.printf("✅ %s completado. Tareas procesadas: %d%n", 
+                         nombreHilo, tareasDeProceso);
+    }
+    
+    // Otros métodos normales de la clase
+    public static double redondear(double numero, int decimales) {
+        double factor = Math.pow(10, decimales);
+        return Math.round(numero * factor) / factor;
+    }
+    
+    public void mostrarEstado() {
+        System.out.printf("Hilo: %s, Tareas completadas: %d%n", 
+                         nombreHilo, tareasDeProceso);
+    }
+}
+```
+
+#### **Cómo usar una clase que implementa Runnable:**
+
+```java
+public class EjemploMultihilos {
+    public static void main(String[] args) {
+        System.out.println("🎬 Iniciando ejemplo de multihilos...");
+        
+        // Crear instancias de la clase Funciones
+        Funciones proceso1 = new Funciones("Calculadora-1");
+        Funciones proceso2 = new Funciones("Calculadora-2");
+        Funciones proceso3 = new Funciones("Calculadora-3");
+        
+        // Crear hilos usando las instancias Runnable
+        Thread hilo1 = new Thread(proceso1);
+        Thread hilo2 = new Thread(proceso2);
+        Thread hilo3 = new Thread(proceso3);
+        
+        // Iniciar todos los hilos AL MISMO TIEMPO
+        hilo1.start();  // Llama automáticamente al método run()
+        hilo2.start();  // Llama automáticamente al método run()
+        hilo3.start();  // Llama automáticamente al método run()
+        
+        // El hilo principal continúa ejecutándose
+        System.out.println("📊 Hilos iniciados desde el hilo principal");
+        
+        try {
+            // Esperar que terminen todos los hilos
+            hilo1.join();
+            hilo2.join();
+            hilo3.join();
+            
+            System.out.println("🏁 Todos los hilos han terminado");
+            
+            // Mostrar estado final
+            proceso1.mostrarEstado();
+            proceso2.mostrarEstado();
+            proceso3.mostrarEstado();
+            
+        } catch (InterruptedException e) {
+            System.err.println("❌ Error esperando hilos: " + e.getMessage());
+        }
+    }
+}
+```
+
+### **Salida esperada del programa:**
+
+```
+🎬 Iniciando ejemplo de multihilos...
+📊 Hilos iniciados desde el hilo principal
+🚀 Hilo iniciado: Calculadora-1
+🚀 Hilo iniciado: Calculadora-2
+🚀 Hilo iniciado: Calculadora-3
+⚙️  Calculadora-1 procesando tarea 1/5
+⚙️  Calculadora-2 procesando tarea 1/5
+⚙️  Calculadora-3 procesando tarea 1/5
+⚙️  Calculadora-1 procesando tarea 2/5
+⚙️  Calculadora-2 procesando tarea 2/5
+⚙️  Calculadora-3 procesando tarea 2/5
+... (continúa hasta que todos terminen)
+✅ Calculadora-1 completado. Tareas procesadas: 5
+✅ Calculadora-2 completado. Tareas procesadas: 5
+✅ Calculadora-3 completado. Tareas procesadas: 5
+🏁 Todos los hilos han terminado
+Hilo: Calculadora-1, Tareas completadas: 5
+Hilo: Calculadora-2, Tareas completadas: 5
+Hilo: Calculadora-3, Tareas completadas: 5
+```
+
+### **¿Por qué es útil esto en aplicaciones reales?**
+
+#### **1. Procesamiento paralelo:**
+```java
+// Ejemplo: procesar múltiples cálculos matemáticos simultáneamente
+public class CalculadoraParalela implements Runnable {
+    private double[] numeros;
+    private double resultado;
+    
+    public CalculadoraParalela(double[] numeros) {
+        this.numeros = numeros;
+    }
+    
+    @Override
+    public void run() {
+        // Cada hilo procesa una parte de los cálculos
+        resultado = 0;
+        for (double num : numeros) {
+            resultado += Math.sqrt(num * num + Math.PI);
+            // Simulación de cálculo complejo
+        }
+        System.out.printf("✅ Cálculo terminado. Resultado: %.2f%n", resultado);
+    }
+    
+    public double getResultado() { return resultado; }
+}
+```
+
+#### **2. Tareas en segundo plano:**
+```java
+// Ejemplo: guardar datos mientras el usuario sigue trabajando
+public class GuardadoAutomatico implements Runnable {
+    private String datosParaGuardar;
+    
+    public GuardadoAutomatico(String datos) {
+        this.datosParaGuardar = datos;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("💾 Guardando datos en segundo plano...");
+        
+        try {
+            Thread.sleep(2000); // Simula escritura a disco
+            // Aquí iría el código real de guardado
+            System.out.println("✅ Datos guardados exitosamente");
+        } catch (InterruptedException e) {
+            System.err.println("❌ Error en guardado automático");
+        }
+    }
+}
+```
+
+### **Diferencias importantes:**
+
+#### **Extender Thread vs Implementar Runnable:**
+
+```java
+// OPCIÓN 1: Extender Thread (menos flexible)
+class MiHilo extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Ejecutándose como Thread");
+    }
+}
+
+// OPCIÓN 2: Implementar Runnable (más flexible) ⭐ RECOMENDADO
+class MiTarea implements Runnable {
+    @Override  
+    public void run() {
+        System.out.println("Ejecutándose como Runnable");
+    }
+}
+
+// Uso:
+public class ComparacionHilos {
+    public static void main(String[] args) {
+        // Opción 1: Thread directo
+        MiHilo hilo1 = new MiHilo();
+        hilo1.start();
+        
+        // Opción 2: Runnable (más versátil)
+        MiTarea tarea = new MiTarea();
+        Thread hilo2 = new Thread(tarea);
+        hilo2.start();
+        
+        // También se puede usar con lambda (Java 8+)
+        Thread hilo3 = new Thread(() -> {
+            System.out.println("Ejecutándose con lambda");
+        });
+        hilo3.start();
+    }
+}
+```
+
+### **¿Por qué usar Runnable es mejor?**
+
+1. **✅ Flexibilidad**: Tu clase puede extender otra clase y aún implementar Runnable
+2. **✅ Reutilización**: La misma instancia Runnable puede usarse en múltiples hilos
+3. **✅ Separación de responsabilidades**: La lógica de negocio está separada del manejo de hilos
+4. **✅ Compatibilidad**: Funciona bien con ExecutorService y ThreadPools modernos
+
+### **En el contexto de nuestros ejemplos:**
+
+Cuando veas `public class Funciones implements Runnable` en los ejemplos del README, ahora sabes que:
+
+- **La clase puede ejecutarse en hilos paralelos** 
+- **Debe implementar obligatoriamente el método `run()`**
+- **Es una práctica común en aplicaciones Java empresariales**
+- **Permite que las funciones matemáticas se ejecuten simultáneamente**
+
+### 🎯 **Ejercicio práctico con Runnable:**
+
+```java
+public class CalculadoraAvanzada implements Runnable {
+    private String operacion;
+    private double num1, num2;
+    private double resultado;
+    
+    public CalculadoraAvanzada(String op, double a, double b) {
+        this.operacion = op;
+        this.num1 = a;
+        this.num2 = b;
+    }
+    
+    @Override
+    public void run() {
+        System.out.printf("🔢 Iniciando %s: %.2f y %.2f%n", operacion, num1, num2);
+        
+        try {
+            Thread.sleep(500); // Simula procesamiento complejo
+            
+            switch (operacion.toLowerCase()) {
+                case "suma":
+                    resultado = num1 + num2;
+                    break;
+                case "multiplicacion":
+                    resultado = num1 * num2;
+                    break;
+                case "potencia":
+                    resultado = Math.pow(num1, num2);
+                    break;
+                case "raiz":
+                    resultado = Math.sqrt(num1);
+                    break;
+                default:
+                    resultado = 0;
+            }
+            
+            System.out.printf("✅ %s completada: %.2f%n", operacion, resultado);
+            
+        } catch (InterruptedException e) {
+            System.err.println("❌ Cálculo interrumpido: " + operacion);
+        }
+    }
+    
+    public double getResultado() { return resultado; }
+    
+    public static void main(String[] args) throws InterruptedException {
+        // Crear múltiples operaciones
+        CalculadoraAvanzada suma = new CalculadoraAvanzada("suma", 15, 25);
+        CalculadoraAvanzada multiplicacion = new CalculadoraAvanzada("multiplicacion", 7, 8);
+        CalculadoraAvanzada potencia = new CalculadoraAvanzada("potencia", 2, 10);
+        CalculadoraAvanzada raiz = new CalculadoraAvanzada("raiz", 144, 0);
+        
+        // Ejecutar todas las operaciones EN PARALELO
+        Thread[] hilos = {
+            new Thread(suma),
+            new Thread(multiplicacion),
+            new Thread(potencia),
+            new Thread(raiz)
+        };
+        
+        // Iniciar todos los hilos
+        for (Thread hilo : hilos) {
+            hilo.start();
+        }
+        
+        // Esperar que terminen todos
+        for (Thread hilo : hilos) {
+            hilo.join();
+        }
+        
+        // Mostrar resultados finales
+        System.out.println("\n📊 RESULTADOS FINALES:");
+        System.out.printf("Suma: %.2f%n", suma.getResultado());
+        System.out.printf("Multiplicación: %.2f%n", multiplicacion.getResultado());
+        System.out.printf("Potencia: %.2f%n", potencia.getResultado());
+        System.out.printf("Raíz: %.2f%n", raiz.getResultado());
+    }
+}
+```
+
+**Ahora entiendes completamente qué significa `implements Runnable` y por qué es tan poderoso en Java para aplicaciones que necesitan ejecutar tareas en paralelo.**
+
+---
+
+### 📝 **CONCEPTO 6: Strings inmutables**
 
 Los `String` en Java son objetos inmutables: una vez creado un `String`, su contenido no puede cambiar.
 
@@ -1066,7 +2706,7 @@ Buenas prácticas resumidas
 
 ---
 
-### 🔄 **CONCEPTO 7: ESTRUCTURAS DE CONTROL**
+### 🔄 **CONCEPTO 7: Estructuras de control**
 
 Las estructuras de control permiten alterar el flujo de ejecución del programa basándose en condiciones o repeticiones. Java ofrece estructuras condicionales, de selección múltiple y de repetición.
 
@@ -1551,7 +3191,7 @@ while (it.hasNext()) {
 
 ---
 
-### 📊 CONCEPTO 8 — Arrays
+### 📊 **CONCEPTO 8: Arrays**
 Arrays en Java son objetos de tamaño fijo que almacenan elementos del mismo tipo y exponen la propiedad `.length` para conocer su tamaño.
 
 Características clave:
@@ -1732,7 +3372,7 @@ Buenas prácticas:
 
 ---
 
-### 🎯 CONCEPTO 9 — Tipos de datos (primitivos y wrappers)
+### 🎯 **CONCEPTO 9: Tipos de datos (primitivos y wrappers)**
 Los tipos de datos en Java se dividen en primitivos y tipos de referencia (objetos). Los primitivos son más eficientes en memoria y rendimiento; las clases wrapper permiten tratarlos como objetos (necesario en colecciones y APIs que requieren objetos).
 
 Tabla resumen de primitivos:
@@ -1791,7 +3431,7 @@ list.add(1); // autoboxing: int -> Integer
 
 ---
 
-### 📝 CONCEPTO 10 — Reglas para variables, clases y palabras reservadas
+### 📝 **CONCEPTO 10: Reglas para variables, clases y palabras reservadas**
 
 Variables
 - Formato: camelCase (lowerCamelCase)
@@ -1831,7 +3471,7 @@ Regla práctica: elige nombres descriptivos y consistentes; si dudas, prefiere c
 
 ---
 
-### 💬 CONCEPTO 11 — Tipos de comentarios
+### 💬 **CONCEPTO 11: Tipos de comentarios**
 
 Java ofrece tres tipos principales de comentarios, cada uno con propósitos específicos y mejores prácticas asociadas. Los comentarios son fundamentales para la documentación del código y la comunicación entre desarrolladores.
 
@@ -2305,7 +3945,7 @@ Los comentarios efectivos mejoran significativamente la mantenibilidad del códi
 
 ---
 
-### ⚡ CONCEPTO 12 — Paso de parámetros
+### ⚡ **CONCEPTO 12: Paso de parámetros**
 
     Java pasa por valor; las referencias a objetos se copian (no se pasa un puntero manipulable externamente).
 
@@ -2331,7 +3971,7 @@ Los comentarios efectivos mejoran significativamente la mantenibilidad del códi
 
 ---
 
-### 🚨 **CONCEPTO 13: PECULIARIDADES Y DIFERENCIAS**
+### 🚨 **CONCEPTO 13: Peculiaridades y diferencias**
 
 #### 1. No hay punteros explícitos:
 ```java
@@ -2437,6 +4077,860 @@ if (flag) { ... }  // OK
 - [OpenJDK](https://openjdk.java.net/)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 - [Eclipse IDE](https://www.eclipse.org/)
+
+---
+
+## 🚀 **PROYECTO INTEGRADOR: SISTEMA DE GESTIÓN DE BIBLIOTECA**
+
+### **Objetivo del proyecto:**
+
+Crear un sistema completo que integre todos los conceptos fundamentales aprendidos: entrada/salida, variables estáticas vs instancia, case sensitivity, strings inmutables, estructuras de control, arrays y tipos de datos.
+
+### **Funcionalidades a implementar:**
+
+1. **Gestión de libros** (variables estáticas vs instancia)
+2. **Sistema de usuarios** (arrays y strings)
+3. **Interfaz de consola** (System.out con formato)
+4. **Validaciones** (case sensitivity y tipos de datos)
+5. **Reportes estadísticos** (estructuras de control)
+
+### **Implementación completa:**
+
+```java
+import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+// Clase principal del sistema
+public class SistemaBiblioteca {
+    // Variables estáticas - información global del sistema
+    private static final String NOMBRE_BIBLIOTECA = "Biblioteca Central Java";
+    private static final String VERSION_SISTEMA = "v2.0";
+    private static final int CAPACIDAD_MAXIMA = 1000;
+    private static int totalLibrosRegistrados = 0;
+    private static int totalUsuariosRegistrados = 0;
+    
+    // Arrays para almacenar datos
+    private static Libro[] inventarioLibros = new Libro[CAPACIDAD_MAXIMA];
+    private static Usuario[] listaUsuarios = new Usuario[CAPACIDAD_MAXIMA];
+    
+    // Scanner global para entrada de datos
+    private static Scanner scanner = new Scanner(System.in);
+    
+    public static void main(String[] args) {
+        mostrarBienvenida();
+        inicializarDatosDemo();
+        
+        boolean sistemaActivo = true;
+        while (sistemaActivo) {
+            mostrarMenuPrincipal();
+            int opcion = leerOpcionMenu();
+            
+            switch (opcion) {
+                case 1:
+                    gestionarLibros();
+                    break;
+                case 2:
+                    gestionarUsuarios();
+                    break;
+                case 3:
+                    realizarPrestamo();
+                    break;
+                case 4:
+                    generarReportes();
+                    break;
+                case 5:
+                    mostrarEstadisticasGlobales();
+                    break;
+                case 0:
+                    sistemaActivo = false;
+                    mostrarDespedida();
+                    break;
+                default:
+                    System.err.println("❌ Opción inválida. Intente nuevamente.");
+            }
+            
+            if (sistemaActivo) {
+                System.out.println("\nPresione Enter para continuar...");
+                scanner.nextLine();
+            }
+        }
+        
+        scanner.close();
+    }
+    
+    // Método estático para mostrar bienvenida
+    private static void mostrarBienvenida() {
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║                                                              ║");
+        System.out.printf("║  %s%-38s%s  ║%n", "🏛️  ", NOMBRE_BIBLIOTECA, " 📚");
+        System.out.printf("║  %-58s  ║%n", "Sistema de Gestión Integral " + VERSION_SISTEMA);
+        System.out.println("║                                                              ║");
+        System.out.println("║  Desarrollado como proyecto integrador de Java 8            ║");
+        System.out.println("║  Integrando conceptos fundamentales del lenguaje            ║");
+        System.out.println("║                                                              ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.printf("%nFecha del sistema: %s%n", 
+                         LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        System.out.println();
+    }
+    
+    private static void mostrarMenuPrincipal() {
+        System.out.println("\n" + "═".repeat(50));
+        System.out.println("               MENÚ PRINCIPAL");
+        System.out.println("═".repeat(50));
+        System.out.println("1. 📚 Gestión de Libros");
+        System.out.println("2. 👥 Gestión de Usuarios");
+        System.out.println("3. 🔄 Realizar Préstamo");
+        System.out.println("4. 📊 Generar Reportes");
+        System.out.println("5. 📈 Estadísticas Globales");
+        System.out.println("0. 🚪 Salir del Sistema");
+        System.out.println("═".repeat(50));
+        System.out.print("Seleccione una opción: ");
+    }
+    
+    private static int leerOpcionMenu() {
+        try {
+            String entrada = scanner.nextLine().trim();
+            return Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            return -1; // Opción inválida
+        }
+    }
+    
+    private static void gestionarLibros() {
+        System.out.println("\n🔹 GESTIÓN DE LIBROS 🔹");
+        System.out.println("1. Agregar nuevo libro");
+        System.out.println("2. Buscar libro");
+        System.out.println("3. Listar todos los libros");
+        System.out.print("Opción: ");
+        
+        int subOpcion = leerOpcionMenu();
+        
+        switch (subOpcion) {
+            case 1:
+                agregarNuevoLibro();
+                break;
+            case 2:
+                buscarLibro();
+                break;
+            case 3:
+                listarLibros();
+                break;
+            default:
+                System.out.println("Opción inválida en gestión de libros");
+        }
+    }
+    
+    private static void agregarNuevoLibro() {
+        if (totalLibrosRegistrados >= CAPACIDAD_MAXIMA) {
+            System.err.println("❌ Capacidad máxima alcanzada. No se pueden agregar más libros.");
+            return;
+        }
+        
+        System.out.println("\n--- AGREGAR NUEVO LIBRO ---");
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine().trim();
+        
+        System.out.print("Autor: ");
+        String autor = scanner.nextLine().trim();
+        
+        System.out.print("ISBN (13 dígitos): ");
+        String isbn = scanner.nextLine().trim();
+        
+        System.out.print("Año de publicación: ");
+        int anioPublicacion = 0;
+        try {
+            anioPublicacion = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.err.println("❌ Año inválido. Libro no agregado.");
+            return;
+        }
+        
+        // Validaciones usando conceptos de case sensitivity y strings
+        if (titulo.isEmpty() || autor.isEmpty()) {
+            System.err.println("❌ Título y autor no pueden estar vacíos.");
+            return;
+        }
+        
+        if (!validarISBN(isbn)) {
+            System.err.println("❌ ISBN inválido. Debe tener 13 dígitos numéricos.");
+            return;
+        }
+        
+        // Crear nuevo libro
+        Libro nuevoLibro = new Libro(titulo, autor, isbn, anioPublicacion);
+        inventarioLibros[totalLibrosRegistrados] = nuevoLibro;
+        totalLibrosRegistrados++;
+        
+        System.out.printf("✅ Libro agregado exitosamente. ID: %d%n", nuevoLibro.getId());
+        System.out.printf("Total de libros en sistema: %d%n", totalLibrosRegistrados);
+    }
+    
+    private static boolean validarISBN(String isbn) {
+        // Implementación de validación usando conceptos de strings y case sensitivity
+        if (isbn == null || isbn.length() != 13) {
+            return false;
+        }
+        
+        // Verificar que solo contenga dígitos
+        for (int i = 0; i < isbn.length(); i++) {
+            char c = isbn.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private static void buscarLibro() {
+        System.out.println("\n--- BUSCAR LIBRO ---");
+        System.out.print("Ingrese término de búsqueda (título o autor): ");
+        String termino = scanner.nextLine().trim().toLowerCase();
+        
+        boolean encontrado = false;
+        System.out.printf("%n%-5s | %-30s | %-25s | %-13s | %-6s%n", 
+                         "ID", "TÍTULO", "AUTOR", "ISBN", "AÑO");
+        System.out.println("─".repeat(85));
+        
+        for (int i = 0; i < totalLibrosRegistrados; i++) {
+            Libro libro = inventarioLibros[i];
+            // Demostración de case sensitivity en búsquedas
+            if (libro.getTitulo().toLowerCase().contains(termino) || 
+                libro.getAutor().toLowerCase().contains(termino)) {
+                
+                System.out.printf("%-5d | %-30s | %-25s | %-13s | %-6d%n",
+                                libro.getId(),
+                                libro.getTitulo(),
+                                libro.getAutor(),
+                                libro.getIsbn(),
+                                libro.getAnioPublicacion());
+                encontrado = true;
+            }
+        }
+        
+        if (!encontrado) {
+            System.out.println("❌ No se encontraron libros con ese término de búsqueda.");
+        }
+    }
+    
+    private static void listarLibros() {
+        if (totalLibrosRegistrados == 0) {
+            System.out.println("📖 No hay libros registrados en el sistema.");
+            return;
+        }
+        
+        System.out.printf("%n=== CATÁLOGO COMPLETO (%d libros) ===%n", totalLibrosRegistrados);
+        System.out.printf("%-5s | %-35s | %-25s | %-6s%n", "ID", "TÍTULO", "AUTOR", "AÑO");
+        System.out.println("─".repeat(80));
+        
+        for (int i = 0; i < totalLibrosRegistrados; i++) {
+            Libro libro = inventarioLibros[i];
+            System.out.printf("%-5d | %-35s | %-25s | %-6d%n",
+                            libro.getId(),
+                            libro.getTitulo(),
+                            libro.getAutor(),
+                            libro.getAnioPublicacion());
+        }
+    }
+    
+    private static void gestionarUsuarios() {
+        System.out.println("\n👤 GESTIÓN DE USUARIOS");
+        System.out.printf("Usuarios registrados: %d%n", totalUsuariosRegistrados);
+        // Implementación simplificada
+        System.out.println("Funcionalidad en desarrollo...");
+    }
+    
+    private static void realizarPrestamo() {
+        System.out.println("\n📋 REALIZAR PRÉSTAMO");
+        // Implementación simplificada
+        System.out.println("Funcionalidad en desarrollo...");
+    }
+    
+    private static void generarReportes() {
+        System.out.println("\n📊 GENERAR REPORTES");
+        
+        // Reporte por década usando estructuras de control
+        System.out.println("\n--- LIBROS POR DÉCADA ---");
+        
+        // Contadores por década
+        int[] librosPorDecada = new int[10]; // 1950-2029
+        String[] etiquetasDecadas = {
+            "1950-1959", "1960-1969", "1970-1979", "1980-1989", "1990-1999",
+            "2000-2009", "2010-2019", "2020-2029", "Otros", "Sin fecha"
+        };
+        
+        for (int i = 0; i < totalLibrosRegistrados; i++) {
+            int anio = inventarioLibros[i].getAnioPublicacion();
+            
+            if (anio >= 1950 && anio <= 2029) {
+                int indice = (anio - 1950) / 10;
+                if (indice < 8) {
+                    librosPorDecada[indice]++;
+                } else {
+                    librosPorDecada[8]++; // Otros
+                }
+            } else {
+                librosPorDecada[9]++; // Sin fecha válida
+            }
+        }
+        
+        for (int i = 0; i < etiquetasDecadas.length; i++) {
+            if (librosPorDecada[i] > 0) {
+                System.out.printf("%-12s: %3d libro(s) %s%n", 
+                                etiquetasDecadas[i], 
+                                librosPorDecada[i],
+                                "■".repeat(librosPorDecada[i]));
+            }
+        }
+    }
+    
+    // Método estático para mostrar estadísticas globales
+    private static void mostrarEstadisticasGlobales() {
+        System.out.println("\n📈 ESTADÍSTICAS GLOBALES DEL SISTEMA");
+        System.out.println("═".repeat(60));
+        System.out.printf("🏛️  Biblioteca:           %s%n", NOMBRE_BIBLIOTECA);
+        System.out.printf("💾  Versión del sistema:  %s%n", VERSION_SISTEMA);
+        System.out.printf("📚  Total libros:         %d / %d%n", totalLibrosRegistrados, CAPACIDAD_MAXIMA);
+        System.out.printf("👥  Total usuarios:       %d / %d%n", totalUsuariosRegistrados, CAPACIDAD_MAXIMA);
+        System.out.printf("📊  Ocupación:            %.1f%%%n", 
+                         ((double) totalLibrosRegistrados / CAPACIDAD_MAXIMA) * 100);
+        System.out.printf("🗓️  Fecha consulta:       %s%n", 
+                         LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        System.out.println("═".repeat(60));
+        
+        if (totalLibrosRegistrados > 0) {
+            System.out.println("\n🏆 TOP DÉCADAS CON MÁS LIBROS:");
+            generarReportes();
+        }
+    }
+    
+    private static void inicializarDatosDemo() {
+        // Agregar algunos libros de demostración
+        inventarioLibros[0] = new Libro("Effective Java", "Joshua Bloch", "9780134685991", 2017);
+        inventarioLibros[1] = new Libro("Clean Code", "Robert Martin", "9780132350884", 2008);
+        inventarioLibros[2] = new Libro("Java: The Complete Reference", "Herbert Schildt", "9781260440235", 2020);
+        inventarioLibros[3] = new Libro("Spring in Action", "Craig Walls", "9781617294945", 2018);
+        inventarioLibros[4] = new Libro("Head First Java", "Kathy Sierra", "9780596009205", 2005);
+        
+        totalLibrosRegistrados = 5;
+        
+        System.out.printf("✅ Sistema inicializado con %d libros de demostración.%n", 
+                         totalLibrosRegistrados);
+    }
+    
+    private static void mostrarDespedida() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║                                                              ║");
+        System.out.println("║                    ¡Gracias por usar!                       ║");
+        System.out.printf("║  %s%-54s  ║%n", "", NOMBRE_BIBLIOTECA);
+        System.out.println("║                                                              ║");
+        System.out.println("║  Sistema desarrollado como proyecto integrador              ║");
+        System.out.println("║  Aplicando conceptos fundamentales de Java 8                ║");
+        System.out.println("║                                                              ║");
+        System.out.printf("║  📊 Estadísticas de la sesión:                              ║%n");
+        System.out.printf("║     • Libros registrados: %-8d                       ║%n", totalLibrosRegistrados);
+        System.out.printf("║     • Usuarios registrados: %-6d                       ║%n", totalUsuariosRegistrados);
+        System.out.println("║                                                              ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        
+        System.out.printf("%n🕐 Sesión finalizada: %s%n", 
+                         java.time.LocalDateTime.now().format(
+                            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+    }
+}
+
+// Clase para representar un libro (demostración de variables de instancia)
+class Libro {
+    // Variable estática - contador de libros creados
+    private static int contadorLibros = 0;
+    
+    // Variables de instancia
+    private int id;
+    private String titulo;
+    private String autor;
+    private String isbn;
+    private int anioPublicacion;
+    private boolean prestado;
+    
+    // Constructor
+    public Libro(String titulo, String autor, String isbn, int anioPublicacion) {
+        contadorLibros++;
+        this.id = contadorLibros;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.anioPublicacion = anioPublicacion;
+        this.prestado = false;
+    }
+    
+    // Getters y setters (demostración de case sensitivity)
+    public int getId() { return id; }
+    public String getTitulo() { return titulo; }
+    public String getAutor() { return autor; }
+    public String getIsbn() { return isbn; }
+    public int getAnioPublicacion() { return anioPublicacion; }
+    public boolean isPrestado() { return prestado; }
+    
+    public void setPrestado(boolean prestado) {
+        this.prestado = prestado;
+    }
+    
+    // Método para mostrar información completa
+    public void mostrarInformacion() {
+        System.out.printf("📖 Libro ID: %d%n", id);
+        System.out.printf("   Título: %s%n", titulo);
+        System.out.printf("   Autor: %s%n", autor);
+        System.out.printf("   ISBN: %s%n", isbn);
+        System.out.printf("   Año: %d%n", anioPublicacion);
+        System.out.printf("   Estado: %s%n", prestado ? "Prestado" : "Disponible");
+    }
+    
+    // Método estático
+    public static int getTotalLibrosCreados() {
+        return contadorLibros;
+    }
+}
+
+// Clase para representar un usuario
+class Usuario {
+    private static int contadorUsuarios = 0;
+    
+    private int id;
+    private String nombre;
+    private String email;
+    private String telefono;
+    
+    public Usuario(String nombre, String email, String telefono) {
+        contadorUsuarios++;
+        this.id = contadorUsuarios;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+    }
+    
+    // Getters
+    public int getId() { return id; }
+    public String getNombre() { return nombre; }
+    public String getEmail() { return email; }
+    public String getTelefono() { return telefono; }
+    
+    public static int getTotalUsuarios() {
+        return contadorUsuarios;
+    }
+}
+```
+
+### **📋 Conceptos aplicados en el proyecto:**
+
+1. **✅ El método main()**: Punto de entrada del programa con lógica principal
+2. **✅ Estructura de clases**: Clases `Libro`, `Usuario` y `SistemaBiblioteca`
+3. **✅ System.out**: Uso extensivo de `println()`, `printf()` con formatos complejos
+4. **✅ Case Sensitivity**: Validaciones, métodos con nombres precisos, variables diferenciadas
+5. **✅ Variables estáticas vs instancia**: Contadores globales vs datos específicos de objetos
+6. **✅ Strings inmutables**: Manipulación de cadenas, búsquedas, validaciones
+7. **✅ Estructuras de control**: `while`, `switch`, `for`, `if-else` anidados
+8. **✅ Arrays**: Almacenamiento de libros y usuarios, reportes estadísticos
+9. **✅ Tipos de datos**: Manejo de `int`, `String`, `boolean`, `double`
+10. **✅ Comentarios**: Documentación clara del código
+
+### **🎯 Ejercicios de extensión:**
+
+1. **Agregar funcionalidad de préstamos**: Implementar sistema completo de préstamos y devoluciones
+2. **Validaciones avanzadas**: Email, teléfono, fechas de vencimiento
+3. **Reportes adicionales**: Por autor, por año, libros más prestados
+4. **Persistencia**: Guardar y cargar datos de archivos
+5. **Interfaz mejorada**: Colores en consola, menús más intuitivos
+
+---
+
+## 🏭 **CONCEPTOS AVANZADOS: EJEMPLOS DE CÓDIGO REAL DE PRODUCCIÓN**
+
+### 📊 **ANÁLISIS DE CÓDIGO EMPRESARIAL REAL**
+
+Los siguientes ejemplos provienen de un sistema real de ingeniería para diseño de transformadores eléctricos. Analicemos cómo se aplican los conceptos fundamentales en software de producción:
+
+---
+
+### 🔧 **CONCEPTO AVANZADO 1: INTERFACES Y MULTIHILOS**
+
+#### **🎯 Implementación de Interfaces:**
+```java
+// Del archivo Funciones.java - Implementación real de Runnable
+public class Funciones implements Runnable {
+    // Variables de instancia para el hilo
+    String hora, minutos, segundos, ampm;
+    Calendar calendario;
+    
+    // Implementación obligatoria del método run()
+    @Override
+    public void run() {
+        // Lógica que se ejecuta en el hilo separado
+        // Actualización de reloj en tiempo real
+        while (true) {
+            calcula();  // Actualizar hora
+            reloj();    // Mostrar en interfaz
+            try {
+                Thread.sleep(1000);  // Pausa de 1 segundo
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+}
+```
+
+**💡 Explicación:**
+- **Interface `Runnable`**: Contrato que obliga a implementar el método `run()`
+- **Multihilos**: Permite ejecutar el reloj en paralelo sin bloquear la interfaz
+- **Implementación real**: El sistema actualiza varios relojes simultáneamente
+
+---
+
+### 🗃️ **CONCEPTO AVANZADO 2: BASES DE DATOS Y MANEJO DE EXCEPCIONES**
+
+#### **🎯 Consultas a Base de Datos con Manejo Robusto:**
+```java
+// Del archivo Consultas.java - Método real para cargar usuarios
+public static void llenarUsuarios() {
+    ServiciosBD.ConsultaGenereal("idusuario,login,contra,email,nombre,apellido,rol,ruta_firma", 
+                                "usuarios", "Order By Idusuario","");
+    DefaultTableModel modelo = new DefaultTableModel();
+    Administracion.jtQuery.setModel(modelo);
+    
+    try {
+        ResultSetMetaData rsMd = ServiciosBD.resultado.getMetaData();
+        int cantidadColumnas = rsMd.getColumnCount();
+        
+        // Configurar cabeceras de tabla dinámicamente
+        for (int i = 1; i <= cantidadColumnas; i++) {
+            modelo.addColumn(rsMd.getColumnLabel(i));
+        }
+        
+        // Llenar datos fila por fila
+        while (ServiciosBD.resultado.next()) {
+            Object[] fila = new Object[cantidadColumnas];
+            for (int i = 0; i < cantidadColumnas; i++) {
+                fila[i] = ServiciosBD.resultado.getObject(i+1);
+            }
+            modelo.addRow(fila);
+        }
+        ServiciosBD.resultado.close();
+        
+    } catch (SQLException ex) {
+        // Logging profesional del error
+        log.error(usuarioLogin.getNombre() + usuarioLogin.getApellido() + ex);
+        
+        // Notificación al usuario
+        JOptionPane.showMessageDialog(null, ex, "Error en la consulta llenar usuarios", 
+                                    JOptionPane.WARNING_MESSAGE);
+        
+        // Envío automático de reporte de error
+        Email.Lanzar("Consultas.LlenarUsuarios", ex.toString(), 0);
+    }
+}
+```
+
+**💡 Conceptos Aplicados:**
+- **Excepciones**: Manejo profesional con `try-catch`
+- **Logging**: Registro de errores para debugging
+- **Interfaz Gráfica**: Integración con tablas Swing
+- **Base de Datos**: Consultas SQL con metadatos dinámicos
+
+---
+
+### 📐 **CONCEPTO AVANZADO 3: CÁLCULOS DE INGENIERÍA CON VALIDACIÓN**
+
+#### **🎯 Método Complejo de Cálculo Real:**
+```java
+// Del archivo Consultas.java - Cálculo de aislamientos eléctricos
+public static void CapAislamientos(Double emin, Double vc2, String TipoPapel, int nReferencias) {        
+    // Query SQL compleja para cálculos de ingeniería
+    ServiciosBD.ConsultaGenereal(
+        "CAPACIDAD_AISLAMIENTOS_J.*," +
+        "(CP08*DPP0075+CP13*DPP013+CP18*DPP018+CP25*DPP025+" +
+        "CDPE13*DPE013+CDPE15*DPE015+CDPE20*DPE020+" +
+        "CDPE25*DPE025+CDPE30*DPE030) as COSTO",
+        
+        "CAPACIDAD_AISLAMIENTOS_J," +
+        "(select * from(select items_unoe" + DatosFactores.CostoMes + ".ITEM as item," +
+        "espesor,proyeccion from items_unoe" + DatosFactores.CostoMes + "," +
+        "kits_papel_epox where kits_papel_epox.item=items_unoe" + DatosFactores.CostoMes + 
+        ".item) PIVOT(avg(proyeccion*espesor) for item in (" + 
+        (TipoPapel.contains("TuFlex") ? "38074" : "13152") + " as CP08," +
+        "514 as CP13,515 as CP18,516 as CP25," +
+        "51890 as CDPE13,51890 as CDPE15,51890 as CDPE20," +
+        "51892 as CDPE25,51893 as CDPE30)))",
+        
+        "WHERE cap >= " + vc2 + " AND tipo = '" + TipoPapel + "' AND DPP0038 = 0 " +
+        "AND DPP0050 = 0 AND DPE013 = 0 " +
+        (!Aislamientos.habilitarPapel013 ? "AND DPP013 = 0" : "") + 
+        " AND ep >= " + emin + " AND NREFERENCIAS <= " + nReferencias + 
+        " ORDER by ep, cap desc, costo", "");
+}
+```
+
+**💡 Conceptos Aplicados:**
+- **Parámetros múltiples**: Método con 4 parámetros de diferentes tipos
+- **Condicionales complejas**: Uso de operador ternario en SQL
+- **Concatenación de strings**: Construcción dinámica de consultas
+- **Validaciones**: Filtros basados en variables de estado
+- **Ingeniería real**: Cálculos de capacidad de aislamiento eléctrico
+
+---
+
+### 📋 **CONCEPTO AVANZADO 4: MANEJO DE METADATOS Y TABLAS DINÁMICAS**
+
+#### **🎯 Construcción Dinámica de Interfaces:**
+```java
+// Del archivo Consultas.java - Tabla dinámica de precálculos
+public static void TablaPrecalculo() {
+    // Query con formateo de moneda y campos condicionales
+    ServiciosBD.ConsultaGenereal(
+        "IDD,TO_CHAR(CEVF,'$999,999,999.00') as CEVF,PCU,PO,PT,TCC,IO,RIO,LAMINA," +
+        (DatosEntrada.TCons == 5 || DatosEntrada.TCons == 6 ? "DN,AC" : "AI,BIF") + "," +
+        "BFO,N2,HC2,EC2,SC2,AWG1,HTB,DIT,DAV,EFICIENCIA," +
+        "TO_CHAR(CCF,'$999,999,999.00') as CCF,ac,bc,gtotal,at,bt,ht,SC", 
+        "Precalculo", "Order By CEVF", "");
+        
+    precalculo = new DefaultTableModel();
+    Precalculos.jTable1.setModel(precalculo);
+    Precalculos.jTable1.setRowSorter(new TableRowSorter(precalculo));
+    
+    try {
+        ResultSetMetaData rsMd = ServiciosBD.resultado.getMetaData();
+        int cantidadColumnas = rsMd.getColumnCount();
+        
+        // Cabeceras dinámicas
+        for (int i = 1; i <= cantidadColumnas; i++) {
+            precalculo.addColumn(rsMd.getColumnLabel(i));
+        }
+        
+        // Procesamiento condicional por columna
+        while (ServiciosBD.resultado.next()) {
+            Object[] fila = new Object[cantidadColumnas];
+            for (int i = 0; i < cantidadColumnas; i++) {
+                switch (i) {
+                    case 0:  // ID
+                    case 2:  // PCU 
+                    case 3:  // PO
+                    case 4:  // PT
+                    case 11: // Otros campos numéricos
+                        // Procesamiento específico para números
+                        fila[i] = ServiciosBD.resultado.getObject(i + 1);
+                        break;
+                    default:
+                        // Procesamiento genérico
+                        fila[i] = ServiciosBD.resultado.getString(i + 1);
+                }
+            }
+            precalculo.addRow(fila);
+        }
+    } catch (SQLException ex) {
+        // Manejo de excepciones...
+    }
+}
+```
+
+**💡 Conceptos Aplicados:**
+- **Metadatos**: Uso de `ResultSetMetaData` para estructura dinámica
+- **Formateo SQL**: `TO_CHAR` para formato de moneda
+- **Condicionales**: Campos diferentes según tipo de consulta
+- **Switch statements**: Procesamiento específico por tipo de columna
+- **Ordenamiento**: Integración con `TableRowSorter` para interfaz
+
+---
+
+### ⚡ **CONCEPTO AVANZADO 5: VARIABLES ESTÁTICAS COMPLEJAS**
+
+#### **🎯 Sistema de Estado Global:**
+```java
+// Del archivo Funciones.java - Variables estáticas del sistema real
+public class Funciones implements Runnable {
+    // Control de estado de ventanas
+    public static int bandera, bandera1, bandera2, bandera3, bandera4, bandera5, 
+                     bandera6, bandera7, bandera8, BanderaVemergente, IndexVemergente, band = 0;
+    
+    // Configuración del sistema
+    public static String Ip = "", Equipo = "";
+    public static File Archivo = null;
+    public static int Tamano;
+    
+    // Matrices de datos técnicos
+    public static double[][] VpTaps;  // Datos de taps de voltaje
+    public static String Dis[][];     // Diseños disponibles
+    public static double[][] ai_bi_Solid;  // Coeficientes sólidos
+    
+    // Constantes de ingeniería (fórmulas específicas)
+    public static double C1wrwct = 7.2661 * Math.pow(10, -5);
+    public static double C2wrwct = -2.9651 * Math.pow(10, -4);
+    public static double C3wrwct = 4.7827 * Math.pow(10, -5);
+    public static double C4wrwct = -2.83954 * Math.pow(10, -4);
+    public static double C1wco = 4.4357 * Math.pow(10, -5);
+    public static double C2wco = -3.26986 * Math.pow(10, -4);
+    
+    // Variables de control de proceso
+    public static boolean advEmbalaje = false, embalajeXestandar = false;
+    public static boolean ULxEstandar = false, aceiteXestandar = false;
+    
+    // Hilos de ejecución
+    public static Thread h1;
+    
+    // Variables para cálculos específicos
+    public static double tcc = 0, XL = 0, r = 0;  // Regulación en prediseño
+    public static double espirasAntesTapMedio = 0;
+}
+```
+
+**💡 Conceptos Aplicados:**
+- **Variables de estado**: Control global del flujo de aplicación
+- **Matrices multidimensionales**: Almacenamiento de datos técnicos complejos
+- **Constantes calculadas**: Valores de ingeniería con `Math.pow()`
+- **Referencias a objetos**: `File`, `Thread` como variables estáticas
+- **Naming conventions**: Nombres descriptivos para dominio específico
+
+---
+
+### 🎯 **LECCIONES DE CÓDIGO PROFESIONAL**
+
+#### **✅ Buenas Prácticas Observadas:**
+
+1. **Separación de responsabilidades**:
+   - `Funciones.java`: Utilidades generales
+   - `Consultas.java`: Acceso a datos específico
+
+2. **Manejo robusto de errores**:
+   - Try-catch específicos por tipo de operación
+   - Logging detallado para debugging
+   - Notificaciones automáticas de errores
+
+3. **Flexibilidad**:
+   - Consultas SQL dinámicas
+   - Interfaces que se adaptan a diferentes datos
+   - Configuraciones mediante variables estáticas
+
+4. **Documentación profesional**:
+   - JavaDoc completo con autor y versión
+   - Comentarios explicativos en lógica compleja
+   - Nombres de variables autodescriptivos
+
+#### **🔧 Patrones de Diseño Aplicados:**
+
+- **Singleton implícito**: Variables estáticas para estado global
+- **Factory pattern**: Construcción dinámica de tablas
+- **Observer pattern**: Interfaces que reaccionan a cambios de datos
+- **Thread pattern**: Ejecución concurrente para interfaces responsivas
+
+**Estos ejemplos demuestran cómo los conceptos básicos de Java se combinan para crear software empresarial robusto y funcional.**
+
+---
+
+## 🔄 **COMPARATIVA: DE LOS CONCEPTOS BÁSICOS AL CÓDIGO PROFESIONAL**
+
+### 📊 **Evolución del Conocimiento**
+
+| Concepto Básico | Aplicación en Producción | Ejemplo del Sistema Real |
+|-----------------|-------------------------|--------------------------|
+| **Variables simples** | **Estado global complejo** | `public static int bandera1, bandera2, bandera3...` |
+| **Métodos básicos** | **APIs especializadas** | `CapAislamientos()`, `TablaPrecalculo()` |
+| **System.out.println** | **Logging profesional** | `log.error()`, `Email.Lanzar()` |
+| **If-else simple** | **Condicionales complejas** | `(DatosEntrada.TCons==5\|\|DatosEntrada.TCons==6?"DN,AC":"AI,BIF")` |
+| **Arrays básicos** | **Matrices multidimensionales** | `double[][] VpTaps`, `String Dis[][]` |
+| **Strings concatenación** | **Construcción dinámica SQL** | Query SQL de 500+ caracteres |
+| **Try-catch básico** | **Manejo integral errores** | Logging + Notificación + Email automático |
+
+### 🎯 **Progresión de Complejidad**
+
+#### **🟢 NIVEL BÁSICO (Conceptos 1-5):**
+```java
+// Lo que aprendes primero
+public class MiClase {
+    public static void main(String[] args) {
+        System.out.println("Hola Mundo");
+    }
+}
+```
+
+#### **🟡 NIVEL INTERMEDIO (Conceptos 6-10):**
+```java
+// Agregando lógica y control
+public class CalculadoraBasica {
+    public static double sumar(double a, double b) {
+        return a + b;
+    }
+}
+```
+
+#### **🟠 NIVEL AVANZADO (Conceptos 11-13):**
+```java
+// Manejo de excepciones y validaciones
+public class ValidadorDatos {
+    public static boolean validar(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+```
+
+#### **🔴 NIVEL PROFESIONAL (Código Real de Producción):**
+```java
+// Sistema completo con múltiples responsabilidades
+public class Funciones implements Runnable {
+    public static void CapAislamientos(Double emin, Double vc2, String TipoPapel, int nReferencias) {
+        // 20+ líneas de SQL complejo
+        // Manejo de metadatos dinámicos
+        // Integración con interfaces gráficas
+        // Sistema de logging y notificaciones
+    }
+}
+```
+
+### 🚀 **Camino de Aprendizaje Recomendado**
+
+#### **Fase 1: Fundamentos (Semanas 1-2)**
+1. ✅ Dominar conceptos 1-5 del README
+2. ✅ Practicar con ejemplos básicos
+3. ✅ Entender compilación y ejecución
+
+#### **Fase 2: Estructuras (Semanas 3-4)**
+1. 📖 Estudiar conceptos 6-10
+2. 🛠️ Implementar calculadoras simples
+3. 🎯 Practicar arrays y strings
+
+#### **Fase 3: Control Avanzado (Semanas 5-6)**
+1. 📚 Conceptos 11-13 + excepciones
+2. 🔧 Crear validadores y utilidades
+3. 🧪 Testing y debugging
+
+#### **Fase 4: Código Real (Semanas 7-8)**
+1. 🏭 Analizar código de `Funciones.java` y `Consultas.java`
+2. 🔍 Entender patrones de diseño aplicados
+3. 💼 Implementar mini-proyectos similares
+
+### 💡 **Reflexiones Finales**
+
+#### **🎓 Lo que Aprendiste:**
+- **Fundamentos sólidos**: Base teórica completa de Java 8
+- **Ejemplos reales**: Código de producción auténtico
+- **Progresión natural**: Del "Hola Mundo" a sistemas empresariales
+- **Buenas prácticas**: Patrones observados en software real
+
+#### **🚀 Próximos Pasos:**
+- **Frameworks**: Spring, Hibernate, Maven
+- **Bases de Datos**: JDBC, JPA, conexiones reales
+- **Interfaces Gráficas**: Swing avanzado, JavaFX
+- **Arquitectura**: Patrones de diseño, clean code
+
+#### **🏆 Objetivo Cumplido:**
+Has visto la **evolución completa** desde conceptos básicos hasta implementaciones profesionales. El código de `Funciones.java` y `Consultas.java` no son ejercicios académicos - son **herramientas reales** usadas en la industria para resolver **problemas complejos de ingeniería**.
+
+**¡Ahora tienes las bases para construir software profesional en Java!**
+
+---
 
 ### Práctica Adicional:
 - [CodingBat Java](https://codingbat.com/java)
