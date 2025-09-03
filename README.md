@@ -2661,10 +2661,6 @@ public class CalculadoraAvanzada implements Runnable {
 - ✅ Programación funcional con lambdas y streams
 - ✅ Programación concurrente con threads
 
-**El viaje apenas comienza.** Java es un ecosistema vasto y en constante evolución. Mantente curioso, sigue practicando y nunca dejes de aprender.
-
-**¡Bienvenido al mundo del desarrollo profesional en Java!** 🎉
-
 ---
 
 *Curso desarrollado con ejemplos reales de código de producción - Septiembre 2025*
