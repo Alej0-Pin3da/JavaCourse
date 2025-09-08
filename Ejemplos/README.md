@@ -2,7 +2,7 @@
 
 ## 📋 Resumen del Análisis
 
-El archivo `Terminales.java` contiene **múltiples errores críticos de diseño** que violan las mejores prácticas de programación en Java. Este documento detalla todos los problemas encontrados y proporciona recomendaciones para su corrección.
+El archivo `Terminales.java` contiene **múltiples errores críticos de diseño** que violan las mejores prácticas de**Prioridad de corrección: 🔶 MEDIA** - Errores de convención que afectan la calidad pero no la funcionalidad.*Prioridad de corrección: 🟡 MEDIA** - Errores de convención que afectan la calidad pero no la funcionalidad.programación en Java. Este documento detalla todos los problemas encontrados y proporciona recomendaciones para su corrección.
 
 ---
 
