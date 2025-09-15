@@ -6,7 +6,335 @@ Este documento proporciona una explicación teórica profunda de los errores com
 
 ---
 
-## 📖 TABLA DE CONTENIDOS
+## 🔍 TEORÍA FUNDAMENTAL: ¿QUÉ ES TRY-CATCH? {#teoria-fundamental}
+
+### 📚 **Definición Conceptual**
+
+El **Try-Catch** es un mecanismo de control de flujo en Java diseñado para manejar situaciones excepcionales que pueden ocurrir durante la ejecución de un programa. No es simplemente una herramienta para "atrapar errores", sino un sistema completo de gestión de estados excepcionales del programa.
+
+### 🎯 **Anatomía del Try-Catch**
+
+```java
+try {
+    // BLOQUE TRY: Código que puede generar una excepción
+    // - Operaciones riesgosas
+    // - Llamadas a métodos que pueden fallar
+    // - Acceso a recursos externos
+} catch (TipoExcepcion1 e) {
+    // BLOQUE CATCH: Manejo específico de un tipo de excepción
+    // - Recuperación del error
+    // - Logging y diagnóstico
+    // - Acciones alternativas
+} catch (TipoExcepcion2 e) {
+    // MÚLTIPLES CATCH: Manejo diferenciado por tipo
+} finally {
+    // BLOQUE FINALLY: Siempre se ejecuta
+    // - Limpieza de recursos
+    // - Operaciones de cierre
+    // - Código que debe ejecutarse sin importar el resultado
+}
+```
+
+### 🧠 **Modelo Mental: Estados del Programa**
+
+```java
+/**
+ * TEORÍA: El programa puede estar en diferentes estados durante la ejecución
+ */
+public enum EstadoPrograma {
+    NORMAL,      // Flujo esperado sin problemas
+    EXCEPCIONAL, // Situación inesperada pero manejable
+    ERROR_FATAL  // Fallo crítico que requiere terminación
+}
+
+// Try-Catch nos permite manejar transiciones entre estos estados
+try {
+    // ESTADO: NORMAL - intentamos operación esperada
+    resultado = operacionNormal();
+    
+} catch (RecoverableException e) {
+    // TRANSICIÓN: NORMAL → EXCEPCIONAL → NORMAL
+    // Manejamos la excepción y continuamos
+    resultado = operacionAlternativa();
+    
+} catch (FatalException e) {
+    // TRANSICIÓN: NORMAL → EXCEPCIONAL → ERROR_FATAL
+    // No podemos recuperarnos, debemos fallar controladamente
+    throw new SystemException("Error irrecuperable", e);
+}
+```
+
+### ⚡ **Flujo de Ejecución en Try-Catch**
+
+```java
+/**
+ * PASO A PASO: Cómo Java procesa un bloque try-catch
+ */
+public void ejemploFlujoEjecucion() {
+    System.out.println("1. Antes del try-catch");
+    
+    try {
+        System.out.println("2. Entrando al bloque try");
+        
+        // Si esto lanza excepción, el flujo salta inmediatamente al catch apropiado
+        operacionRiesgosa();
+        
+        System.out.println("3. Operación exitosa - continuando en try");
+        
+    } catch (SpecificException e) {
+        System.out.println("4a. Excepción específica capturada");
+        // El flujo continúa aquí si se lanza SpecificException
+        
+    } catch (GeneralException e) {
+        System.out.println("4b. Excepción general capturada");
+        // Solo se ejecuta si no fue capturada por el catch anterior
+        
+    } finally {
+        System.out.println("5. Finally - SIEMPRE se ejecuta");
+        // Se ejecuta independientemente de si hubo excepción o no
+    }
+    
+    System.out.println("6. Después del try-catch");
+}
+```
+
+### 🎨 **Tipos de Excepciones: Jerarquía Semántica**
+
+```java
+/**
+ * TEORÍA: La jerarquía de excepciones tiene significado semántico
+ */
+
+// THROWABLE (raíz de todas las excepciones)
+//   ├── ERROR (errores del sistema - no catchear)
+//   │    ├── OutOfMemoryError
+//   │    ├── StackOverflowError
+//   │    └── VirtualMachineError
+//   │
+//   └── EXCEPTION (excepciones de aplicación - sí catchear)
+//        ├── RuntimeException (excepciones no verificadas)
+//        │    ├── NullPointerException      // Error de programación
+//        │    ├── IllegalArgumentException  // Datos inválidos
+//        │    ├── IllegalStateException     // Estado inválido
+//        │    └── ArithmeticException       // Error matemático
+//        │
+//        └── Checked Exceptions (excepciones verificadas)
+//             ├── IOException               // Problemas de E/O
+//             ├── SQLException              // Errores de BD
+//             ├── ClassNotFoundException    // Problemas de carga
+//             └── InterruptedException      // Concurrencia
+
+/**
+ * PRINCIPIO FUNDAMENTAL: Cada nivel tiene una estrategia de manejo diferente
+ */
+public void manejoSegunJerarquia() {
+    try {
+        operacionCompleja();
+        
+    } catch (IllegalArgumentException e) {
+        // PROGRAMACIÓN: Validar entrada y rechazar
+        logger.warning("Entrada inválida proporcionada: " + e.getMessage());
+        throw new ValidationException("Datos de entrada inválidos", e);
+        
+    } catch (IllegalStateException e) {
+        // PROGRAMACIÓN: Bug del sistema, fallar rápido
+        logger.severe("Estado del sistema inconsistente - posible bug");
+        throw new SystemException("Sistema en estado inválido", e);
+        
+    } catch (IOException e) {
+        // INFRAESTRUCTURA: Reintentar o usar alternativa
+        logger.warning("Problema de E/O - intentando recuperación");
+        return recuperarDeError(e);
+        
+    } catch (SQLException e) {
+        // DATOS: Estrategia específica de base de datos
+        logger.severe("Error de base de datos");
+        return manejarErrorBD(e);
+    }
+}
+```
+
+### 🔄 **Patrones de Control de Flujo**
+
+#### **A) Patrón de Validación**
+```java
+/**
+ * USO CORRECTO: Try-catch para validación cuando el parsing es la validación
+ */
+public boolean esNumero(String entrada) {
+    try {
+        Double.parseDouble(entrada);  // La validación ES el parsing
+        return true;
+    } catch (NumberFormatException e) {
+        return false;  // No es excepción, es resultado esperado
+    }
+}
+
+// TEORÍA: Aquí el try-catch NO es control de flujo, es delegación de validación
+```
+
+#### **B) Patrón de Recuperación**
+```java
+/**
+ * USO CORRECTO: Try-catch para recuperación de errores
+ */
+public String obtenerConfiguracion() {
+    try {
+        return leerConfiguracionRemota();  // Intento principal
+    } catch (IOException e) {
+        logger.warning("Config remota no disponible, usando local");
+        return leerConfiguracionLocal();   // Recuperación
+    } catch (ConfigurationException e) {
+        logger.warning("Config local corrupta, usando por defecto");
+        return obtenerConfiguracionPorDefecto();  // Fallback final
+    }
+}
+```
+
+#### **C) Patrón de Limpieza de Recursos**
+```java
+/**
+ * USO CORRECTO: Try-catch-finally para gestión de recursos
+ */
+public void procesarArchivo(String archivo) {
+    FileInputStream stream = null;
+    try {
+        stream = new FileInputStream(archivo);
+        procesarContenido(stream);
+        
+    } catch (FileNotFoundException e) {
+        logger.severe("Archivo no encontrado: " + archivo);
+        throw new ProcessingException("No se puede procesar archivo inexistente", e);
+        
+    } catch (IOException e) {
+        logger.warning("Error leyendo archivo, intentando recuperación");
+        recuperarLectura(archivo, e);
+        
+    } finally {
+        // CRÍTICO: Limpiar recursos independientemente del resultado
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                logger.warning("Error cerrando stream: " + e.getMessage());
+            }
+        }
+    }
+}
+
+// MODERNO: Try-with-resources es preferible
+public void procesarArchivoModerno(String archivo) {
+    try (FileInputStream stream = new FileInputStream(archivo)) {
+        procesarContenido(stream);
+        // El stream se cierra automáticamente
+        
+    } catch (FileNotFoundException e) {
+        logger.severe("Archivo no encontrado: " + archivo);
+        throw new ProcessingException("No se puede procesar archivo inexistente", e);
+    }
+}
+```
+
+### 🚫 **Anti-Patrones Comunes**
+
+#### **A) Control de Flujo Inapropiado**
+```java
+// ❌ MAL USO: Usar excepciones para lógica normal
+public int buscarElemento(int[] array, int elemento) {
+    try {
+        for (int i = 0; ; i++) {  // Bucle infinito intencional
+            if (array[i] == elemento) {
+                return i;
+            }
+        }
+    } catch (ArrayIndexOutOfBoundsException e) {
+        return -1;  // ¡ESTO ESTÁ MAL!
+    }
+}
+
+// ✅ CORRECTO: Usar condiciones normales
+public int buscarElemento(int[] array, int elemento) {
+    for (int i = 0; i < array.length; i++) {
+        if (array[i] == elemento) {
+            return i;
+        }
+    }
+    return -1;
+}
+```
+
+#### **B) Ocultamiento de Excepciones**
+```java
+// ❌ MAL USO: Catch vacío oculta problemas
+try {
+    operacionCritica();
+} catch (Exception e) {
+    // Silencio total - ¡PELIGROSO!
+}
+
+// ✅ CORRECTO: Manejo apropiado
+try {
+    operacionCritica();
+} catch (SpecificException e) {
+    logger.log(Level.WARNING, "Operación falló, usando alternativa", e);
+    usarOperacionAlternativa();
+} catch (FatalException e) {
+    logger.log(Level.SEVERE, "Error crítico en operación", e);
+    throw new SystemException("Sistema no puede continuar", e);
+}
+```
+
+### 🎓 **Principios Teóricos Fundamentales**
+
+#### **1. Principio de Especificidad**
+```java
+// Catch más específico ANTES que genérico
+try {
+    operacion();
+} catch (FileNotFoundException e) {     // MÁS específico
+    // manejo específico
+} catch (IOException e) {               // MENOS específico
+    // manejo general
+} catch (Exception e) {                 // GENÉRICO (evitar)
+    // último recurso
+}
+```
+
+#### **2. Principio de Responsabilidad Única**
+```java
+// Cada catch debe manejar UNA responsabilidad
+try {
+    validarDatos();
+    procesarDatos();
+    guardarResultados();
+} catch (ValidationException e) {
+    // SOLO manejo de validación
+} catch (ProcessingException e) {
+    // SOLO manejo de procesamiento
+} catch (PersistenceException e) {
+    // SOLO manejo de persistencia
+}
+```
+
+#### **3. Principio de Transparencia**
+```java
+// Las excepciones deben proporcionar información útil
+try {
+    operacion();
+} catch (SpecificException e) {
+    // Logging con contexto completo
+    logger.log(Level.WARNING, 
+        "Operación falló en contexto: usuario=" + usuario + 
+        ", operación=" + operacionId + ", timestamp=" + timestamp, e);
+    
+    // Acción apropiada con información clara
+    notificarUsuario("La operación no pudo completarse: " + e.getLocalizedMessage());
+}
+```
+
+---
+
+## �📖 TABLA DE CONTENIDOS
 
 1. [Fundamentos Teóricos del Manejo de Excepciones](#fundamentos)
 2. [Análisis de Errores Específicos en Funciones.java](#analisis-errores)
