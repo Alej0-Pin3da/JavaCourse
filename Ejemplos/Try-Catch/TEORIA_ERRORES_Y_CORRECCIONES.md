@@ -1,1141 +1,1062 @@
 # 📚 TEORÍA DE ERRORES Y CORRECCIONES EN JAVA
 
-## 🎯 Basado en el análisis de Funciones.java y patrones Try-Catch
+## 🎯 Guía para Principiantes: Try-Catch Explicado Paso a Paso
 
-Este documento proporciona una explicación teórica profunda de los errores comunes encontrados en el manejo de excepciones y sus correcciones apropiadas, tomando como base ejemplos reales del código.
+Este documento explica de manera **simple y clara** cómo manejar errores en Java usando try-catch, con ejemplos prácticos y fáciles de entender.
 
 ---
 
-## 🔍 TEORÍA FUNDAMENTAL: ¿QUÉ ES TRY-CATCH? {#teoria-fundamental}
+## 🔍 ¿QUÉ ES TRY-CATCH? (EXPLICACIÓN SIMPLE) {#teoria-fundamental}
 
-### 📚 **Definición Conceptual**
+### 🤔 **¿Por qué necesitamos Try-Catch?**
 
-El **Try-Catch** es un mecanismo de control de flujo en Java diseñado para manejar situaciones excepcionales que pueden ocurrir durante la ejecución de un programa. No es simplemente una herramienta para "atrapar errores", sino un sistema completo de gestión de estados excepcionales del programa.
+Imagina que estás cocinando y sigues una receta. A veces pueden ocurrir problemas:
+- Se te acabó un ingrediente (archivo no encontrado)
+- Se quemó la comida (error de cálculo)
+- Se fue la luz (problema de conexión)
 
-### 🎯 **Anatomía del Try-Catch**
+**Try-Catch** es como tener un **Plan B** para cuando algo sale mal en tu programa.
+
+### 📝 **Analogía Simple: El Paraguas**
+
+```java
+// Es como salir de casa:
+try {
+    // "Voy a caminar al trabajo sin paraguas"
+    caminarAlTrabajo();
+} catch (LluviaException e) {
+    // "Si llueve, usaré el paraguas"
+    usarParaguas();
+    caminarAlTrabajo();
+}
+```
+
+### 🎯 **Definición Básica**
+
+**Try-Catch** es una forma de decirle a Java:
+1. **TRY (Intenta)**: "Haz esto..."
+2. **CATCH (Atrapa)**: "Si algo sale mal, haz esto otro..."
+
+Es como tener un **plan de emergencia** para cuando las cosas no salen como esperabas.
+
+### 🧩 **Estructura Básica (Las Piezas del Rompecabezas)**
 
 ```java
 try {
-    // BLOQUE TRY: Código que puede generar una excepción
-    // - Operaciones riesgosas
-    // - Llamadas a métodos que pueden fallar
-    // - Acceso a recursos externos
-} catch (TipoExcepcion1 e) {
-    // BLOQUE CATCH: Manejo específico de un tipo de excepción
-    // - Recuperación del error
-    // - Logging y diagnóstico
-    // - Acciones alternativas
-} catch (TipoExcepcion2 e) {
-    // MÚLTIPLES CATCH: Manejo diferenciado por tipo
+    // 1️⃣ AQUÍ pones el código que PUEDE fallar
+    // Ejemplo: leer un archivo, hacer una división, conectarse a internet
+    
+} catch (TipoDeError e) {
+    // 2️⃣ AQUÍ decides qué hacer SI algo sale mal
+    // Ejemplo: mostrar mensaje, usar valor por defecto, intentar otra cosa
+    
 } finally {
-    // BLOQUE FINALLY: Siempre se ejecuta
-    // - Limpieza de recursos
-    // - Operaciones de cierre
-    // - Código que debe ejecutarse sin importar el resultado
+    // 3️⃣ AQUÍ pones código que SIEMPRE se ejecuta
+    // Ejemplo: cerrar archivos, limpiar memoria
+    // (Esta parte es OPCIONAL)
 }
 ```
 
-### 🧠 **Modelo Mental: Estados del Programa**
+### 🎭 **Los Diferentes Tipos de Problemas (Excepciones)**
+
+Imagina que los errores en Java son como diferentes tipos de problemas en la vida real:
 
 ```java
-/**
- * TEORÍA: El programa puede estar en diferentes estados durante la ejecución
- */
-public enum EstadoPrograma {
-    NORMAL,      // Flujo esperado sin problemas
-    EXCEPCIONAL, // Situación inesperada pero manejable
-    ERROR_FATAL  // Fallo crítico que requiere terminación
-}
-
-// Try-Catch nos permite manejar transiciones entre estos estados
+// 🔢 PROBLEMA: Intentar dividir entre cero
 try {
-    // ESTADO: NORMAL - intentamos operación esperada
-    resultado = operacionNormal();
-    
-} catch (RecoverableException e) {
-    // TRANSICIÓN: NORMAL → EXCEPCIONAL → NORMAL
-    // Manejamos la excepción y continuamos
-    resultado = operacionAlternativa();
-    
-} catch (FatalException e) {
-    // TRANSICIÓN: NORMAL → EXCEPCIONAL → ERROR_FATAL
-    // No podemos recuperarnos, debemos fallar controladamente
-    throw new SystemException("Error irrecuperable", e);
-}
-```
-
-### ⚡ **Flujo de Ejecución en Try-Catch**
-
-```java
-/**
- * PASO A PASO: Cómo Java procesa un bloque try-catch
- */
-public void ejemploFlujoEjecucion() {
-    System.out.println("1. Antes del try-catch");
-    
-    try {
-        System.out.println("2. Entrando al bloque try");
-        
-        // Si esto lanza excepción, el flujo salta inmediatamente al catch apropiado
-        operacionRiesgosa();
-        
-        System.out.println("3. Operación exitosa - continuando en try");
-        
-    } catch (SpecificException e) {
-        System.out.println("4a. Excepción específica capturada");
-        // El flujo continúa aquí si se lanza SpecificException
-        
-    } catch (GeneralException e) {
-        System.out.println("4b. Excepción general capturada");
-        // Solo se ejecuta si no fue capturada por el catch anterior
-        
-    } finally {
-        System.out.println("5. Finally - SIEMPRE se ejecuta");
-        // Se ejecuta independientemente de si hubo excepción o no
-    }
-    
-    System.out.println("6. Después del try-catch");
-}
-```
-
-### 🎨 **Tipos de Excepciones: Jerarquía Semántica**
-
-```java
-/**
- * TEORÍA: La jerarquía de excepciones tiene significado semántico
- */
-
-// THROWABLE (raíz de todas las excepciones)
-//   ├── ERROR (errores del sistema - no catchear)
-//   │    ├── OutOfMemoryError
-//   │    ├── StackOverflowError
-//   │    └── VirtualMachineError
-//   │
-//   └── EXCEPTION (excepciones de aplicación - sí catchear)
-//        ├── RuntimeException (excepciones no verificadas)
-//        │    ├── NullPointerException      // Error de programación
-//        │    ├── IllegalArgumentException  // Datos inválidos
-//        │    ├── IllegalStateException     // Estado inválido
-//        │    └── ArithmeticException       // Error matemático
-//        │
-//        └── Checked Exceptions (excepciones verificadas)
-//             ├── IOException               // Problemas de E/O
-//             ├── SQLException              // Errores de BD
-//             ├── ClassNotFoundException    // Problemas de carga
-//             └── InterruptedException      // Concurrencia
-
-/**
- * PRINCIPIO FUNDAMENTAL: Cada nivel tiene una estrategia de manejo diferente
- */
-public void manejoSegunJerarquia() {
-    try {
-        operacionCompleja();
-        
-    } catch (IllegalArgumentException e) {
-        // PROGRAMACIÓN: Validar entrada y rechazar
-        logger.warning("Entrada inválida proporcionada: " + e.getMessage());
-        throw new ValidationException("Datos de entrada inválidos", e);
-        
-    } catch (IllegalStateException e) {
-        // PROGRAMACIÓN: Bug del sistema, fallar rápido
-        logger.severe("Estado del sistema inconsistente - posible bug");
-        throw new SystemException("Sistema en estado inválido", e);
-        
-    } catch (IOException e) {
-        // INFRAESTRUCTURA: Reintentar o usar alternativa
-        logger.warning("Problema de E/O - intentando recuperación");
-        return recuperarDeError(e);
-        
-    } catch (SQLException e) {
-        // DATOS: Estrategia específica de base de datos
-        logger.severe("Error de base de datos");
-        return manejarErrorBD(e);
-    }
-}
-```
-
-### 🔄 **Patrones de Control de Flujo**
-
-#### **A) Patrón de Validación**
-```java
-/**
- * USO CORRECTO: Try-catch para validación cuando el parsing es la validación
- */
-public boolean esNumero(String entrada) {
-    try {
-        Double.parseDouble(entrada);  // La validación ES el parsing
-        return true;
-    } catch (NumberFormatException e) {
-        return false;  // No es excepción, es resultado esperado
-    }
+    int resultado = 10 / 0;  // ¡Esto va a fallar!
+} catch (ArithmeticException e) {
+    System.out.println("¡No puedes dividir entre cero!");
+    // Solución: usar un valor por defecto
+    int resultado = 0;
 }
 
-// TEORÍA: Aquí el try-catch NO es control de flujo, es delegación de validación
-```
-
-#### **B) Patrón de Recuperación**
-```java
-/**
- * USO CORRECTO: Try-catch para recuperación de errores
- */
-public String obtenerConfiguracion() {
-    try {
-        return leerConfiguracionRemota();  // Intento principal
-    } catch (IOException e) {
-        logger.warning("Config remota no disponible, usando local");
-        return leerConfiguracionLocal();   // Recuperación
-    } catch (ConfigurationException e) {
-        logger.warning("Config local corrupta, usando por defecto");
-        return obtenerConfiguracionPorDefecto();  // Fallback final
-    }
-}
-```
-
-#### **C) Patrón de Limpieza de Recursos**
-```java
-/**
- * USO CORRECTO: Try-catch-finally para gestión de recursos
- */
-public void procesarArchivo(String archivo) {
-    FileInputStream stream = null;
-    try {
-        stream = new FileInputStream(archivo);
-        procesarContenido(stream);
-        
-    } catch (FileNotFoundException e) {
-        logger.severe("Archivo no encontrado: " + archivo);
-        throw new ProcessingException("No se puede procesar archivo inexistente", e);
-        
-    } catch (IOException e) {
-        logger.warning("Error leyendo archivo, intentando recuperación");
-        recuperarLectura(archivo, e);
-        
-    } finally {
-        // CRÍTICO: Limpiar recursos independientemente del resultado
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                logger.warning("Error cerrando stream: " + e.getMessage());
-            }
-        }
-    }
-}
-
-// MODERNO: Try-with-resources es preferible
-public void procesarArchivoModerno(String archivo) {
-    try (FileInputStream stream = new FileInputStream(archivo)) {
-        procesarContenido(stream);
-        // El stream se cierra automáticamente
-        
-    } catch (FileNotFoundException e) {
-        logger.severe("Archivo no encontrado: " + archivo);
-        throw new ProcessingException("No se puede procesar archivo inexistente", e);
-    }
-}
-```
-
-### 🚫 **Anti-Patrones Comunes**
-
-#### **A) Control de Flujo Inapropiado**
-```java
-// ❌ MAL USO: Usar excepciones para lógica normal
-public int buscarElemento(int[] array, int elemento) {
-    try {
-        for (int i = 0; ; i++) {  // Bucle infinito intencional
-            if (array[i] == elemento) {
-                return i;
-            }
-        }
-    } catch (ArrayIndexOutOfBoundsException e) {
-        return -1;  // ¡ESTO ESTÁ MAL!
-    }
-}
-
-// ✅ CORRECTO: Usar condiciones normales
-public int buscarElemento(int[] array, int elemento) {
-    for (int i = 0; i < array.length; i++) {
-        if (array[i] == elemento) {
-            return i;
-        }
-    }
-    return -1;
-}
-```
-
-#### **B) Ocultamiento de Excepciones**
-```java
-// ❌ MAL USO: Catch vacío oculta problemas
+// 📁 PROBLEMA: Buscar un archivo que no existe
 try {
-    operacionCritica();
-} catch (Exception e) {
-    // Silencio total - ¡PELIGROSO!
+    leerArchivo("archivo_inexistente.txt");
+} catch (FileNotFoundException e) {
+    System.out.println("El archivo no existe, creando uno nuevo...");
+    // Solución: crear el archivo
+    crearArchivoNuevo();
 }
 
-// ✅ CORRECTO: Manejo apropiado
+// 🌐 PROBLEMA: Sin conexión a internet
 try {
-    operacionCritica();
-} catch (SpecificException e) {
-    logger.log(Level.WARNING, "Operación falló, usando alternativa", e);
-    usarOperacionAlternativa();
-} catch (FatalException e) {
-    logger.log(Level.SEVERE, "Error crítico en operación", e);
-    throw new SystemException("Sistema no puede continuar", e);
-}
-```
-
-### 🎓 **Principios Teóricos Fundamentales**
-
-#### **1. Principio de Especificidad**
-```java
-// Catch más específico ANTES que genérico
-try {
-    operacion();
-} catch (FileNotFoundException e) {     // MÁS específico
-    // manejo específico
-} catch (IOException e) {               // MENOS específico
-    // manejo general
-} catch (Exception e) {                 // GENÉRICO (evitar)
-    // último recurso
-}
-```
-
-#### **2. Principio de Responsabilidad Única**
-```java
-// Cada catch debe manejar UNA responsabilidad
-try {
-    validarDatos();
-    procesarDatos();
-    guardarResultados();
-} catch (ValidationException e) {
-    // SOLO manejo de validación
-} catch (ProcessingException e) {
-    // SOLO manejo de procesamiento
-} catch (PersistenceException e) {
-    // SOLO manejo de persistencia
-}
-```
-
-#### **3. Principio de Transparencia**
-```java
-// Las excepciones deben proporcionar información útil
-try {
-    operacion();
-} catch (SpecificException e) {
-    // Logging con contexto completo
-    logger.log(Level.WARNING, 
-        "Operación falló en contexto: usuario=" + usuario + 
-        ", operación=" + operacionId + ", timestamp=" + timestamp, e);
-    
-    // Acción apropiada con información clara
-    notificarUsuario("La operación no pudo completarse: " + e.getLocalizedMessage());
-}
-```
-
----
-
-## �📖 TABLA DE CONTENIDOS
-
-1. [Fundamentos Teóricos del Manejo de Excepciones](#fundamentos)
-2. [Análisis de Errores Específicos en Funciones.java](#analisis-errores)
-3. [Teoría de Correcciones y Mejores Prácticas](#teoria-correcciones)
-4. [Patrones de Diseño para Manejo de Errores](#patrones-diseno)
-5. [Casos de Estudio Prácticos](#casos-estudio)
-
----
-
-## 1. 🔧 FUNDAMENTOS TEÓRICOS DEL MANEJO DE EXCEPCIONES {#fundamentos}
-
-### 🎓 **Principios Fundamentales**
-
-#### **A) Principio de Responsabilidad Única en Excepciones**
-```java
-// ❌ VIOLACIÓN: Un catch maneja múltiples responsabilidades
-try {
-    conectarBaseDatos();
-    validarDatos();
-    procesarTransaccion();
-} catch (Exception e) {
-    // ¿Error de conexión? ¿Validación? ¿Procesamiento?
-    manejarError(e); // Respuesta genérica inapropiada
-}
-
-// ✅ CORRECTO: Separación de responsabilidades
-try {
-    conectarBaseDatos();
-} catch (SQLException e) {
-    manejarErrorConexion(e);
-}
-
-try {
-    validarDatos();
-} catch (ValidationException e) {
-    manejarErrorValidacion(e);
-}
-
-try {
-    procesarTransaccion();
-} catch (TransactionException e) {
-    manejarErrorTransaccion(e);
-}
-```
-
-#### **B) Principio de Falla Rápida (Fail-Fast)**
-```java
-// ❌ INCORRECTO: Ocultar errores permite corrupción de estado
-public void procesarDatos(String[] datos) {
-    try {
-        for (String dato : datos) {
-            procesarDato(dato); // Puede fallar silenciosamente
-        }
-    } catch (Exception e) {
-        // Continuar con datos corruptos
-    }
-}
-
-// ✅ CORRECTO: Fallar rápido preserva integridad
-public void procesarDatos(String[] datos) {
-    // Validación defensiva ANTES de procesamiento
-    if (datos == null || datos.length == 0) {
-        throw new IllegalArgumentException("Datos no pueden ser null o vacíos");
-    }
-    
-    for (String dato : datos) {
-        if (dato == null || dato.trim().isEmpty()) {
-            throw new IllegalArgumentException("Dato individual no puede ser null/vacío");
-        }
-        procesarDato(dato); // Falla rápido si hay problemas
-    }
-}
-```
-
-#### **C) Principio de Transparencia**
-```java
-// ❌ VIOLACIÓN: Información perdida
-try {
-    operacionCompleja();
-} catch (Exception e) {
-    return false; // ¿Qué pasó? ¿Por qué falló?
-}
-
-// ✅ CORRECTO: Transparencia total
-try {
-    operacionCompleja();
-    return true;
-} catch (SQLException e) {
-    Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
-        "Error de base de datos en operación compleja", e);
-    throw new ServiceException("Falla en acceso a datos", e);
-} catch (ValidationException e) {
-    Logger.getLogger(getClass().getName()).log(Level.WARNING, 
-        "Datos inválidos en operación compleja", e);
-    throw new ServiceException("Datos proporcionados son inválidos", e);
-}
-```
-
----
-
-## 2. 🔍 ANÁLISIS DE ERRORES ESPECÍFICOS EN FUNCIONES.JAVA {#analisis-errores}
-
-### **ERROR 1: Método esNumero() - Análisis Teórico**
-
-#### 📊 **Código Actual:**
-```java
-public static boolean esNumero(String string) {
-    try {
-        Double.parseDouble(string);
-    } catch (Exception e) {
-        return false;
-    }
-    return true;
-}
-```
-
-#### 🎓 **Análisis Teórico del Problema:**
-
-**A) Uso Correcto de Try-Catch para Validación:**
-- **✅ Semánticamente apropiado**: `parseDouble()` lanza excepción cuando el string no es numérico
-- **✅ Delega validación**: Aprovecha la lógica robusta incorporada en Java
-- **✅ Performance aceptable**: Para validaciones ocasionales, no en bucles críticos
-
-**B) Problemas Identificados:**
-- **❌ Captura genérica**: `Exception` es demasiado amplio
-- **❌ Sin validación null**: `NullPointerException` no manejada explícitamente
-- **❌ Sin documentación**: Comportamiento con null no especificado
-
-#### 🔧 **Teoría de la Corrección:**
-
-```java
-/**
- * Verifica si una cadena representa un número válido de punto flotante.
- * 
- * TEORÍA APLICADA:
- * - Validación defensiva: Verificar precondiciones antes de operaciones costosas
- * - Especificidad en catch: Solo capturar NumberFormatException esperada
- * - Transparencia: Documentar todos los comportamientos posibles
- * 
- * @param string la cadena a verificar (puede ser null o vacía)
- * @return true si la cadena representa un número válido, false en caso contrario
- * @implNote Utiliza Double.parseDouble() para validación exhaustiva
- */
-public static boolean esNumero(String string) {
-    // PRINCIPIO: Fail-Fast con validación defensiva
-    if (string == null || string.trim().isEmpty()) {
-        return false;
-    }
-    
-    try {
-        Double.parseDouble(string.trim());
-        return true;
-    } catch (NumberFormatException e) {
-        // PRINCIPIO: Especificidad - solo errores de parsing numérico
-        return false;
-    }
-    // NOTA: No capturamos Exception porque no esperamos otros tipos de errores
-}
-```
-
-### **ERROR 2: Catch Vacíos - Análisis Teórico**
-
-#### 📊 **Problemas Identificados en Funciones.java:**
-```java
-// Línea 705: InterruptedException silenciada
-}catch(InterruptedException e) {}
-
-// Líneas 1075, 1101, 1120: HeadlessException silenciada  
-catch(HeadlessException ex){}
-```
-
-#### 🎓 **Teoría del Problema:**
-
-**A) Violación del Principio de Transparencia:**
-```java
-// ❌ ANTIPATRÓN: "Swallowing Exceptions"
-catch(InterruptedException e) {}
-
-// PROBLEMAS TEÓRICOS:
-// 1. Rompe el protocolo de interrupción de Java
-// 2. Oculta información vital para debugging
-// 3. Puede causar deadlocks en aplicaciones multihilo
-// 4. Viola el principio de "least surprise"
-```
-
-**B) Impacto en el Modelo de Concurrencia de Java:**
-```java
-// TEORÍA: InterruptedException es un mecanismo cooperativo
-// - Thread.interrupt() establece una flag de interrupción
-// - Métodos como Thread.sleep() verifican esta flag
-// - Si se lanza InterruptedException, la flag se limpia automáticamente
-// - El catch vacío impide restaurar la flag, rompiendo el protocolo
-```
-
-#### 🔧 **Teoría de la Corrección:**
-
-```java
-// ✅ PATRÓN CORRECTO: Restaurar estado de interrupción
-catch(InterruptedException e) {
-    // TEORÍA: Restaurar flag de interrupción para protocolo cooperativo
-    Thread.currentThread().interrupt();
-    
-    // TEORÍA: Logging para observabilidad del sistema
-    Logger.getLogger(Funciones.class.getName()).log(Level.INFO, 
-        "Operación interrumpida por solicitud de cancelación", e);
-    
-    // TEORÍA: Decidir estrategia de salida apropiada
-    throw new RuntimeException("Operación cancelada por interrupción", e);
-}
-
-// ✅ PATRÓN CORRECTO: HeadlessException informativa
-catch(HeadlessException ex) {
-    // TEORÍA: Aunque esperada en entornos sin GUI, debe registrarse
-    Logger.getLogger(Funciones.class.getName()).log(Level.INFO, 
-        "Operación GUI no disponible en entorno headless - usando alternativa", ex);
-    
-    // TEORÍA: Proporcionar funcionalidad alternativa
-    ejecutarModoConsola();
-}
-```
-
-### **ERROR 3: Captura Genérica de Exception - Análisis Teórico**
-
-#### 📊 **Problema en Funciones.java (líneas múltiples):**
-```java
-}catch(Exception ex){
-    // Captura demasiado amplia sin manejo específico
-}
-```
-
-#### 🎓 **Teoría del Problema:**
-
-**A) Violación del Principio de Especificidad:**
-```java
-// ❌ PROBLEMÁTICO: Catch "catch-all"
-try {
-    operacionCompleja();
-} catch (Exception e) {
-    // ¿SQLException? ¿IOException? ¿NullPointerException? ¿RuntimeException?
-    // Respuesta genérica para problemas muy diferentes
-}
-
-// PROBLEMAS TEÓRICOS:
-// 1. Puede capturar errores de programación (NPE, IllegalStateException)
-// 2. Dificulta el debugging (información insuficiente)
-// 3. Impide manejo diferenciado según el tipo de error
-// 4. Puede ocultar bugs serios bajo "manejo de errores"
-```
-
-**B) Impacto en la Mantenibilidad:**
-```java
-// TEORÍA: La jerarquía de excepciones tiene propósito semántico
-Exception
-├── RuntimeException (errores de programación)
-│   ├── NullPointerException
-│   ├── IllegalArgumentException
-│   └── IllegalStateException
-├── SQLException (errores de base de datos)
-├── IOException (errores de E/O)
-└── InterruptedException (errores de concurrencia)
-
-// Capturar Exception pierde esta información semántica valiosa
-```
-
-#### 🔧 **Teoría de la Corrección:**
-
-```java
-// ✅ PATRÓN CORRECTO: Múltiples catch específicos
-try {
-    operacionCompleja();
-} catch (SQLException e) {
-    // TEORÍA: Error de persistencia - estrategia de reintento
-    Logger.getLogger(getClass()).log(Level.SEVERE, 
-        "Error de base de datos", e);
-    intentarRecuperacionBD(e);
-    
-} catch (ValidationException e) {
-    // TEORÍA: Error de datos - informar al usuario
-    Logger.getLogger(getClass()).log(Level.WARNING, 
-        "Datos inválidos proporcionados", e);
-    notificarUsuario("Datos inválidos: " + e.getMessage());
-    
-} catch (IllegalStateException e) {
-    // TEORÍA: Error de programación - fallar rápido
-    Logger.getLogger(getClass()).log(Level.SEVERE, 
-        "Estado inconsistente del sistema", e);
-    throw new SystemException("Sistema en estado inválido", e);
-    
+    descargarDatos();
 } catch (IOException e) {
-    // TEORÍA: Error de E/O - estrategia de reintentos
-    Logger.getLogger(getClass()).log(Level.WARNING, 
-        "Error de comunicación", e);
-    programarReintento(e);
+    System.out.println("Sin internet, usando datos guardados...");
+    // Solución: usar datos locales
+    usarDatosLocales();
 }
-
-// PRINCIPIO: Cada tipo de error recibe manejo apropiado a su naturaleza
 ```
 
----
-
-## 3. 🛠️ TEORÍA DE CORRECCIONES Y MEJORES PRÁCTICAS {#teoria-correcciones}
-
-### **A) Patrón de Validación Defensiva**
-
-#### 🎓 **Fundamento Teórico:**
-La validación defensiva es un principio de programación que establece verificar todas las precondiciones antes de ejecutar operaciones costosas o riesgosas.
+### ⚡ **¿Cómo Funciona? (Paso a Paso)**
 
 ```java
-// ✅ PATRÓN IMPLEMENTADO: Validación por capas
-public static void operacionSegura(String datos, Object configuracion) {
-    // CAPA 1: Validación de argumentos (Fail-Fast)
-    if (datos == null) {
-        throw new IllegalArgumentException("Datos no pueden ser null");
-    }
-    if (configuracion == null) {
-        throw new IllegalArgumentException("Configuración no puede ser null");
-    }
+public void ejemploSimple() {
+    System.out.println("1. Comenzando el programa...");
     
-    // CAPA 2: Validación de estado del sistema
-    if (!sistemaInicializado()) {
-        throw new IllegalStateException("Sistema no ha sido inicializado");
-    }
-    
-    // CAPA 3: Validación de formato/contenido
-    if (!validarFormatoDatos(datos)) {
-        throw new ValidationException("Formato de datos inválido: " + datos);
-    }
-    
-    // OPERACIÓN: Solo proceder después de todas las validaciones
     try {
-        procesarDatosValidados(datos, configuracion);
-    } catch (ProcessingException e) {
-        // Error en procesamiento, no en validación
-        Logger.getLogger(getClass()).log(Level.SEVERE, 
-            "Error en procesamiento después de validación exitosa", e);
-        throw new ServiceException("Procesamiento falló", e);
+        System.out.println("2. Intentando algo arriesgado...");
+        
+        // Si ESTA línea falla, salta directamente al catch
+        operacionQuePodriaFallar();
+        
+        System.out.println("3. ¡Todo salió bien!");
+        
+    } catch (Exception e) {
+        System.out.println("4. ¡Ups! Algo salió mal, pero lo arreglé");
+        
+    } finally {
+        System.out.println("5. Esto SIEMPRE se ejecuta, pase lo que pase");
+    }
+    
+    System.out.println("6. El programa continúa normalmente...");
+}
+```
+
+**Flujo cuando TODO sale bien:**
+```
+1 → 2 → 3 → 5 → 6
+```
+
+**Flujo cuando algo FALLA:**
+```
+1 → 2 → 4 → 5 → 6
+```
+
+### 🎯 **Analogía del Restaurante**
+
+Imagina que eres un mesero en un restaurante:
+
+```java
+public void atenderCliente() {
+    try {
+        // Intentas servir el plato favorito del cliente
+        servirPlatoFavorito();
+        
+    } catch (IngredienteAgotadoException e) {
+        // Si no hay ingredientes, ofreces una alternativa
+        System.out.println("Lo siento, ese plato se agotó. ¿Le gustaría probar esto otro?");
+        servirPlatoAlternativo();
+        
+    } catch (CocinaLlenaException e) {
+        // Si la cocina está ocupada, pides que espere
+        System.out.println("La cocina está ocupada, ¿puede esperar 10 minutos?");
+        ponerEnEspera();
+        
+    } finally {
+        // Siempre agradeces al cliente, pase lo que pase
+        System.out.println("¡Gracias por visitarnos!");
     }
 }
 ```
 
-### **B) Patrón de Logging Estructurado**
+### 📚 **Los Tipos de Errores más Comunes (Para Principiantes)**
 
-#### 🎓 **Fundamento Teórico:**
-El logging estructurado proporciona información consistente y útil para debugging, monitoreo y análisis de sistemas en producción.
+Imagina los errores como diferentes tipos de problemas cotidianos:
 
 ```java
-// ✅ PATRÓN IMPLEMENTADO: Logger configurado profesionalmente
-private static final Logger logger = Logger.getLogger(Funciones.class.getName());
-
-// Configuración de niveles de logging
-static {
-    // En desarrollo: mostrar todo
-    // En producción: solo WARNING y SEVERE
-    ConsoleHandler handler = new ConsoleHandler();
-    handler.setLevel(Level.INFO);
-    logger.addHandler(handler);
-    logger.setLevel(Level.INFO);
-}
-
-/**
- * Patrón estándar para logging de excepciones con contexto completo
- */
-private static void logearExcepcionEstructurada(Level nivel, String operacion, 
-                                               Map<String, Object> contexto, 
-                                               Exception excepcion) {
-    // TEORÍA: Información estructurada para análisis posterior
-    StringBuilder mensaje = new StringBuilder();
-    mensaje.append("Error en operación: ").append(operacion);
-    
-    if (contexto != null && !contexto.isEmpty()) {
-        mensaje.append(" | Contexto: ");
-        contexto.forEach((key, value) -> 
-            mensaje.append(key).append("=").append(value).append(" "));
-    }
-    
-    mensaje.append(" | Excepción: ").append(excepcion.getMessage());
-    
-    logger.log(nivel, mensaje.toString(), excepcion);
-    
-    // TEORÍA: Escalamiento automático para errores críticos
-    if (nivel == Level.SEVERE) {
-        notificarAdministrador(mensaje.toString(), excepcion);
-    }
-}
-
-// Uso del patrón
+// 🚫 NULLPOINTEREXCEPTION: "No hay nada ahí"
+// Como intentar abrir una puerta que no existe
+String nombre = null;
 try {
-    operacionRiesgosa();
-} catch (SQLException e) {
-    Map<String, Object> contexto = Map.of(
-        "usuario", getCurrentUser(),
-        "timestamp", System.currentTimeMillis(),
-        "operacion_id", getOperationId()
-    );
-    
-    logearExcepcionEstructurada(Level.SEVERE, "acceso_base_datos", contexto, e);
+    int longitud = nombre.length();  // ¡Error! nombre es null
+} catch (NullPointerException e) {
+    System.out.println("El nombre está vacío, usando 'Anónimo'");
+    nombre = "Anónimo";
+}
+
+// 🔢 NUMBERFORMATEXCEPTION: "Eso no es un número"
+// Como intentar hacer matemáticas con letras
+try {
+    int numero = Integer.parseInt("abc");  // ¡Error! "abc" no es número
+} catch (NumberFormatException e) {
+    System.out.println("Eso no es un número válido, usando 0");
+    numero = 0;
+}
+
+// 📁 FILENOTFOUNDEXCEPTION: "No encuentro ese archivo"
+// Como buscar una foto que no existe en tu teléfono
+try {
+    leerArchivo("foto_vacaciones.jpg");
+} catch (FileNotFoundException e) {
+    System.out.println("La foto no existe, usando imagen por defecto");
+    mostrarImagenPorDefecto();
+}
+
+// ➗ ARITHMETICEXCEPTION: "Error en matemáticas"
+// Como intentar dividir una pizza entre 0 personas
+try {
+    int resultado = 10 / 0;  // ¡Error! No se puede dividir entre 0
+} catch (ArithmeticException e) {
+    System.out.println("No puedes dividir entre cero, usando 0 como resultado");
+    resultado = 0;
 }
 ```
 
-### **C) Patrón de Recuperación por Capas**
+### 🎯 **Reglas Simples para Principiantes**
 
-#### 🎓 **Fundamento Teórico:**
-La recuperación por capas implementa múltiples estrategias de fallback para mantener la funcionalidad del sistema incluso cuando ocurren errores.
-
+#### **Regla #1: Nunca Dejes un Catch Vacío**
 ```java
-// ✅ PATRÓN IMPLEMENTADO: Recuperación escalonada
-public static <T> T operacionConRecuperacion(Supplier<T> operacionPrincipal, 
-                                            Supplier<T> operacionBackup,
-                                            Supplier<T> operacionPorDefecto) {
-    // CAPA 1: Intento principal
-    try {
-        T resultado = operacionPrincipal.get();
-        logger.info("Operación principal exitosa");
-        return resultado;
-        
-    } catch (PrimaryOperationException e) {
-        logger.warning("Operación principal falló, intentando backup: " + e.getMessage());
-        
-        // CAPA 2: Operación de backup
+// ❌ MAL - "Hacer como que no pasó nada"
+try {
+    hacerAlgo();
+} catch (Exception e) {
+    // Vacío = el error desaparece y no sabes qué pasó
+}
+
+// ✅ BIEN - "Al menos di qué pasó"
+try {
+    hacerAlgo();
+} catch (Exception e) {
+    System.out.println("Algo salió mal: " + e.getMessage());
+    // O haz algo para arreglar el problema
+}
+```
+
+#### **Regla #2: Sé Específico con los Errores**
+```java
+// ❌ MAL - "Atrapar todo sin saber qué"
+try {
+    leerArchivo();
+    dividirNumeros();
+} catch (Exception e) {  // Muy genérico
+    System.out.println("Error");  // No sabemos cuál
+}
+
+// ✅ BIEN - "Maneja cada problema de manera diferente"
+try {
+    leerArchivo();
+    dividirNumeros();
+} catch (FileNotFoundException e) {
+    System.out.println("El archivo no existe, creando uno nuevo");
+    crearArchivo();
+} catch (ArithmeticException e) {
+    System.out.println("Error en matemáticas, usando valor por defecto");
+    usarValorPorDefecto();
+}
+```
+
+#### **Regla #3: Siempre Informa al Usuario Qué Pasó**
+```java
+// ❌ MAL - "Usuario no sabe qué pasó"
+try {
+    enviarEmail();
+} catch (Exception e) {
+    // Error silencioso
+}
+
+// ✅ BIEN - "Usuario sabe qué pasó y qué hacer"
+try {
+    enviarEmail();
+} catch (Exception e) {
+    System.out.println("No se pudo enviar el email. Verifica tu conexión a internet.");
+    System.out.println("Intenta de nuevo en unos minutos.");
+}
+```
+
+### � **Ejemplos Prácticos para Entender Mejor**
+
+#### **Ejemplo 1: Calculadora Simple**
+```java
+public class CalculadoraSimple {
+    
+    public static void main(String[] args) {
+        // Ejemplo: dividir dos números
+        dividir(10, 2);  // Esto funcionará
+        dividir(10, 0);  // Esto causará error, pero lo manejaremos
+    }
+    
+    public static void dividir(int a, int b) {
         try {
-            T resultado = operacionBackup.get();
-            logger.info("Operación backup exitosa");
-            return resultado;
+            // Intentamos hacer la división
+            int resultado = a / b;
+            System.out.println(a + " ÷ " + b + " = " + resultado);
             
-        } catch (BackupOperationException e2) {
-            logger.warning("Operación backup falló, usando valor por defecto: " + e2.getMessage());
-            
-            // CAPA 3: Valor por defecto (nunca falla)
-            T resultado = operacionPorDefecto.get();
-            logger.info("Usando valor por defecto");
-            return resultado;
+        } catch (ArithmeticException e) {
+            // Si hay división entre cero, hacemos esto
+            System.out.println("¡Error! No puedes dividir " + a + " entre " + b);
+            System.out.println("Recuerda: no se puede dividir entre cero");
         }
     }
 }
 
-// Ejemplo de uso:
-String configuracion = operacionConRecuperacion(
-    () -> leerConfiguracionRemota(),    // Operación principal
-    () -> leerConfiguracionLocal(),     // Backup
-    () -> obtenerConfiguracionDefecto() // Por defecto
-);
+// SALIDA:
+// 10 ÷ 2 = 5
+// ¡Error! No puedes dividir 10 entre 0
+// Recuerda: no se puede dividir entre cero
+```
+
+#### **Ejemplo 2: Leer Edad del Usuario**
+```java
+import java.util.Scanner;
+
+public class LeerEdad {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("¿Cuántos años tienes? ");
+        String respuesta = scanner.nextLine();
+        
+        try {
+            // Intentamos convertir la respuesta a número
+            int edad = Integer.parseInt(respuesta);
+            
+            if (edad >= 18) {
+                System.out.println("Eres mayor de edad (" + edad + " años)");
+            } else {
+                System.out.println("Eres menor de edad (" + edad + " años)");
+            }
+            
+        } catch (NumberFormatException e) {
+            // Si el usuario escribió algo que no es número
+            System.out.println("¡Ups! '" + respuesta + "' no es un número válido");
+            System.out.println("Por favor escribe solo números, ejemplo: 25");
+        }
+    }
+}
+
+// EJEMPLOS DE USO:
+// Usuario escribe "25" → "Eres mayor de edad (25 años)"
+// Usuario escribe "abc" → "¡Ups! 'abc' no es un número válido"
+```
+
+#### **Ejemplo 3: Buscar Archivo**
+```java
+import java.io.*;
+
+public class BuscarArchivo {
+    
+    public static void abrirArchivo(String nombreArchivo) {
+        try {
+            // Intentamos abrir el archivo
+            FileReader archivo = new FileReader(nombreArchivo);
+            System.out.println("¡Archivo encontrado! Abriendo " + nombreArchivo);
+            
+            // Aquí leeríamos el contenido del archivo
+            archivo.close();
+            
+        } catch (FileNotFoundException e) {
+            // Si el archivo no existe
+            System.out.println("No encontré el archivo: " + nombreArchivo);
+            System.out.println("¿Estás seguro de que el nombre es correcto?");
+            System.out.println("Verifica que el archivo esté en la carpeta correcta");
+            
+        } catch (IOException e) {
+            // Si hay problemas al leer el archivo
+            System.out.println("Hay un problema al leer el archivo");
+            System.out.println("Puede que esté dañado o no tengas permisos");
+        }
+    }
+}
+```
+
+### � **Cuándo Usar Try-Catch (Guía para Principiantes)**
+
+#### **✅ SÍ uses Try-Catch cuando:**
+
+1. **Trabajas con archivos**
+   ```java
+   try {
+       leerArchivo("datos.txt");
+   } catch (FileNotFoundException e) {
+       System.out.println("Archivo no encontrado");
+   }
+   ```
+
+2. **Conviertes texto a números**
+   ```java
+   try {
+       int numero = Integer.parseInt(textoDelUsuario);
+   } catch (NumberFormatException e) {
+       System.out.println("Eso no es un número");
+   }
+   ```
+
+3. **Haces operaciones matemáticas arriesgadas**
+   ```java
+   try {
+       int resultado = a / b;
+   } catch (ArithmeticException e) {
+       System.out.println("No se puede dividir entre cero");
+   }
+   ```
+
+4. **Te conectas a internet o bases de datos**
+   ```java
+   try {
+       conectarAInternet();
+   } catch (IOException e) {
+       System.out.println("Sin conexión a internet");
+   }
+   ```
+
+#### **❌ NO uses Try-Catch para:**
+
+1. **Validaciones normales**
+   ```java
+   // ❌ MAL
+   try {
+       if (edad < 0) throw new Exception();
+   } catch (Exception e) {
+       System.out.println("Edad inválida");
+   }
+   
+   // ✅ MEJOR
+   if (edad < 0) {
+       System.out.println("Edad no puede ser negativa");
+   }
+   ```
+
+2. **Control de flujo normal**
+   ```java
+   // ❌ MAL - usar excepciones para decidir qué hacer
+   // ✅ MEJOR - usar if/else normal
+   ```
+
+## 📖 TABLA DE CONTENIDOS (Guía Paso a Paso)
+
+1. [🎯 ¿Qué es Try-Catch? (Explicación Simple)](#teoria-fundamental)
+2. [🚫 Errores Comunes y Cómo Evitarlos](#errores-comunes)
+3. [✅ Mejores Prácticas para Principiantes](#mejores-practicas)
+4. [🔧 Ejercicios Prácticos](#ejercicios)
+5. [📚 Casos de Estudio Simples](#casos-estudio)
+
+---
+
+## � ERRORES COMUNES Y CÓMO EVITARLOS {#errores-comunes}
+
+### **Error #1: El Catch Vacío (¡El más peligroso!)**
+
+#### 🤔 **¿Qué es?**
+Es como **ignorar** que algo salió mal. Es como si tu carro hiciera un ruido extraño y tú simplemente subieras la música para no escucharlo.
+
+```java
+// ❌ ¡MUY MAL! - Catch vacío
+try {
+    int resultado = 10 / 0;  // Esto va a fallar
+} catch (Exception e) {
+    // Vacío = "Hacer como que no pasó nada"
+    // ¡El error desaparece y nunca sabrás qué pasó!
+}
+
+// ✅ MUCHO MEJOR - Al menos di qué pasó
+try {
+    int resultado = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("¡Error! No puedes dividir entre cero");
+    System.out.println("Detalles: " + e.getMessage());
+    // Ahora sabes que pasó y puedes arreglarlo
+}
+```
+
+#### 🎯 **¿Por qué es tan malo?**
+- **No sabes qué falló**: El error desaparece silenciosamente
+- **No puedes arreglar el problema**: Sin información, no puedes solucionarlo
+- **Dificulta encontrar bugs**: Es como buscar algo con los ojos cerrados
+
+### **Error #2: Atrapar Demasiado (Exception genérico)**
+
+#### 🤔 **¿Qué es?**
+Es como usar una red gigante para pescar cuando solo quieres un tipo específico de pez.
+
+```java
+// ❌ MAL - Muy genérico
+try {
+    leerArchivo("datos.txt");       // Puede fallar de una manera
+    int numero = Integer.parseInt("abc");  // Puede fallar de otra manera
+} catch (Exception e) {  // ¡Atrapa TODO tipo de errores!
+    System.out.println("Algo salió mal");  // ¿Pero qué exactamente?
+}
+
+// ✅ MEJOR - Específico para cada problema
+try {
+    leerArchivo("datos.txt");
+    int numero = Integer.parseInt("abc");
+    
+} catch (FileNotFoundException e) {
+    System.out.println("No encontré el archivo datos.txt");
+    System.out.println("Verifica que el archivo existe");
+    
+} catch (NumberFormatException e) {
+    System.out.println("'abc' no es un número válido");
+    System.out.println("Por favor usa solo números");
+}
+```
+
+#### 🎯 **¿Por qué es mejor ser específico?**
+- **Mensajes más útiles**: El usuario sabe exactamente qué está mal
+- **Soluciones diferentes**: Cada problema tiene su propia solución
+- **Más fácil de debuggear**: Sabes exactamente dónde buscar el problema
+
+### **Error #3: No Validar Antes de Usar**
+
+#### 🤔 **¿Qué es?**
+Es como tratar de escribir con un lápiz sin verificar si tiene punta.
+
+```java
+// ❌ MAL - No verificar si existe
+String nombre = null;  // Podría venir de una base de datos
+try {
+    int longitud = nombre.length();  // ¡BOOM! Error porque nombre es null
+} catch (NullPointerException e) {
+    System.out.println("El nombre está vacío");
+}
+
+// ✅ MEJOR - Verificar primero
+String nombre = obtenerNombreDeBaseDatos();  // Podría ser null
+
+if (nombre == null || nombre.trim().isEmpty()) {
+    System.out.println("No hay nombre disponible, usando 'Anónimo'");
+    nombre = "Anónimo";
+}
+
+// Ahora es seguro usar el nombre
+int longitud = nombre.length();
+```
+
+#### 🎯 **Principio Simple**
+**"Verificar antes de usar"** - Siempre revisa si las cosas existen antes de usarlas.
+
+### **Error #4: Usar Try-Catch para Lógica Normal**
+
+#### 🤔 **¿Qué es?**
+Es como usar un martillo para abrir una puerta cuando tienes la llave.
+
+```java
+// ❌ MAL - Usar excepciones para lógica normal
+public boolean esEdadValida(int edad) {
+    try {
+        if (edad < 0 || edad > 150) {
+            throw new Exception("Edad inválida");
+        }
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
+}
+
+// ✅ MEJOR - Usar lógica normal (if/else)
+public boolean esEdadValida(int edad) {
+    if (edad < 0 || edad > 150) {
+        System.out.println("La edad debe estar entre 0 y 150 años");
+        return false;
+    }
+    return true;
+}
 ```
 
 ---
 
-## 4. 🎨 PATRONES DE DISEÑO PARA MANEJO DE ERRORES {#patrones-diseno}
+## ✅ MEJORES PRÁCTICAS PARA PRINCIPIANTES {#mejores-practicas}
 
-### **A) Patrón Result (Try/Either)**
-
-#### 🎓 **Fundamento Teórico:**
-El patrón Result encapsula tanto el éxito como el fallo en un tipo de dato, evitando excepciones para control de flujo.
+### **🎯 Práctica #1: Siempre Da Información Útil**
 
 ```java
-// ✅ IMPLEMENTACIÓN DEL PATRÓN RESULT
-public class Result<T, E> {
-    private final T valor;
-    private final E error;
-    private final boolean exito;
-    
-    private Result(T valor, E error, boolean exito) {
-        this.valor = valor;
-        this.error = error;
-        this.exito = exito;
-    }
-    
-    public static <T, E> Result<T, E> exito(T valor) {
-        return new Result<>(valor, null, true);
-    }
-    
-    public static <T, E> Result<T, E> error(E error) {
-        return new Result<>(null, error, false);
-    }
-    
-    public boolean esExito() { return exito; }
-    public T getValor() { return valor; }
-    public E getError() { return error; }
-    
-    // Métodos funcionales para composición
-    public <U> Result<U, E> map(Function<T, U> mapper) {
-        return exito ? exito(mapper.apply(valor)) : error(error);
-    }
-    
-    public <U> Result<U, E> flatMap(Function<T, Result<U, E>> mapper) {
-        return exito ? mapper.apply(valor) : error(error);
-    }
-}
-
-// USO DEL PATRÓN RESULT
-public static Result<Double, String> esNumeroSeguro(String entrada) {
-    if (entrada == null || entrada.trim().isEmpty()) {
-        return Result.error("Entrada no puede ser null o vacía");
-    }
-    
+// ✅ BUENA PRÁCTICA
+public void leerArchivoSeguro(String nombreArchivo) {
     try {
-        double numero = Double.parseDouble(entrada.trim());
-        return Result.exito(numero);
-    } catch (NumberFormatException e) {
-        return Result.error("Formato numérico inválido: " + entrada);
+        // Intentar leer el archivo
+        FileReader archivo = new FileReader(nombreArchivo);
+        System.out.println("Archivo leído exitosamente: " + nombreArchivo);
+        
+    } catch (FileNotFoundException e) {
+        // Información útil para el usuario
+        System.out.println("❌ No pude encontrar el archivo: " + nombreArchivo);
+        System.out.println("💡 Sugerencias:");
+        System.out.println("   - Verifica que el nombre sea correcto");
+        System.out.println("   - Asegúrate de que el archivo esté en la carpeta correcta");
+        System.out.println("   - Revisa que tengas permisos para acceder al archivo");
     }
 }
-
-// Composición funcional sin excepciones
-String entrada = "42.5";
-String resultado = esNumeroSeguro(entrada)
-    .map(numero -> numero * 2)          // Solo si es éxito
-    .map(numero -> "Resultado: " + numero)
-    .map(String::toUpperCase)
-    .getValor();  // "RESULTADO: 85.0"
 ```
 
-### **B) Patrón Circuit Breaker**
-
-#### 🎓 **Fundamento Teórico:**
-El Circuit Breaker protege el sistema de fallos en cascada deteniendo temporalmente operaciones que están fallando consistentemente.
+### **🎯 Práctica #2: Maneja Cada Error de Manera Específica**
 
 ```java
-// ✅ IMPLEMENTACIÓN SIMPLE DE CIRCUIT BREAKER
-public class CircuitBreaker<T> {
-    private enum Estado { CERRADO, ABIERTO, MEDIO_ABIERTO }
-    
-    private Estado estado = Estado.CERRADO;
-    private int contadorFallos = 0;
-    private long tiempoUltimoFallo = 0;
-    private final int umbralFallos;
-    private final long timeoutRecuperacion;
-    
-    public CircuitBreaker(int umbralFallos, long timeoutRecuperacion) {
-        this.umbralFallos = umbralFallos;
-        this.timeoutRecuperacion = timeoutRecuperacion;
-    }
-    
-    public Result<T, String> ejecutar(Supplier<T> operacion) {
-        // TEORÍA: Verificar estado antes de ejecutar
-        if (estado == Estado.ABIERTO) {
-            if (System.currentTimeMillis() - tiempoUltimoFallo > timeoutRecuperacion) {
-                estado = Estado.MEDIO_ABIERTO;
-                logger.info("Circuit breaker pasando a estado MEDIO_ABIERTO");
-            } else {
-                return Result.error("Circuit breaker ABIERTO - operación bloqueada");
-            }
+// ✅ BUENA PRÁCTICA - Un plan diferente para cada problema
+public void calcularPromedio(String[] numerosTexto) {
+    try {
+        double suma = 0;
+        int cantidad = 0;
+        
+        for (String numeroTexto : numerosTexto) {
+            double numero = Double.parseDouble(numeroTexto);
+            suma += numero;
+            cantidad++;
         }
         
-        try {
-            T resultado = operacion.get();
-            
-            // TEORÍA: Éxito restaura el estado
-            if (estado == Estado.MEDIO_ABIERTO) {
-                estado = Estado.CERRADO;
-                contadorFallos = 0;
-                logger.info("Circuit breaker CERRADO - operación recuperada");
+        double promedio = suma / cantidad;
+        System.out.println("El promedio es: " + promedio);
+        
+    } catch (NumberFormatException e) {
+        System.out.println("❌ Hay un valor que no es número");
+        System.out.println("💡 Todos los valores deben ser números, ejemplo: 1.5, 2.3, 4.7");
+        
+    } catch (ArithmeticException e) {
+        System.out.println("❌ No puedo calcular promedio sin números");
+        System.out.println("💡 Proporciona al menos un número válido");
+        
+    } catch (NullPointerException e) {
+        System.out.println("❌ La lista de números está vacía");
+        System.out.println("💡 Proporciona una lista con números");
+    }
+}
+```
+
+### **🎯 Práctica #3: Usar Finally para Limpiar**
+
+```java
+// ✅ BUENA PRÁCTICA - Siempre limpia al final
+public void trabajarConArchivo(String archivo) {
+    FileReader lector = null;
+    
+    try {
+        // Abrir el archivo
+        lector = new FileReader(archivo);
+        System.out.println("Trabajando con el archivo...");
+        // Hacer trabajo con el archivo
+        
+    } catch (FileNotFoundException e) {
+        System.out.println("No encontré el archivo: " + archivo);
+        
+    } catch (IOException e) {
+        System.out.println("Problema leyendo el archivo");
+        
+    } finally {
+        // ESTO SIEMPRE SE EJECUTA - ¡Importante para limpiar!
+        if (lector != null) {
+            try {
+                lector.close();
+                System.out.println("Archivo cerrado correctamente");
+            } catch (IOException e) {
+                System.out.println("Problema cerrando el archivo");
             }
+        }
+    }
+}
+```
+
+## 🔧 EJERCICIOS PRÁCTICOS {#ejercicios}
+
+### **💪 Ejercicio 1: Arregla el Catch Vacío**
+
+```java
+// ❌ CÓDIGO CON PROBLEMA
+public class EjercicioCatchVacio {
+    public static void main(String[] args) {
+        String numero = "abc";
+        
+        try {
+            int resultado = Integer.parseInt(numero);
+            System.out.println("El número es: " + resultado);
+        } catch (NumberFormatException e) {
+            // Catch vacío - ¡Arréglalo!
+        }
+    }
+}
+
+// ✅ SOLUCIÓN
+public class EjercicioCatchVacioSolucion {
+    public static void main(String[] args) {
+        String numero = "abc";
+        
+        try {
+            int resultado = Integer.parseInt(numero);
+            System.out.println("El número es: " + resultado);
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Error: '" + numero + "' no es un número válido");
+            System.out.println("💡 Intenta con números como: 123, 456, -789");
+            System.out.println("🔧 Usando 0 como valor por defecto");
+            int resultado = 0;
+        }
+    }
+}
+```
+
+### **💪 Ejercicio 2: Calculadora Segura**
+
+Crea una calculadora que maneje todos los errores posibles:
+
+```java
+// ✅ SOLUCIÓN COMPLETA
+import java.util.Scanner;
+
+public class CalculadoraSegura {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== CALCULADORA SEGURA ===");
+        
+        try {
+            // Pedir primer número
+            System.out.print("Ingresa el primer número: ");
+            String numero1Texto = scanner.nextLine();
+            double numero1 = Double.parseDouble(numero1Texto);
             
-            return Result.exito(resultado);
+            // Pedir operación
+            System.out.print("Ingresa la operación (+, -, *, /): ");
+            String operacion = scanner.nextLine();
+            
+            // Pedir segundo número
+            System.out.print("Ingresa el segundo número: ");
+            String numero2Texto = scanner.nextLine();
+            double numero2 = Double.parseDouble(numero2Texto);
+            
+            // Realizar cálculo
+            double resultado = calcular(numero1, numero2, operacion);
+            System.out.println("✅ Resultado: " + numero1 + " " + operacion + " " + numero2 + " = " + resultado);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Error: Solo se permiten números");
+            System.out.println("💡 Ejemplos válidos: 123, -456, 78.9");
+            
+        } catch (ArithmeticException e) {
+            System.out.println("❌ Error matemático: " + e.getMessage());
+            
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ Error: " + e.getMessage());
             
         } catch (Exception e) {
-            // TEORÍA: Fallo incrementa contador y puede abrir circuito
-            contadorFallos++;
-            tiempoUltimoFallo = System.currentTimeMillis();
-            
-            if (contadorFallos >= umbralFallos) {
-                estado = Estado.ABIERTO;
-                logger.warning("Circuit breaker ABIERTO después de " + contadorFallos + " fallos");
-            }
-            
-            return Result.error("Operación falló: " + e.getMessage());
+            System.out.println("❌ Error inesperado: " + e.getMessage());
+            System.out.println("💡 Por favor intenta de nuevo");
         }
     }
-}
-
-// USO DEL CIRCUIT BREAKER
-CircuitBreaker<String> protectorBD = new CircuitBreaker<>(3, 5000); // 3 fallos, 5 segundos
-
-Result<String, String> resultado = protectorBD.ejecutar(() -> {
-    return consultarBaseDatos("SELECT * FROM usuarios");
-});
-
-if (resultado.esExito()) {
-    procesarDatos(resultado.getValor());
-} else {
-    logger.warning("Operación protegida falló: " + resultado.getError());
-    usarDatosCache();
+    
+    public static double calcular(double a, double b, String operacion) {
+        switch (operacion) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                if (b == 0) {
+                    throw new ArithmeticException("No se puede dividir entre cero");
+                }
+                return a / b;
+            default:
+                throw new IllegalArgumentException("Operación inválida: " + operacion + 
+                    ". Use +, -, * o /");
+        }
+    }
 }
 ```
 
----
-
-## 5. 📚 CASOS DE ESTUDIO PRÁCTICOS {#casos-estudio}
-
-### **CASO 1: Refactorización del Método esNumero()**
-
-#### 📊 **Evolución del Código:**
+### **💪 Ejercicio 3: Lector de Archivos Inteligente**
 
 ```java
-// ❌ VERSIÓN ORIGINAL
-public static boolean esNumero(String string) {
-    try {
-        Double.parseDouble(string);
-    } catch (Exception e) {
-        return false;
-    }
-    return true;
-}
+// ✅ SOLUCIÓN CON MÚLTIPLES ESTRATEGIAS
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-// 🔄 VERSIÓN MEJORADA BÁSICA
-public static boolean esNumero(String string) {
-    if (string == null || string.trim().isEmpty()) {
-        return false;
-    }
+public class LectorArchivosInteligente {
     
-    try {
-        Double.parseDouble(string.trim());
-        return true;
-    } catch (NumberFormatException e) {
-        return false;
-    }
-}
-
-// ✅ VERSIÓN PROFESIONAL CON RESULT
-public static Result<Double, String> parseNumero(String entrada) {
-    // Validación defensiva completa
-    if (entrada == null) {
-        return Result.error("Entrada no puede ser null");
-    }
-    
-    String limpia = entrada.trim();
-    if (limpia.isEmpty()) {
-        return Result.error("Entrada no puede estar vacía");
-    }
-    
-    try {
-        double numero = Double.parseDouble(limpia);
+    public static void leerArchivo(String nombreArchivo) {
+        System.out.println("📁 Intentando leer: " + nombreArchivo);
         
-        // Validaciones adicionales según contexto
-        if (Double.isNaN(numero)) {
-            return Result.error("Resultado es NaN (Not a Number)");
-        }
-        if (Double.isInfinite(numero)) {
-            return Result.error("Resultado es infinito");
-        }
-        
-        return Result.exito(numero);
-        
-    } catch (NumberFormatException e) {
-        return Result.error("Formato numérico inválido: '" + entrada + 
-                          "' - " + e.getMessage());
-    }
-}
-
-// Método de compatibilidad con versión anterior
-public static boolean esNumero(String string) {
-    return parseNumero(string).esExito();
-}
-```
-
-### **CASO 2: Sistema de Validación Robusto**
-
-#### 📊 **Implementación Completa:**
-
-```java
-// ✅ SISTEMA DE VALIDACIÓN PROFESIONAL
-public class ValidadorEntradas {
-    private static final Logger logger = Logger.getLogger(ValidadorEntradas.class.getName());
-    
-    public static class ResultadoValidacion {
-        private final boolean valido;
-        private final List<String> errores;
-        private final List<String> advertencias;
-        
-        public ResultadoValidacion(boolean valido, List<String> errores, List<String> advertencias) {
-            this.valido = valido;
-            this.errores = new ArrayList<>(errores);
-            this.advertencias = new ArrayList<>(advertencias);
-        }
-        
-        // Getters y métodos de utilidad
-        public boolean esValido() { return valido; }
-        public List<String> getErrores() { return new ArrayList<>(errores); }
-        public List<String> getAdvertencias() { return new ArrayList<>(advertencias); }
-        public String getMensajeCompleto() {
-            StringBuilder sb = new StringBuilder();
-            if (!errores.isEmpty()) {
-                sb.append("Errores: ").append(String.join(", ", errores));
+        try {
+            // Intentar leer el archivo
+            List<String> lineas = leerLineasArchivo(nombreArchivo);
+            
+            System.out.println("✅ Archivo leído exitosamente");
+            System.out.println("📊 Total de líneas: " + lineas.size());
+            
+            // Mostrar las primeras 3 líneas
+            for (int i = 0; i < Math.min(3, lineas.size()); i++) {
+                System.out.println("   Línea " + (i+1) + ": " + lineas.get(i));
             }
-            if (!advertencias.isEmpty()) {
-                if (sb.length() > 0) sb.append(" | ");
-                sb.append("Advertencias: ").append(String.join(", ", advertencias));
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("❌ Archivo no encontrado: " + nombreArchivo);
+            System.out.println("🔧 Intentando crear archivo por defecto...");
+            
+            try {
+                crearArchivoPorDefecto(nombreArchivo);
+                System.out.println("✅ Archivo creado exitosamente");
+            } catch (IOException e2) {
+                System.out.println("❌ No se pudo crear el archivo: " + e2.getMessage());
             }
-            return sb.toString();
+            
+        } catch (IOException e) {
+            System.out.println("❌ Error leyendo archivo: " + e.getMessage());
+            System.out.println("💡 Posibles causas:");
+            System.out.println("   - El archivo está en uso por otro programa");
+            System.out.println("   - No tienes permisos para leer el archivo");
+            System.out.println("   - El archivo está dañado");
+            
+        } catch (SecurityException e) {
+            System.out.println("❌ Sin permisos para acceder al archivo");
+            System.out.println("💡 Contacta al administrador del sistema");
         }
     }
     
-    /**
-     * Valida todos los campos de entrada con reporte detallado
-     */
-    public static ResultadoValidacion validarEntradaCompleta() {
-        List<String> errores = new ArrayList<>();
-        List<String> advertencias = new ArrayList<>();
+    private static List<String> leerLineasArchivo(String nombreArchivo) throws IOException {
+        List<String> lineas = new ArrayList<>();
         
-        // Validación de campos requeridos
-        validarCamposRequeridos(errores);
-        
-        // Validación de rangos numéricos
-        validarRangosNumericos(errores, advertencias);
-        
-        // Validación de compatibilidad entre campos
-        validarCompatibilidad(errores, advertencias);
-        
-        // Validación de normas y estándares
-        validarNormativas(advertencias);
-        
-        boolean esValido = errores.isEmpty();
-        
-        // Logging del resultado
-        if (!esValido) {
-            logger.log(Level.WARNING, "Validación falló: " + String.join("; ", errores));
-        }
-        
-        return new ResultadoValidacion(esValido, errores, advertencias);
-    }
-    
-    private static void validarCamposRequeridos(List<String> errores) {
-        // Implementación con validación específica por campo
-        if (Entrada.TxtPosNominal.getText().isEmpty()) {
-            errores.add("Potencia nominal es requerida");
-        }
-        
-        if (Entrada.TxtCargaL.getText().isEmpty()) {
-            errores.add("Carga es requerida");
-        }
-        
-        // Validación con parseNumero para campos numéricos
-        String voltajeText = Entrada.TxtVoltaje.getText();
-        Result<Double, String> voltajeResult = parseNumero(voltajeText);
-        if (!voltajeResult.esExito()) {
-            errores.add("Voltaje inválido: " + voltajeResult.getError());
-        }
-    }
-    
-    private static void validarRangosNumericos(List<String> errores, List<String> advertencias) {
-        // Validación de rangos con Result pattern
-        Result<Double, String> potenciaResult = parseNumero(Entrada.TxtPosNominal.getText());
-        if (potenciaResult.esExito()) {
-            double potencia = potenciaResult.getValor();
-            if (potencia <= 0) {
-                errores.add("Potencia debe ser mayor que cero");
-            } else if (potencia > 1000) {
-                advertencias.add("Potencia muy alta (>" + potencia + "kVA) - verificar especificaciones");
+        try (BufferedReader reader = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                lineas.add(linea);
             }
         }
+        
+        return lineas;
     }
     
-    private static void validarCompatibilidad(List<String> errores, List<String> advertencias) {
-        // Validación de lógica de negocio
-        String norma = (String) Entrada.CmbNorma.getSelectedItem();
-        String pais = (String) Entrada.CmbPais.getSelectedItem();
-        
-        if (norma != null && pais != null) {
-            if (!esNormaCompatibleConPais(norma, pais)) {
-                errores.add("Norma " + norma + " no es compatible con país " + pais);
-            }
+    private static void crearArchivoPorDefecto(String nombreArchivo) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(nombreArchivo))) {
+            writer.println("# Archivo creado automáticamente");
+            writer.println("# Fecha: " + new java.util.Date());
+            writer.println("# Puedes editar este archivo y agregar tu contenido");
+            writer.println("");
+            writer.println("Línea de ejemplo 1");
+            writer.println("Línea de ejemplo 2");
         }
     }
     
-    private static void validarNormativas(List<String> advertencias) {
-        // Validaciones específicas de normativas técnicas
-        // Implementar según requerimientos específicos
-    }
-    
-    private static boolean esNormaCompatibleConPais(String norma, String pais) {
-        // Lógica de compatibilidad según base de datos de normas
-        return true; // Placeholder
+    public static void main(String[] args) {
+        // Probar con archivo existente
+        leerArchivo("datos.txt");
+        
+        // Probar con archivo que no existe
+        leerArchivo("archivo_nuevo.txt");
     }
 }
 ```
 
 ---
 
-## 🎯 CONCLUSIONES Y APLICACIÓN PRÁCTICA
+## 📚 CASOS DE ESTUDIO SIMPLES {#casos-estudio}
 
-### **Principios Clave Aplicados:**
+### **📋 Caso 1: Sistema de Login Simple**
 
-1. **🔧 Fail-Fast**: Validar antes de procesar
-2. **🎯 Especificidad**: Catch específicos según el tipo de error
-3. **📝 Transparencia**: Logging completo y estructurado
-4. **🔄 Recuperación**: Múltiples estrategias de fallback
-5. **🛡️ Defensividad**: Validación de todas las precondiciones
+```java
+public class SistemaLogin {
+    private static final String USUARIO_CORRECTO = "admin";
+    private static final String PASSWORD_CORRECTO = "123456";
+    
+    public static boolean intentarLogin(String usuario, String password) {
+        try {
+            // Validar que no sean null
+            if (usuario == null || password == null) {
+                throw new IllegalArgumentException("Usuario y contraseña no pueden estar vacíos");
+            }
+            
+            // Validar longitud mínima
+            if (usuario.trim().length() < 3) {
+                throw new IllegalArgumentException("El usuario debe tener al menos 3 caracteres");
+            }
+            
+            if (password.length() < 6) {
+                throw new IllegalArgumentException("La contraseña debe tener al menos 6 caracteres");
+            }
+            
+            // Verificar credenciales
+            boolean loginExitoso = usuario.equals(USUARIO_CORRECTO) && 
+                                 password.equals(PASSWORD_CORRECTO);
+            
+            if (loginExitoso) {
+                System.out.println("✅ Login exitoso. ¡Bienvenido " + usuario + "!");
+                return true;
+            } else {
+                System.out.println("❌ Credenciales incorrectas");
+                return false;
+            }
+            
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ Error de validación: " + e.getMessage());
+            return false;
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error inesperado durante login: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Casos de prueba
+        System.out.println("=== PRUEBAS DE LOGIN ===");
+        
+        // Caso 1: Login exitoso
+        intentarLogin("admin", "123456");
+        
+        // Caso 2: Usuario muy corto
+        intentarLogin("ab", "123456");
+        
+        // Caso 3: Contraseña muy corta
+        intentarLogin("admin", "123");
+        
+        // Caso 4: Credenciales incorrectas
+        intentarLogin("usuario", "password");
+        
+        // Caso 5: Valores null
+        intentarLogin(null, "123456");
+    }
+}
+```
 
-### **Herramientas Implementadas:**
+### **📋 Caso 2: Conversor de Temperaturas Robusto**
 
-1. **Result Pattern**: Para operaciones que pueden fallar
-2. **Circuit Breaker**: Para protección contra fallos en cascada
-3. **Validación por Capas**: Para entrada de datos robusta
-4. **Logging Estructurado**: Para observabilidad del sistema
+```java
+public class ConversorTemperaturas {
+    
+    public static void convertirTemperatura(String temperaturaTexto, String unidadOrigen, String unidadDestino) {
+        try {
+            // Validar inputs
+            validarInputs(temperaturaTexto, unidadOrigen, unidadDestino);
+            
+            // Convertir texto a número
+            double temperatura = Double.parseDouble(temperaturaTexto.trim());
+            
+            // Validar rangos físicos
+            validarRangosFisicos(temperatura, unidadOrigen);
+            
+            // Realizar conversión
+            double resultado = realizarConversion(temperatura, unidadOrigen, unidadDestino);
+            
+            // Mostrar resultado
+            System.out.printf("🌡️  %.2f°%s = %.2f°%s%n", 
+                temperatura, unidadOrigen.toUpperCase(), 
+                resultado, unidadDestino.toUpperCase());
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ '" + temperaturaTexto + "' no es un número válido");
+            System.out.println("💡 Ejemplos: 25, -10, 98.6, 0");
+            
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+            
+        } catch (ArithmeticException e) {
+            System.out.println("❌ Error en cálculo: " + e.getMessage());
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error inesperado: " + e.getMessage());
+        }
+    }
+    
+    private static void validarInputs(String temp, String origen, String destino) {
+        if (temp == null || temp.trim().isEmpty()) {
+            throw new IllegalArgumentException("La temperatura no puede estar vacía");
+        }
+        
+        if (origen == null || destino == null) {
+            throw new IllegalArgumentException("Las unidades no pueden estar vacías");
+        }
+        
+        String[] unidadesValidas = {"C", "F", "K"};
+        boolean origenValido = false, destinoValido = false;
+        
+        for (String unidad : unidadesValidas) {
+            if (unidad.equalsIgnoreCase(origen)) origenValido = true;
+            if (unidad.equalsIgnoreCase(destino)) destinoValido = true;
+        }
+        
+        if (!origenValido) {
+            throw new IllegalArgumentException("Unidad origen inválida: " + origen + 
+                ". Use C (Celsius), F (Fahrenheit) o K (Kelvin)");
+        }
+        
+        if (!destinoValido) {
+            throw new IllegalArgumentException("Unidad destino inválida: " + destino + 
+                ". Use C (Celsius), F (Fahrenheit) o K (Kelvin)");
+        }
+    }
+    
+    private static void validarRangosFisicos(double temp, String unidad) {
+        switch (unidad.toUpperCase()) {
+            case "C":
+                if (temp < -273.15) {
+                    throw new IllegalArgumentException("Temperatura imposible: " + temp + "°C " +
+                        "(menor que cero absoluto: -273.15°C)");
+                }
+                break;
+            case "F":
+                if (temp < -459.67) {
+                    throw new IllegalArgumentException("Temperatura imposible: " + temp + "°F " +
+                        "(menor que cero absoluto: -459.67°F)");
+                }
+                break;
+            case "K":
+                if (temp < 0) {
+                    throw new IllegalArgumentException("Temperatura imposible: " + temp + "K " +
+                        "(menor que cero absoluto: 0K)");
+                }
+                break;
+        }
+    }
+    
+    private static double realizarConversion(double temp, String origen, String destino) {
+        // Si es la misma unidad, no hay conversión
+        if (origen.equalsIgnoreCase(destino)) {
+            return temp;
+        }
+        
+        // Convertir todo a Celsius primero
+        double celsius = temp;
+        switch (origen.toUpperCase()) {
+            case "F":
+                celsius = (temp - 32) * 5.0 / 9.0;
+                break;
+            case "K":
+                celsius = temp - 273.15;
+                break;
+        }
+        
+        // Convertir de Celsius a la unidad destino
+        switch (destino.toUpperCase()) {
+            case "C":
+                return celsius;
+            case "F":
+                return celsius * 9.0 / 5.0 + 32;
+            case "K":
+                return celsius + 273.15;
+            default:
+                throw new IllegalArgumentException("Unidad destino no soportada: " + destino);
+        }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("=== CONVERSOR DE TEMPERATURAS ===");
+        
+        // Casos de prueba
+        convertirTemperatura("25", "C", "F");     // ✅ Debería funcionar
+        convertirTemperatura("abc", "C", "F");    // ❌ No es número
+        convertirTemperatura("100", "X", "F");    // ❌ Unidad inválida
+        convertirTemperatura("-300", "C", "K");   // ❌ Temperatura imposible
+        convertirTemperatura("", "C", "F");       // ❌ Temperatura vacía
+    }
+}
+```
 
-### **Aplicación al Código Existente:**
+---
 
-Los patrones y principios presentados pueden aplicarse gradualmente al código de `Funciones.java`, priorizando:
+## 🎯 RESUMEN PARA PRINCIPIANTES
 
-1. Métodos críticos para la funcionalidad
-2. Operaciones de E/O y base de datos
-3. Validaciones de entrada de usuario
-4. Cálculos matemáticos complejos
+### **📝 Checklist de Buenas Prácticas**
 
-Esta refactorización mejorará significativamente la robustez, mantenibilidad y capacidad de debugging del sistema.
+✅ **Nunca dejes un catch vacío**
+✅ **Siempre da información útil al usuario**
+✅ **Sé específico con los tipos de error que atrapas**
+✅ **Valida antes de usar (null checks)**
+✅ **Usa finally para limpiar recursos**
+✅ **No uses try-catch para lógica normal**
+
+### **🚫 Qué NUNCA debes hacer**
+
+❌ Catch vacío: `catch(Exception e) {}`
+❌ Atrapar Exception genérico sin razón
+❌ Ignorar errores sin dar información
+❌ Usar excepciones para control de flujo normal
+
+### **🎯 Recuerda Siempre**
+
+1. **Try-Catch es tu Plan B** - Para cuando las cosas salen mal
+2. **Cada error merece una respuesta específica** - No todos los errores son iguales
+3. **El usuario necesita saber qué pasó** - Mensajes claros y útiles
+4. **Prevenir es mejor que curar** - Valida antes de usar
+
+¡Con estos conceptos básicos ya puedes escribir código Java más robusto y confiable! 🚀
