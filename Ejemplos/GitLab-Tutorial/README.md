@@ -657,9 +657,3 @@ git add .           # Preparar
 git commit -m "..."  # Guardar
 git push origin main # Subir
 ```
-
-¡Con estos comandos ya puedes trabajar profesionalmente con GitLab! 🎉
-
----
-
-**💡 Recuerda:** La práctica hace al maestro. No tengas miedo de experimentar en una rama de prueba. ¡GitLab está ahí para ayudarte a colaborar mejor! 🚀
